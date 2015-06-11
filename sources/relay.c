@@ -8,7 +8,7 @@
  * @param n - the relay's sequence number
  * @ret - the address of the new relay
  */
-struct relay* initRelay(struct relay* r, char ab, int n) {
+struct relay* initRelay(char ab, int n) {
 	struct relay* t = malloc(sizeof(struct relay));
 
 	// Check for allocated memory
@@ -47,17 +47,36 @@ int switchRelay(struct relay* r) {
 
 	tx[2] = r->label;
 
-	int firstDigit = r->number;
-	firstDigit = firstDigit/10;
+	if (r->number > 10) {
+		int firstDigit = r->number;
+		firstDigit = firstDigit/10;
 
-	tx[3] = (char) firstDigit + '0';
-	tx[4] = (firstDigit%10) + '0';
+		tx[3] = (char) firstDigit + '0';
+		tx[4] = (firstDigit%10) + '0';
+	} else {
+		tx[3] = '0';
+		tx[4] = r->number + '0';
+	}
+
 	tx[5] = '\r';
 	tx[6] = '\0';
 
 	printf("TX: %s \n", tx);
 
-	return sendText(tx);
+	if (sendText(tx) == 1) {
+		r->status = tx[1];
+
+		#ifdef _WIN32
+			Sleep(100);
+		#else
+			usleep(100000);  /* sleep for 100 milliSeconds */
+		#endif
+
+		return 1;
+	}
+
+
+	return 0;
 }
 
 
@@ -71,17 +90,79 @@ int	onRelay(struct relay* r) {
 	int firstDigit = r->number;
 	firstDigit = firstDigit/10;
 
-	tx[3] = firstDigit;
-	tx[4] = firstDigit%10;
+	if (r->number > 10) {
+		int firstDigit = r->number;
+		firstDigit = firstDigit/10;
+
+		tx[3] = (char) firstDigit + '0';
+		tx[4] = (firstDigit%10) + '0';
+	} else {
+		tx[3] = '0';
+		tx[4] = r->number + '0';
+	}
+
 	tx[5] = '\r';
 	tx[6] = '\0';
 
-	return sendText(tx);
+	if (sendText(tx) == 1) {
+		r->status = 1;
+		#ifdef _WIN32
+			Sleep(100);
+		#else
+			usleep(100000);  /* sleep for 100 milliSeconds */
+		#endif
+		return 1;
+	}
 
+	return 0;
 }
-/*
-int		offRelay(struct relay* r);
-char	getLabelRelay(struct relay* r);
-int		getNumRelay(struct relay* r);
-int		getStatusRelay(struct relay* r);
-*/
+
+
+int	offRelay(struct relay* r) {
+	char tx[6];
+
+	tx[0] = 'R';
+	tx[1] = '0';
+	tx[2] = r->label;
+
+	int firstDigit = r->number;
+	firstDigit = firstDigit/10;
+
+	if (r->number > 10) {
+		int firstDigit = r->number;
+		firstDigit = firstDigit/10;
+
+		tx[3] = (char) firstDigit + '0';
+		tx[4] = (firstDigit%10) + '0';
+	} else {
+		tx[3] = '0';
+		tx[4] = r->number + '0';
+	}
+
+	tx[5] = '\r';
+	tx[6] = '\0';
+
+	if (sendText(tx) == 1) {
+		r->status = 0;
+		#ifdef _WIN32
+			Sleep(100);
+		#else
+			usleep(100000);  /* sleep for 100 milliSeconds */
+		#endif
+		return 1;
+	}
+
+	return 0;
+}
+
+char getLabelRelay(struct relay* r) {
+	return r->label;
+}
+
+int	getNumRelay(struct relay* r) {
+	return r->number;
+}
+
+int	getStatusRelay(struct relay* r) {
+	return r->status;
+}

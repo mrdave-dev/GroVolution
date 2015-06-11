@@ -47,7 +47,7 @@ comms.o:
 #tests
 
 relay-test-1: $(OBJS) tests/relay-test-1.c
-	$(CXX) $(CXXFLAGS) tests/relay-test-1.c -o tests/relay-test-1
+	$(CXX) $(CXXFLAGS) rs232.o relay.o comms.o tests/relay-test-1.c -o relay-test-1
 
 
 #utility

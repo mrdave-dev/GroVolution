@@ -23,7 +23,7 @@ struct relay {
 	int 	status;
 };
 
-struct relay* 	initRelay(struct relay* r, char ab, int n);
+struct relay* 	initRelay(char ab, int n);
 void 	setRelayNum(struct relay* r, int n);
 void 	setRelayLabel(struct relay* r, char ab);
 int 	switchRelay(struct relay* r);

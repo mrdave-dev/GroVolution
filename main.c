@@ -10,8 +10,6 @@
 #include "headers/relay.h"
 #include "headers/comms.h"
 
-
-
 /* TODO:
  - Make read text write to the buffer provided
  - Begin creating objects: switches, bank, board
@@ -31,7 +29,13 @@ int main(int argc, char** argv)  {
 
 	printf("\n");
 
-	//sendText("RV001ON\r");
+	sendText("ST\r");
+	unsigned char davesString[100];
+	readText(davesString);
+
+	return 0;
+
+	/*
 
 	struct relay* davesRelay = initRelay(davesRelay, 'P', 33);
 	switchRelay(davesRelay);
@@ -43,4 +47,5 @@ int main(int argc, char** argv)  {
 
 	printf("davesString: %s \n", davesString);
     return 0;
+    */
 }

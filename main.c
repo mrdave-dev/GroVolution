@@ -29,8 +29,15 @@ int main(int argc, char** argv)  {
 
 	printf("\n");
 
-	sendText("START\r");
-	// sendText("ST\r");
+	sendText("R1L01\r");
+
+		#ifdef _WIN32
+			Sleep(1000);
+		#else
+			usleep(1000000);  /* sleep for 100 milliSeconds */
+		#endif
+
+	sendText("ST\r");
 	unsigned char davesString[100];
 	readText(davesString);
 	printf("STRING: %s", davesString);

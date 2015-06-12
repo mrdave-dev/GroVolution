@@ -32,16 +32,16 @@ default: $(SRCS) $(OBJS)
 allandclean: default clean
 
 # Main interface
-main.o:
+main.o: main.c
 	$(CXX) $(CXXFLAGS) main.c -c
 
-rs232.o:
+rs232.o: RS-232/rs232.c
 	$(CXX) $(CXXFLAGS) RS-232/rs232.c -c
 
-relay.o:
+relay.o: sources/relay.c
 	$(CXX) $(CXXFLAGS) sources/relay.c -c
 
-comms.o:
+comms.o: sources/comms.c
 	$(CXX) $(CXXFLAGS) sources/comms.c -c
 
 #tests

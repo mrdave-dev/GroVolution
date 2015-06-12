@@ -52,7 +52,7 @@ int switchRelay(struct relay* r) {
 		firstDigit = firstDigit/10;
 
 		tx[3] = (char) firstDigit + '0';
-		tx[4] = (firstDigit%10) + '0';
+		tx[4] = (r->number%10) + '0';
 	} else {
 		tx[3] = '0';
 		tx[4] = r->number + '0';
@@ -87,15 +87,12 @@ int	onRelay(struct relay* r) {
 	tx[1] = '1';
 	tx[2] = r->label;
 
-	int firstDigit = r->number;
-	firstDigit = firstDigit/10;
-
-	if (r->number > 10) {
+	if (r->number >= 10) {
 		int firstDigit = r->number;
 		firstDigit = firstDigit/10;
 
 		tx[3] = (char) firstDigit + '0';
-		tx[4] = (firstDigit%10) + '0';
+		tx[4] = (r->number%10) + '0';
 	} else {
 		tx[3] = '0';
 		tx[4] = r->number + '0';
@@ -125,15 +122,12 @@ int	offRelay(struct relay* r) {
 	tx[1] = '0';
 	tx[2] = r->label;
 
-	int firstDigit = r->number;
-	firstDigit = firstDigit/10;
-
-	if (r->number > 10) {
+	if (r->number >= 10) {
 		int firstDigit = r->number;
 		firstDigit = firstDigit/10;
 
 		tx[3] = (char) firstDigit + '0';
-		tx[4] = (firstDigit%10) + '0';
+		tx[4] = (r->number%10) + '0';
 	} else {
 		tx[3] = '0';
 		tx[4] = r->number + '0';

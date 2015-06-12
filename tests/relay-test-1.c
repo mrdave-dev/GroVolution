@@ -27,9 +27,10 @@ int main(int argc, char** argv) {
 	readText(davesString);
 	printf("\n\n");
 
-	printf("*** SWITCHING ALL RELAYS ON ***");
+	printf("*** SWITCHING ALL RELAYS ON ***\n");
 	for (int i = 0; i<23; i++) {
-		onRelay(GVR_RELAYS[i]);
+		int f = onRelay(GVR_RELAYS[i]);
+		printf(" RET: %i ", f);
 	}
 
 
@@ -37,9 +38,10 @@ int main(int argc, char** argv) {
 	sendText("ST\r");
 	printf("\n\n");
 
-	printf("*** SWITCHING ALL RELAYS OFF ***");
+	printf("*** SWITCHING ALL RELAYS OFF ***\n");
 	for (int i = 0; i<23; i++) {
-		offRelay(GVR_RELAYS[i]);
+		int f = offRelay(GVR_RELAYS[i]);
+		printf(" RET: %i ", f);
 	}
 
 	printf("*** SHOULD BE ALL 0's ***\n\n");

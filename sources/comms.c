@@ -28,7 +28,10 @@ int sendText(const char* tx) {
 	// Close port
 	RS232_CloseComport(PIPORT);
 
-	printf("SENT: %s \n", tx);
+	printf(" SENT: %s \n", tx);
+
+
+
 
 	return 1;
 }
@@ -44,7 +47,7 @@ void readText(unsigned char* rx) {
 
 	int status = RS232_OpenComport(PIPORT, BAUDRATE, mode);
 
-	if (status == 1) {
+	if (status > 0) {
 		// Error opening port
 		printf("ERROR: Could not open communication port. (readText) \n");
 		return;
@@ -74,6 +77,7 @@ void readText(unsigned char* rx) {
 		#endif
 
 		i++;
+		printf("Read cycle\n");
 	}
 
 
@@ -85,5 +89,12 @@ void readText(unsigned char* rx) {
 		cur++;
 		r++;
 	}
+
+	#ifdef _WIN32
+		Sleep(2000);
+	#else
+		usleep(200000);  /* sleep for 100 milliSeconds */
+	#endif
+
 }
 

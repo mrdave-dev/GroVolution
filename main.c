@@ -29,9 +29,11 @@ int main(int argc, char** argv)  {
 
 	printf("\n");
 
-	sendText("ST\r");
+	sendText("START\r");
+	// sendText("ST\r");
 	unsigned char davesString[100];
 	readText(davesString);
+	printf("STRING: %s", davesString);
 
 	return 0;
 

@@ -18,5 +18,28 @@
 #include "../headers/comms.h"
 #include "../headers/relay.h"
 
+struct Bank {
+	struct Relay **relays;
+
+	int count,
+		relayCapacity,
+		wakeTime,
+		lightDuration,
+		sprayInterval,
+		sprayDuration;
+};
+
+struct Bank * bankInit(struct Bank *b);
+void bankAddRelay(struct Bank b, char ab, int r);
+void bankTurnAllOn(struct Bank b);
+void bankTurnAllOff(struct Bank b);
+void bankTurnInverse(struct Bank b);
+void bankReport(struct Bank b);
+void bankReportByName(struct Bank b, char* c);
+void bankReportTimers(struct Bank b);
+void bankFetchStatus(struct Bank b);
+void bankFetchTimers(struct Bank b);
+int bankSetTimer(int t, int v);
+int bankSetTimers(int a, int b, int c, int d);
 
 #endif

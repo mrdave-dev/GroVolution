@@ -29,7 +29,7 @@ int main(int argc, char** argv)  {
 
 	printf("\n");
 
-	sendText("R1L01\r");
+	sendText("R0L001\r");
 
 		#ifdef _WIN32
 			Sleep(1000);

@@ -35,7 +35,7 @@ void setRelayLabel(struct relay* r, char ab) {
 }
 
 int switchRelay(struct relay* r) {
-	char tx[6];
+	char tx[7];
 
 	tx[0] = 'R';
 
@@ -46,20 +46,21 @@ int switchRelay(struct relay* r) {
 	}
 
 	tx[2] = r->label;
+	tx[3] = '0';
 
 	if (r->number > 10) {
 		int firstDigit = r->number;
 		firstDigit = firstDigit/10;
 
-		tx[3] = (char) firstDigit + '0';
-		tx[4] = (r->number%10) + '0';
+		tx[4] = (char) firstDigit + '0';
+		tx[5] = (r->number%10) + '0';
 	} else {
-		tx[3] = '0';
-		tx[4] = r->number + '0';
+		tx[4] = '0';
+		tx[5] = r->number + '0';
 	}
 
-	tx[5] = '\r';
-	tx[6] = '\0';
+	tx[6] = '\r';
+	tx[7] = '\0';
 
 	printf("TX: %s \n", tx);
 
@@ -67,9 +68,9 @@ int switchRelay(struct relay* r) {
 		r->status = tx[1];
 
 		#ifdef _WIN32
-			Sleep(100);
+			Sleep(150);
 		#else
-			usleep(100000);  /* sleep for 100 milliSeconds */
+			usleep(150000);  /* sleep for 100 milliSeconds */
 		#endif
 
 		return 1;
@@ -81,32 +82,32 @@ int switchRelay(struct relay* r) {
 
 
 int	onRelay(struct relay* r) {
-	char tx[6];
+	char tx[7];
 
 	tx[0] = 'R';
 	tx[1] = '1';
 	tx[2] = r->label;
-
+	tx[3] = '0';
 	if (r->number >= 10) {
 		int firstDigit = r->number;
 		firstDigit = firstDigit/10;
 
-		tx[3] = (char) firstDigit + '0';
-		tx[4] = (r->number%10) + '0';
+		tx[4] = (char) firstDigit + '0';
+		tx[5] = (r->number%10) + '0';
 	} else {
-		tx[3] = '0';
-		tx[4] = r->number + '0';
+		tx[4] = '0';
+		tx[5] = r->number + '0';
 	}
 
-	tx[5] = '\r';
-	tx[6] = '\0';
+	tx[6] = '\r';
+	tx[7] = '\0';
 
 	if (sendText(tx) == 1) {
 		r->status = 1;
 		#ifdef _WIN32
-			Sleep(100);
+			Sleep(150);
 		#else
-			usleep(100000);  /* sleep for 100 milliSeconds */
+			usleep(150000);  /* sleep for 100 milliSeconds */
 		#endif
 		return 1;
 	}
@@ -116,32 +117,33 @@ int	onRelay(struct relay* r) {
 
 
 int	offRelay(struct relay* r) {
-	char tx[6];
+	char tx[7];
 
 	tx[0] = 'R';
 	tx[1] = '0';
 	tx[2] = r->label;
+	tx[3] = '0';
 
 	if (r->number >= 10) {
 		int firstDigit = r->number;
 		firstDigit = firstDigit/10;
 
-		tx[3] = (char) firstDigit + '0';
-		tx[4] = (r->number%10) + '0';
+		tx[4] = (char) firstDigit + '0';
+		tx[5] = (r->number%10) + '0';
 	} else {
-		tx[3] = '0';
-		tx[4] = r->number + '0';
+		tx[4] = '0';
+		tx[5] = r->number + '0';
 	}
 
-	tx[5] = '\r';
-	tx[6] = '\0';
+	tx[6] = '\r';
+	tx[7] = '\0';
 
 	if (sendText(tx) == 1) {
 		r->status = 0;
 		#ifdef _WIN32
-			Sleep(100);
+			Sleep(150);
 		#else
-			usleep(100000);  /* sleep for 100 milliSeconds */
+			usleep(150000);  /* sleep for 100 milliSeconds */
 		#endif
 		return 1;
 	}

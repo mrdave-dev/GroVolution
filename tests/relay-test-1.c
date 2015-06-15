@@ -14,7 +14,7 @@ int main(int argc, char** argv) {
 
 	printf("*** CREATING RELAYS ***\n");
 
-	struct relay* GVR_RELAYS[] = {initRelay('P', 1), initRelay('P', 2), initRelay('P', 3),
+	struct relay* GVR_RELAYS[] = {initRelay('P', 1), initRelay('P', 2),
 		initRelay('V', 1), initRelay('V', 2), initRelay('V', 3),
 		initRelay('L', 1), initRelay('L', 2), initRelay('L', 3), initRelay('L', 4), initRelay('L', 5),
 		initRelay('L', 6), initRelay('L', 7), initRelay('L', 8), initRelay('L', 9), initRelay('L', 10),
@@ -28,24 +28,42 @@ int main(int argc, char** argv) {
 	printf("\n\n");
 
 	printf("*** SWITCHING ALL RELAYS ON ***\n");
-	for (int i = 0; i<23; i++) {
+	for (int i = 0; i<22; i++) {
 		int f = onRelay(GVR_RELAYS[i]);
-		printf(" RET: %i ", f);
 	}
+
+	#ifdef _WIN32
+		Sleep(550);
+	#else
+		usleep(550000);  /* sleep for 100 milliSeconds */
+	#endif
 
 
 	printf("*** SHOULD BE ALL 1's ***\n\n");
 	sendText("ST\r");
+	readText(davesString);
 	printf("\n\n");
 
+	#ifdef _WIN32
+		Sleep(550);
+	#else
+		usleep(550000);  /* sleep for 100 milliSeconds */
+	#endif
+
 	printf("*** SWITCHING ALL RELAYS OFF ***\n");
-	for (int i = 0; i<23; i++) {
+	for (int i = 0; i<22; i++) {
 		int f = offRelay(GVR_RELAYS[i]);
-		printf(" RET: %i ", f);
 	}
+
+	#ifdef _WIN32
+		Sleep(550);
+	#else
+		usleep(550000);  /* sleep for 100 milliSeconds */
+	#endif
 
 	printf("*** SHOULD BE ALL 0's ***\n\n");
 	sendText("ST\r");
+	readText(davesString);
 	printf("\n\n");
 
 		#ifdef _WIN32

@@ -11,7 +11,7 @@ CXXFLAGS = -std=gnu99
 CXXFLAGS += -Wall
 CXXFLAGS += -pedantic-errors
 CXXFLAGS += -g
-
+CXXFLAGS += -lm
 
 # All objects
 OBJS = main.o rs232.o relay.o comms.o bank.o

@@ -2,6 +2,7 @@
 #include <stdio.h>		// printf
 #include <string.h>
 #include <unistd.h> 	// usleep
+#include <math.h>
 
 // Outside libraries
 #include "RS-232/rs232.h"

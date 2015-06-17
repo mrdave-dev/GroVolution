@@ -33,8 +33,10 @@ struct Bank {
 	struct relay *relays[30];
 };
 
-struct Bank * bankInit(struct Bank *b);
+struct Bank * bankInit();
 void bankAddRelay(struct Bank *b, char ab, int r);
+void bankTurnRelayOn(struct Bank *b, char ab, int r);
+void bankTurnRelayOff(struct Bank *b, char ab, int r);
 void bankTurnAllOn(struct Bank *b);
 void bankTurnAllOff(struct Bank *b);
 void bankTurnInverse(struct Bank *b);

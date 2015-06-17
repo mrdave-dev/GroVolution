@@ -10,6 +10,7 @@
 // Custom definitions
 #include "headers/relay.h"
 #include "headers/comms.h"
+#include "headers/bank.h"
 
 /* TODO:
  - Make read text write to the buffer provided

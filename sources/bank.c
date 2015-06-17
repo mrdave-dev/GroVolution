@@ -1,8 +1,8 @@
 #include "../headers/bank.h"
 
-struct Bank * bankInit(struct Bank *b) {
+struct Bank * bankInit() {
 	// Allocate some memory
-	struct Bank *t = malloc(sizeof(struct Bank));
+	struct Bank* t = malloc(sizeof(struct Bank));
 
 	// initialize ints to 0
 	t->count = 0;
@@ -18,8 +18,33 @@ struct Bank * bankInit(struct Bank *b) {
 }
 
 void bankAddRelay(struct Bank *b, char ab, int r) {
+	if (b->count >= b->relayCapacity) {
+		printf("ERROR: Bank at capacity.\n");
+		return;
+	}
+
 	b->relays[b->count] = initRelay(ab, r);
 	b->count++;
+}
+
+void bankTurnRelayOn(struct Bank *b, char ab, int r) {
+	for (int i = 0; i < b->count; i++) {
+		if (b->relays[i]->label == ab) {
+			if (b->relays[i]->number == r) {
+				onRelay((b->relays[i]));
+			}
+		}
+	}
+}
+
+void bankTurnRelayOff(struct Bank *b, char ab, int r) {
+	for (int i = 0; i < b->count; i++) {
+		if (b->relays[i]->label == ab) {
+			if (b->relays[i]->number == r) {
+				offRelay((b->relays[i]));
+			}
+		}
+	}
 }
 
 void bankTurnAllOn(struct Bank *b) {
@@ -49,7 +74,7 @@ void bankReport(struct Bank *b) {
 	for (int i = 0; i < b->count; i++) {
 		printf("RELAY #%i\t| %c%i\t| STATUS: %i\n", i, b->relays[i]->label, b->relays[i]->number, b->relays[i]->status);
 	}
-
+	printf("\n\n");
 }
 
 void bankReportByLabel(struct Bank *b, char* c) {
@@ -66,6 +91,7 @@ void bankReportByLabel(struct Bank *b, char* c) {
 			printf("RELAY #%i\t| %c%i\t| STATUS: %i\n", i, b->relays[i]->label, b->relays[i]->number, b->relays[i]->status);
 		}
 	}
+	printf("\n\n");
 }
 
 
@@ -74,6 +100,7 @@ void bankReportTimers(struct Bank *b) {
 	printf("COUNT: %i\t\tCAPACITY: %i\n", b->count, b->relayCapacity);
 	printf("WAKE TIME %i\t\tLIGHT DURATION: %i\n", b->wakeTime, b->lightDuration);
 	printf("SPRAY INT.: %i\t\tSPRAY DURATION: %i\n", b->sprayInterval, b->sprayDuration);
+	printf("\n\n");
 }
 
 void bankFetchStatus(struct Bank *b) {
@@ -84,8 +111,20 @@ void bankFetchStatus(struct Bank *b) {
 	sendText("ST\r");
 	readText(statusHolder);
 
+	int statusHolderCount = 0;
+	unsigned char* statusHolderPtr = statusHolder;
+	while (*statusHolderPtr != '\0') {
+		statusHolderCount++;
+		statusHolderPtr++;
+	}
+
+	// Adjust for \r
+	statusHolderCount--;
+
 	// Print error if number of relays don't match
-	if (sizeof(statusHolder) != b->count) {
+	if (statusHolderCount != b->count) {
+		printf("STATUS HOLDER SIZE: %i", sizeof(statusHolder));
+
 		printf("STATUS FETCH ERROR: Number of relays do not match\n");
 		return;
 	}
@@ -94,8 +133,8 @@ void bankFetchStatus(struct Bank *b) {
 	// compare to status of relay
 		// print something if there's a discrepncy
 		// change relay status to reflect what PLC says
-	for (int i = 0; i < b->relayCapacity; i++) {
-		if (b->relays[i]->status != statusHolder[i]) {
+	for (int i = 0; i < statusHolderCount; i++) {
+		if (b->relays[i]->status != (statusHolder[i]- '0')) {
 			printf("STATUS FETCH ERROR: Relay #%i does not match PLC. Adjusting relay status.\n", i);
 			b->relays[i]->status = statusHolder[i] - '0';
 		}
@@ -109,33 +148,37 @@ void bankFetchTimers(struct Bank *b) {
 	sendText("TM\r");
 	readText(timerHolder);
 
-	int timerSelector = 0;
-	int timerPlace = 0;
-	int timerTemp = 0;
-	while (timerHolder[timerPlace] != 0) {
-		for (int i = 4; i >= 0; i--) {
-			timerTemp += timerHolder[timerPlace] * (pow(10, i));
-			timerPlace++;
+	unsigned char *timerHolderPtr = timerHolder;
+
+	int timerBaseIndex = 0;
+	for (int i=0; i<4; i++) {
+		// sum the number from ASCII
+		int x = 0;
+		for (int j=4; j >= 0; j--) {
+			x = x + ((timerHolderPtr[timerBaseIndex + j] - '0') * pow(10, 4-j));
 		}
 
-		switch (timerSelector) {
+		// assign to various variables
+		switch (i) {
 			case 0:
-				b->wakeTime = timerTemp;
+				b->wakeTime = x;
 				break;
 			case 1:
-				b->lightDuration = timerTemp;
+				b->lightDuration = x;
 				break;
 			case 2:
-				b->sprayInterval = timerTemp;
+				b->sprayInterval = x;
 				break;
 			case 3:
-				b->sprayDuration = timerTemp;
+				b->sprayDuration = x;
 				break;
 		}
 
-		timerPlace += 5;
-		timerSelector++;
+		// iterate
+		timerBaseIndex += 3;
+		timerHolderPtr += 3;
 	}
+
 
 
 

@@ -53,6 +53,9 @@ bank.o: sources/bank.c
 relay-test-1: $(OBJS) tests/relay-test-1.c
 	$(CXX) $(CXXFLAGS) rs232.o relay.o comms.o tests/relay-test-1.c -o relay-test-1
 
+bank-test-1: $(OBJS) tests/bank-test-1.c
+	$(CXX) $(CXXFLAGS) rs232.o relay.o comms.o bank.o tests/bank-test-1.c -o bank-test-1
+
 
 #utility
 

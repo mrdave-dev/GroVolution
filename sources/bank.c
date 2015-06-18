@@ -110,6 +110,8 @@ void bankFetchStatus(struct Bank *b) {
 
 	sendText("ST\r");
 	readText(statusHolder);
+	printf("Attempting to fetch statu ... \n");
+	printf("STATUS FROM PLC: %s\n", statusHolder);
 
 	int statusHolderCount = 0;
 	unsigned char* statusHolderPtr = statusHolder;
@@ -143,10 +145,17 @@ void bankFetchStatus(struct Bank *b) {
 
 void bankFetchTimers(struct Bank *b) {
 	printf("Fetching timers from PLC...\n");
-	unsigned char timerHolder[24];
+	unsigned char timerHolder[25];
 
 	sendText("TM\r");
 	readText(timerHolder);
+
+	// NOTE: THIS SHOULD BE REFACTORED TO THE READ FUNCTION
+	// ASSIGN LAST CHAR TO '\0';
+	int BUFFER_LAST = 24;
+	timerHolder[BUFFER_LAST] = '\0';
+
+	printf("TIMERS FROM PLC: %s", timerHolder);
 
 	unsigned char *timerHolderPtr = timerHolder;
 

@@ -39,7 +39,7 @@ int main(int argc, char** argv)  {
 			usleep(1000000);  /* sleep for 100 milliSeconds */
 		#endif
 
-	sendText("ST\r");
+	sendText("START\r");
 	unsigned char davesString[100];
 	readText(davesString);
 	printf("STRING: %s", davesString);

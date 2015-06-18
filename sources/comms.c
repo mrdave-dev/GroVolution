@@ -28,10 +28,7 @@ int sendText(const char* tx) {
 	// Close port
 	RS232_CloseComport(PIPORT);
 
-	printf(" SENT: %s \n", tx);
-
-
-
+	// printf(" SENT: %s \n", tx);
 
 	return 1;
 }
@@ -66,7 +63,7 @@ void readText(unsigned char* rx) {
 				}
 			}
 
-			printf("received %i bytes: %s\n", n, (char *)buffer);
+			// printf("received %i bytes: %s\n", n, (char *)buffer);
 			break;
 		}
 
@@ -77,7 +74,7 @@ void readText(unsigned char* rx) {
 		#endif
 
 		i++;
-		printf("Read cycle\n");
+		//printf("Read cycle\n");
 	}
 
 

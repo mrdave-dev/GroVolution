@@ -48,7 +48,7 @@ int switchRelay(struct relay* r) {
 	tx[2] = r->label;
 	tx[3] = '0';
 
-	if (r->number > 10) {
+	if (r->number >= 10) {
 		int firstDigit = r->number;
 		firstDigit = firstDigit/10;
 
@@ -62,10 +62,8 @@ int switchRelay(struct relay* r) {
 	tx[6] = '\r';
 	tx[7] = '\0';
 
-	printf("TX: %s \n", tx);
-
 	if (sendText(tx) == 1) {
-		r->status = tx[1];
+		r->status = tx[1] - '0';
 
 		#ifdef _WIN32
 			Sleep(150);

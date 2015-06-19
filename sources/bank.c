@@ -124,7 +124,7 @@ void bankFetchStatus(struct Bank *b) {
 
 	// Print error if number of relays don't match
 	if (statusHolderCount != b->count) {
-		printf("STATUS HOLDER SIZE: %i", sizeof(statusHolder));
+		printf("STATUS HOLDER SIZE: %i\n", sizeof(statusHolder));
 
 		printf("STATUS FETCH ERROR: Number of relays do not match\n");
 		return;

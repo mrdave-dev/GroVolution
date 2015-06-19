@@ -22,6 +22,7 @@
  - Edit makefile to work right...
 */
 
+void printHelp();
 
 int main(int argc, char** argv)  {
 	printf("DEBUG: ARGC = %i \n", argc);
@@ -80,24 +81,87 @@ int main(int argc, char** argv)  {
 	printf("\t explanation of how things work, type './gv help [command]', replacing [command] with\n");
 	printf("\t an option below.\n\n");
 */
+
+	printHelp();
+
+	while (strcmp(userResponse, "quit") != 0) {
+
+		printf("What would you like to do? ");
+		gets(userResponse);
+
+		// Break down user response
+		char firstWord[20];
+		char firstChar;
+		int firstNum;
+
+		char* firstSpace = strstr(userResponse, " ");
+		if (firstSpace == NULL) {
+			// entry is only one word long
+			strcpy(firstWord, userResponse);
+			// printf("DEBUG: firstSpace == NULL\n");
+			// printf("DEBUG: firstWord = %s\n", firstWord);
+		} else {
+			// Assign first char and first num
+			// printf("DEBUG: firstSpace = %p\n", (void *)firstSpace);
+			// printf("DEBUG: &userresponse = %p\n", (void *)&userResponse);
+			// how many bytes does it take to get to space?
+			int bytesToSpace = (int) firstSpace - (int) &userResponse;
+			// printf("DEBUG: bytesToSpace = %i\n", bytesToSpace);
+
+			firstChar = userResponse[bytesToSpace + 1];
+			firstNum = (int) userResponse[bytesToSpace + 2] - '0';
+
+			// printf("DEBUG: firstChar = %c\n", firstChar);
+			// printf("DEBUG: firstNum = %i\n", firstNum);
+
+			// TODO: add additional verifications: range char andnum
+		}
+
+
+		if (strstr(userResponse, "add") != NULL) {
+			bankAddRelay(bankZero, firstChar, firstNum);
+
+		} else if (strstr(userResponse, "report") != NULL) {
+			bankReport(bankZero);
+
+		} else if (strstr(userResponse, "fetch") != NULL) {
+			bankFetchStatus(bankZero);
+			bankFetchTimers(bankZero);
+
+		} else if (strstr(userResponse, "switch") != NULL) {
+			// bankSwitch(bankZero, firstChar, firstNum);
+			printf("TODO: Create bankSwitch function\n");
+
+		} else if (strstr(userResponse, "on") != NULL) {
+			bankTurnRelayOn(bankZero, firstChar, firstNum);
+
+		} else if (strstr(userResponse, "off") != NULL) {
+			bankTurnRelayOff(bankZero, firstChar, firstNum);
+
+		} else if (strstr(userResponse, "help") != NULL) {
+
+		} else if (strstr(userResponse, "quit") != NULL) {
+			// do nothing
+		} else {
+
+		}
+	}
+
+	return 0;
+}
+
+
+void printHelp() {
 	printf(" GROVOLUTION CLI \n");
 	printf(" OPTIONS: \n");
-	printf("\t add [char] [#]\t\t- add a relay, i.e.: ./gv add P 3 \n");
+	printf("\t add [char][#]\t\t- add a relay, i.e.: ./gv add P 3 \n");
 	printf("\t report\t\t\t- show the current status of relays \n");
 	printf("\t fetch\t\t\t- get the current status of the relays from the PLC \n");
 	printf("\t switch [char][#]\t- turn a relay to its opposite status i.e.: ./gv switch P3\n");
 	printf("\t on [char][#]\t\t- turn relay on\n");
 	printf("\t off [char][#]\t\t- turn relay off\n");
 	printf("\t help\t\t\t- show this screen again\n\n");
+	printf("\t quit\t\t\t- exit the program\n\n");
 
-	printf("What would you like to do? ");
-	gets(userResponse);
-
-
-
-
-
-
-	return 0;
-
+	return;
 }

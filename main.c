@@ -13,13 +13,13 @@
 #include "headers/bank.h"
 
 /* TODO:
- - Make read text write to the buffer provided
- - Begin creating objects: switches, bank, board
- - Create code to take commands from CL arguements
- - Create interface to use without command lind arguements
  - Create Code to figure out which port to use
- - Refactor code in to seperate headers and object files
- - Edit makefile to work right...
+
+   ISSUES:
+ - Fetch should be able to handle some issues with getting either corrupted data
+   or data that isn't complete or data that's not well formed (no null char).
+ - In one instance, errors were occuring with bad syncage between status fetches.
+   Watch out and try to replicate.
 */
 
 void printHelp();
@@ -159,6 +159,9 @@ int main(int argc, char** argv)  {
 			//printf("Off\n");
 			bankTurnRelayOff(bankZero, firstChar, firstNum);
 
+		} else if (strcmp(userResponse, "invert") == 0) {
+			bankTurnInverse(bankZero);
+
 		} else if (strcmp(userResponse, "help") == 0) {
 			//printf("Help\n");
 			printHelp();
@@ -183,8 +186,9 @@ void printHelp() {
 	printf("\t switch [char][#]\t- turn a relay to its opposite status i.e.: ./gv switch P3\n");
 	printf("\t on [char][#]\t\t- turn relay on\n");
 	printf("\t off [char][#]\t\t- turn relay off\n");
-	printf("\t all on\t\t- turn all relays on\n");
+	printf("\t all on\t\t\t- turn all relays on\n");
 	printf("\t all off\t\t- turn all relays off\n");
+	printf("\t invert\t\t\t- turns on switches on and off switches off\n");
 	printf("\t help\t\t\t- show this screen again\n");
 	printf("\t quit\t\t\t- exit the program\n\n");
 

@@ -47,6 +47,16 @@ void bankTurnRelayOff(struct Bank *b, char ab, int r) {
 	}
 }
 
+void bankRelaySwitch(struct Bank *b, char ab, int r) {
+	for (int i = 0; i < b->count; i++) {
+		if (b->relays[i]->label == ab) {
+			if (b->relays[i]->number == r) {
+				switchRelay(b->relays[i]);
+			}
+		}
+	}
+}
+
 void bankTurnAllOn(struct Bank *b) {
 	for (int i = 0; i < b->count; i++) {
 		onRelay(b->relays[i]);

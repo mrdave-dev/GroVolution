@@ -25,15 +25,6 @@
 void printHelp();
 
 int main(int argc, char** argv)  {
-	printf("DEBUG: ARGC = %i \n", argc);
-
-	if (argc > 1) {
-		printf("DEBUG: ARGV[1] = %s \n", argv[1]);
-		if (strcmp(argv[1], "fetch") == 0) {
-
-		}
-	}
-
 	printf("... initializing bank ...\n");
 	struct Bank* bankZero = bankInit();
 
@@ -67,20 +58,37 @@ int main(int argc, char** argv)  {
 	printf("... fetching timer status ...\n");
 	bankFetchTimers(bankZero);
 
+	/* COMMAND LINE ARGUEMENTS INTERFACE */
+	if (argc > 1) {
+		if (strcmp(argv[1], "all") == 0) {
+			if (strcmp(argv[2], "on") == 0) {
+				bankTurnAllOn(bankZero);
+				return 0;
+			} else if (strcmp(argv[2], "off") == 0) {
+				bankTurnAllOff(bankZero);
+				return 0;
+			}
+		} else if (strcmp(argv[1], "fetch") == 0) {
+			bankFetchStatus(bankZero);
+			return 0;
+		} else if (strcmp(argv[1], "on") == 0) {
+			char targetChar = argv[2][0];
+			int  targetInt = argv[2][1] - '0';
+			bankTurnRelayOn(bankZero, targetChar, targetInt);
+			return 0;
+
+		} else if (strcmp(argv[1], "off") == 0) {
+			char targetChar = argv[2][0];
+			int  targetInt = argv[2][1] - '0';
+			bankTurnRelayOff(bankZero, targetChar, targetInt);
+			return 0;
+		}
+	}
+
 	printf("... almost done ...\n");
 	char userResponse[80];
 
 	printf("Setup complete!\n\n");
-
-/* TO IMPLEMENT LATER:
-	printf("\n");
-	printf("SYNTAX: ./gv [command] (char)(#)");
-	printf("\n\n");
-
-	printf("\t Type the following commands after './gv ' (minus the apostrophes). If you need further\n");
-	printf("\t explanation of how things work, type './gv help [command]', replacing [command] with\n");
-	printf("\t an option below.\n\n");
-*/
 
 	printHelp();
 
@@ -111,39 +119,54 @@ int main(int argc, char** argv)  {
 			firstChar = userResponse[bytesToSpace + 1];
 			firstNum = (int) userResponse[bytesToSpace + 2] - '0';
 
-			// printf("DEBUG: firstChar = %c\n", firstChar);
-			// printf("DEBUG: firstNum = %i\n", firstNum);
+			//printf("DEBUG: firstChar = %c\n", firstChar);
+			//printf("DEBUG: firstNum = %i\n", firstNum);
 
 			// TODO: add additional verifications: range char andnum
 		}
 
 
 		if (strstr(userResponse, "add") != NULL) {
+			//printf("Add\n");
 			bankAddRelay(bankZero, firstChar, firstNum);
 
-		} else if (strstr(userResponse, "report") != NULL) {
+		} else if (strcmp(userResponse, "report") == 0) {
+			//printf("Report\n");
 			bankReport(bankZero);
 
-		} else if (strstr(userResponse, "fetch") != NULL) {
+		} else if (strcmp(userResponse, "fetch") == 0) {
+			//printf("Fetch\n");
 			bankFetchStatus(bankZero);
 			bankFetchTimers(bankZero);
 
 		} else if (strstr(userResponse, "switch") != NULL) {
-			// bankSwitch(bankZero, firstChar, firstNum);
-			printf("TODO: Create bankSwitch function\n");
+			//printf("Switch\n");
+			bankRelaySwitch(bankZero, firstChar, firstNum);
+
+		} else if (strcmp(userResponse, "all on") == 0) {
+			//printf("All on\n");
+			bankTurnAllOn(bankZero);
+
+		} else if (strcmp(userResponse, "all off") == 0) {
+			//printf("All off\n");
+			bankTurnAllOff(bankZero);
 
 		} else if (strstr(userResponse, "on") != NULL) {
+			//printf("On\n");
 			bankTurnRelayOn(bankZero, firstChar, firstNum);
 
 		} else if (strstr(userResponse, "off") != NULL) {
+			//printf("Off\n");
 			bankTurnRelayOff(bankZero, firstChar, firstNum);
 
-		} else if (strstr(userResponse, "help") != NULL) {
+		} else if (strcmp(userResponse, "help") == 0) {
+			//printf("Help\n");
+			printHelp();
 
-		} else if (strstr(userResponse, "quit") != NULL) {
+		} else if (strcmp(userResponse, "quit") == 0) {
 			// do nothing
 		} else {
-
+			printf("Sorry, that's not an option. :( \n\n");
 		}
 	}
 
@@ -154,14 +177,19 @@ int main(int argc, char** argv)  {
 void printHelp() {
 	printf(" GROVOLUTION CLI \n");
 	printf(" OPTIONS: \n");
-	printf("\t add [char][#]\t\t- add a relay, i.e.: ./gv add P 3 \n");
+	printf("\t add [char][#]\t\t- add a relay, i.e.: ./gv add P3 \n");
 	printf("\t report\t\t\t- show the current status of relays \n");
 	printf("\t fetch\t\t\t- get the current status of the relays from the PLC \n");
 	printf("\t switch [char][#]\t- turn a relay to its opposite status i.e.: ./gv switch P3\n");
 	printf("\t on [char][#]\t\t- turn relay on\n");
 	printf("\t off [char][#]\t\t- turn relay off\n");
-	printf("\t help\t\t\t- show this screen again\n\n");
+	printf("\t all on\t\t- turn all relays on\n");
+	printf("\t all off\t\t- turn all relays off\n");
+	printf("\t help\t\t\t- show this screen again\n");
 	printf("\t quit\t\t\t- exit the program\n\n");
+
+	printf(" You may also this program with command line arguements: \n\n");
+	printf("\t\tSYNTAX: ./gv [on|off|all on|all off|fetch] (char)(#)\n\n");
 
 	return;
 }

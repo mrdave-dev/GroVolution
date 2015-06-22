@@ -144,6 +144,8 @@ int	offRelay(struct relay* r) {
 			usleep(150000);  /* sleep for 100 milliSeconds */
 		#endif
 		return 1;
+	} else {
+
 	}
 
 	return 0;

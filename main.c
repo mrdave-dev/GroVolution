@@ -11,6 +11,7 @@
 #include "headers/relay.h"
 #include "headers/comms.h"
 #include "headers/bank.h"
+#include "headers/fileops.h"
 
 /* TODO:
  - Create Code to figure out which port to use
@@ -162,7 +163,10 @@ int main(int argc, char** argv)  {
 		} else if (strcmp(userResponse, "invert") == 0) {
 			bankTurnInverse(bankZero);
 
-		} else if (strcmp(userResponse, "help") == 0) {
+		} else if (strcmp(userResponse, "save") == 0) {
+			bankSave(bankZero);
+
+		}else if (strcmp(userResponse, "help") == 0) {
 			//printf("Help\n");
 			printHelp();
 

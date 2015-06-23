@@ -4,6 +4,8 @@ struct Bank * bankInit() {
 	// Allocate some memory
 	struct Bank* t = malloc(sizeof(struct Bank));
 
+	strcpy(t->fileName, "untitled.json");
+
 	// initialize ints to 0
 	t->count = 0;
 	t->wakeTime = 0;

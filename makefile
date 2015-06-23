@@ -14,13 +14,13 @@ CXXFLAGS += -g
 CXXFLAGS += -lm
 
 # All objects
-OBJS = main.o rs232.o relay.o comms.o bank.o
+OBJS = main.o rs232.o relay.o comms.o bank.o fileops.o
 
 # All sources
-SRCS = RS-232/rs232.c main.c sources/relay.c sources/comms.c sources/bank.c
+SRCS = RS-232/rs232.c main.c sources/relay.c sources/comms.c sources/bank.c sources/fileops.c
 
 #All headers
-HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bank.c
+HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bank.h headers/fileops.h
 
 
 # Make Flags
@@ -46,6 +46,9 @@ comms.o: sources/comms.c
 
 bank.o: sources/bank.c
 	$(CXX) $(CXXFLAGS) sources/bank.c -c
+
+fileops.o: sources/fileops.c
+	$(CXX) $(CXXFLAGS) sources/fileops.c -c
 
 
 #tests

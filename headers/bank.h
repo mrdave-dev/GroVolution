@@ -22,6 +22,7 @@
 
 struct Bank {
 
+	char fileName[30];
 
 	int count,
 		relayCapacity,
@@ -31,6 +32,7 @@ struct Bank {
 		sprayDuration;
 
 	struct relay *relays[30];
+
 };
 
 struct Bank * bankInit();

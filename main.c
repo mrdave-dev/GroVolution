@@ -166,7 +166,11 @@ int main(int argc, char** argv)  {
 		} else if (strcmp(userResponse, "save") == 0) {
 			bankSave(bankZero);
 
-		}else if (strcmp(userResponse, "help") == 0) {
+		} else if (strstr(userResponse, "load") != NULL) {
+			struct Bank *aBank = bankLoad("untitled.json");
+			bankReport(aBank);
+
+		} else if (strcmp(userResponse, "help") == 0) {
 			//printf("Help\n");
 			printHelp();
 

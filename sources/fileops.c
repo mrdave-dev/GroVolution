@@ -73,7 +73,7 @@ int bankSave(struct Bank *b) {
 			fputs(", ", fileptr);
 
 			fputs("\"status\": ", fileptr);
-			if (b->relays[i]->number == 0) {
+			if (b->relays[i]->status == 0) {
 				fputs("0", fileptr);
 			} else {
 				fputs("1", fileptr);
@@ -81,11 +81,32 @@ int bankSave(struct Bank *b) {
 			fputs("},\n", fileptr);
 		}
 
-		fputs("\t]\n", fileptr);
+		fputs("\t\t]\n", fileptr);
+		fputs("\t}\n", fileptr);
 		fputs("}\n", fileptr);
-
-
 
 	fclose(fileptr);
 	return 0;
+}
+
+struct Bank* bankLoad(char* fn) {
+	struct Bank* t = bankInit();
+	strcpy(t->fileName, "untitled.json");
+
+	FILE * fileptr = fopen(t->fileName, "r");
+
+	if (fileptr == NULL) {
+		printf("ERROR: File not found. \n");
+		return NULL;
+	}
+
+	char buffer[100];
+
+	while(fgets(buffer, 100, fileptr) != NULL) {
+
+
+	}
+
+	return t;
+
 }

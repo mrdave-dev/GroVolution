@@ -103,10 +103,81 @@ struct Bank* bankLoad(char* fn) {
 	char buffer[100];
 
 	while(fgets(buffer, 100, fileptr) != NULL) {
+		if (strstr(buffer, "\"count\"") != NULL) {
+			//t->count = _getNumValueFromJSON(buffer, "\"count\"");
+
+		} else if (strstr(buffer, "\"relayCapacity\"") != NULL) {
+			t->relayCapacity = _getNumValueFromJSON(buffer, "\"relayCapacity\"");
+
+		} else if (strstr(buffer, "\"wakeTime\"") != NULL) {
+			t->wakeTime = _getNumValueFromJSON(buffer, "\"wakeTime\"");
+
+		} else if (strstr(buffer, "\"lightDuration\"") != NULL) {
+			t->lightDuration = _getNumValueFromJSON(buffer, "\"lightDuration\"");
+
+		} else if (strstr(buffer, "\"sprayInterval\"") != NULL) {
+			t->sprayInterval = _getNumValueFromJSON(buffer, "\"sprayInterval\"");
+
+		} else if (strstr(buffer, "\"sprayDuration\"") != NULL) {
+			t->sprayDuration = _getNumValueFromJSON(buffer, "\"sprayDuration\"");
+
+		} else if (strstr(buffer, "\"relays\"") != NULL) {
+			while (fgets(buffer, 100, fileptr) != NULL) {
+				// break at end of array
+				if (strcmp(buffer, "]") == 0) {
+					break;
+				}
+
+				char ab = _getCharValueFromJSON(buffer, "\"label\"");
+				int num = _getNumValueFromJSON(buffer, "\"number\"");
+				int st = _getNumValueFromJSON(buffer, "\"status\"");
+
+				bankAddRelay(t, ab, num);
+
+			}
+		}
 
 
 	}
 
 	return t;
 
+}
+
+int _getNumValueFromJSON(char* b, char* k) {
+			char* placePtr = strstr(b, k);
+			while (isdigit(*placePtr) == 0) {
+				placePtr++;
+			}
+
+			int digitsLeft = 0;
+			while ((*placePtr != '\0') && (*placePtr != ',')
+					&& (*placePtr != '}')) {
+				digitsLeft++;
+				placePtr++;
+			}
+
+			placePtr -= digitsLeft;
+
+			int val = 0;
+			for (int i=1; i<=digitsLeft; i++) {
+				val = val + ((*placePtr - '0') * pow(10, (digitsLeft - i)));
+				placePtr++;
+			}
+
+			return val;
+}
+
+char _getCharValueFromJSON(char* b, char* k) {
+			char* placePtr = strstr(b, k);
+			placePtr += strlen(k);
+			placePtr++;
+
+			while (placePtr[0] != '\"') {
+				placePtr++;
+			}
+
+			placePtr++;
+
+			return *placePtr;
 }

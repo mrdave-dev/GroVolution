@@ -1,2 +1,5 @@
 # no objects
 *.o
+
+#executables
+gv

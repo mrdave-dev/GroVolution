@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
-#include <errno.h>
+#include <ctype.h>
 
 #include "../RS-232/rs232.h"
 
@@ -24,6 +24,7 @@
 
 int bankSave(struct Bank *b);
 struct Bank* bankLoad(char* fn);
-
+int _getNumValueFromJSON(char* b, char* k);
+char _getCharValueFromJSON(char* b, char* k);
 
 #endif

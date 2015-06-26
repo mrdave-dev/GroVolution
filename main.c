@@ -28,7 +28,7 @@ void printHelp();
 int main(int argc, char** argv)  {
 	printf("... initializing bank ...\n");
 	struct Bank* bankZero = bankInit();
-
+/*
 	printf("... adding relays ...\n");
 	bankAddRelay(bankZero, 'P', 1);
 	bankAddRelay(bankZero, 'P', 2);
@@ -58,7 +58,7 @@ int main(int argc, char** argv)  {
 
 	printf("... fetching timer status ...\n");
 	bankFetchTimers(bankZero);
-
+*/
 	/* COMMAND LINE ARGUEMENTS INTERFACE */
 	if (argc > 1) {
 		if (strcmp(argv[1], "all") == 0) {
@@ -126,7 +126,8 @@ int main(int argc, char** argv)  {
 			// TODO: add additional verifications: range char andnum
 		}
 
-
+		// TODO: Ditch the strstr function and use the strtok to break apart
+		// the user's entry. this will help if/else tree to be more accurate
 		if (strstr(userResponse, "add") != NULL) {
 			//printf("Add\n");
 			bankAddRelay(bankZero, firstChar, firstNum);
@@ -143,6 +144,22 @@ int main(int argc, char** argv)  {
 		} else if (strstr(userResponse, "switch") != NULL) {
 			//printf("Switch\n");
 			bankRelaySwitch(bankZero, firstChar, firstNum);
+
+		} else if (strstr(userResponse, "save") != NULL) {
+			bankSave(bankZero);
+
+		} else if (strstr(userResponse, "load") != NULL) {
+			printf("load\n");
+
+			// should i destroy this memory after use?
+			char *word = strtok(userResponse, " ");
+			word = strtok(NULL, " ");
+			printf("%s \n", word);
+
+			bankZero = bankLoad(word);
+			if (bankZero != NULL) {
+				bankReport(bankZero);
+			}
 
 		} else if (strcmp(userResponse, "all on") == 0) {
 			//printf("All on\n");
@@ -162,13 +179,6 @@ int main(int argc, char** argv)  {
 
 		} else if (strcmp(userResponse, "invert") == 0) {
 			bankTurnInverse(bankZero);
-
-		} else if (strcmp(userResponse, "save") == 0) {
-			bankSave(bankZero);
-
-		} else if (strstr(userResponse, "load") != NULL) {
-			struct Bank *aBank = bankLoad("untitled.json");
-			bankReport(aBank);
 
 		} else if (strcmp(userResponse, "help") == 0) {
 			//printf("Help\n");

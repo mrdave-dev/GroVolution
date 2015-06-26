@@ -91,7 +91,7 @@ int bankSave(struct Bank *b) {
 
 struct Bank* bankLoad(char* fn) {
 	struct Bank* t = bankInit();
-	strcpy(t->fileName, "untitled.json");
+	strcpy(t->fileName, fn);
 
 	FILE * fileptr = fopen(t->fileName, "r");
 
@@ -124,7 +124,7 @@ struct Bank* bankLoad(char* fn) {
 		} else if (strstr(buffer, "\"relays\"") != NULL) {
 			while (fgets(buffer, 100, fileptr) != NULL) {
 				// break at end of array
-				if (strcmp(buffer, "]") == 0) {
+				if (strstr(buffer, "]") != NULL) {
 					break;
 				}
 
@@ -133,12 +133,9 @@ struct Bank* bankLoad(char* fn) {
 				int st = _getNumValueFromJSON(buffer, "\"status\"");
 
 				bankAddRelay(t, ab, num);
-
-			}
-		}
-
-
-	}
+			} // end while
+		} // end if/else
+	} // end while
 
 	return t;
 

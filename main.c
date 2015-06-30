@@ -72,14 +72,22 @@ int main(int argc, char** argv)  {
 		} else if (strcmp(argv[1], "fetch") == 0) {
 			bankFetchStatus(bankZero);
 			return 0;
+		} else if (strcmp(argv[1], "webfetch") == 0) {
+			struct Bank BankOne = bankLoad("untitled.json");
+			bankFetchStatus(BankOne);
+			bankFetchTimers(BankOne);
+			bankRename("web/webready.json");
+			bankSave(BankOne);
+			return 0;
+
 		} else if (strcmp(argv[1], "on") == 0) {
 			char targetChar = argv[2][0];
 			int  targetInt = argv[2][1] - '0';
 			bankTurnRelayOn(bankZero, targetChar, targetInt);
 			return 0;
 
-		} else if (strcmp(argv[1], "off") == 0) {
-			char targetChar = argv[2][0];
+		}else if (strcmp(argv[1], "off") == 0) {
+			 char targetChar = argv[2][0];
 			int  targetInt = argv[2][1] - '0';
 			bankTurnRelayOff(bankZero, targetChar, targetInt);
 			return 0;
@@ -149,17 +157,20 @@ int main(int argc, char** argv)  {
 			bankSave(bankZero);
 
 		} else if (strstr(userResponse, "load") != NULL) {
-			printf("load\n");
-
 			// should i destroy this memory after use?
 			char *word = strtok(userResponse, " ");
 			word = strtok(NULL, " ");
-			printf("%s \n", word);
 
 			bankZero = bankLoad(word);
 			if (bankZero != NULL) {
 				bankReport(bankZero);
 			}
+
+		} else if (strstr(userResponse, "rename") != NULL) {
+			char *fn = strtok(userResponse, " ");
+			fn = strtok(NULL, " ");
+
+			bankRename(bankZero, fn);
 
 		} else if (strcmp(userResponse, "all on") == 0) {
 			//printf("All on\n");
@@ -202,6 +213,9 @@ void printHelp() {
 	printf("\t report\t\t\t- show the current status of relays \n");
 	printf("\t fetch\t\t\t- get the current status of the relays from the PLC \n");
 	printf("\t switch [char][#]\t- turn a relay to its opposite status i.e.: ./gv switch P3\n");
+	printf("\t rename [str]\t\t- Rename a bank. NOTE: name is used to save file.\n");
+	printf("\t load [str]\t\t- Load a file, usually .json\n");
+	printf("\t save\t\t\t- Save a file. NOTE: the bank's name is used as the filename\n");
 	printf("\t on [char][#]\t\t- turn relay on\n");
 	printf("\t off [char][#]\t\t- turn relay off\n");
 	printf("\t all on\t\t\t- turn all relays on\n");

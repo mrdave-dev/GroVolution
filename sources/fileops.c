@@ -78,7 +78,12 @@ int bankSave(struct Bank *b) {
 			} else {
 				fputs("1", fileptr);
 			}
-			fputs("},\n", fileptr);
+
+			fputs("}", fileptr);
+			if (i < (b->count - 1)) {
+				fputs(",", fileptr);
+			}
+			fputs("\n", fileptr);
 		}
 
 		fputs("\t\t]\n", fileptr);
@@ -130,7 +135,6 @@ struct Bank* bankLoad(char* fn) {
 
 				char ab = _getCharValueFromJSON(buffer, "\"label\"");
 				int num = _getNumValueFromJSON(buffer, "\"number\"");
-				int st = _getNumValueFromJSON(buffer, "\"status\"");
 
 				bankAddRelay(t, ab, num);
 			} // end while

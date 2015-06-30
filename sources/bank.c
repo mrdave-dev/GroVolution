@@ -19,6 +19,17 @@ struct Bank * bankInit() {
 	return t;
 }
 
+void bankRename(struct Bank *b, char *nm) {
+	if (strlen(nm) > 29) {
+		printf("ERROR: Name is too long.");
+		return;
+	}
+
+	strcpy(b->fileName, nm);
+
+	return;
+}
+
 void bankAddRelay(struct Bank *b, char ab, int r) {
 	if (b->count >= b->relayCapacity) {
 		printf("ERROR: Bank at capacity.\n");
@@ -79,8 +90,9 @@ void bankTurnInverse(struct Bank *b) {
 
 void bankReport(struct Bank *b) {
 	printf("\n\nBANK REPORT \n");
+	printf("FILE NAME: %s \n", b->fileName);
 	printf("COUNT: %i\t\tCAPACITY: %i\n", b->count, b->relayCapacity);
-	printf("WAKE TIME %i\t\tLIGHT DURATION: %i\n", b->wakeTime, b->lightDuration);
+	printf("WAKE TIME: %i\t\tLIGHT DURATION: %i\n", b->wakeTime, b->lightDuration);
 	printf("SPRAY INT.: %i\t\tSPRAY DURATION: %i\n", b->sprayInterval, b->sprayDuration);
 	printf("RELAYS:\n");
 	for (int i = 0; i < b->count; i++) {

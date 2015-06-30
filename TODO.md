@@ -32,11 +32,16 @@ Issues
 	is created? Unsure. Check for memory leak here. Also,
 	previous struct is not destroyed. Free memory here.
 
-*	GV0005 - bank.c - Need way to rename and report on the name
-	of the bank.
-
-*	GV0006 - main.c - Need function to 'save as...'
+*	GV0006 - main.c - Need function to 'save as...'. Also need
+	to confirm with user filename to save to. Warning should
+	indicate that any file name of same will be overwritten.
 
 * 	GV0007 - all - Begin work on a web interface to execute ./gv
 
+
+Closed Issues
+-------------
+
+*	GV0005 - bank.c - Need way to rename and report on the name
+	of the bank.
 

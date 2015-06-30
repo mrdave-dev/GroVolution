@@ -36,6 +36,7 @@ struct Bank {
 };
 
 struct Bank * bankInit();
+void bankRename(struct Bank *b, char *nm);
 void bankAddRelay(struct Bank *b, char ab, int r);
 void bankTurnRelayOn(struct Bank *b, char ab, int r);
 void bankTurnRelayOff(struct Bank *b, char ab, int r);

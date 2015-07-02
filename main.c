@@ -73,11 +73,13 @@ int main(int argc, char** argv)  {
 			bankFetchStatus(bankZero);
 			return 0;
 		} else if (strcmp(argv[1], "webfetch") == 0) {
-			struct Bank BankOne = bankLoad("untitled.json");
+			printf("WEBFETCH\n");
+			struct Bank* BankOne = bankLoad("untitled.json");
 			bankFetchStatus(BankOne);
 			bankFetchTimers(BankOne);
-			bankRename("web/webready.json");
+			bankRename(BankOne, "web/webready.json");
 			bankSave(BankOne);
+			printf("SUCCESS\n");
 			return 0;
 
 		} else if (strcmp(argv[1], "on") == 0) {
@@ -90,6 +92,8 @@ int main(int argc, char** argv)  {
 			 char targetChar = argv[2][0];
 			int  targetInt = argv[2][1] - '0';
 			bankTurnRelayOff(bankZero, targetChar, targetInt);
+			return 0;
+		} else {
 			return 0;
 		}
 	}

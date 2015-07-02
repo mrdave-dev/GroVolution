@@ -11,23 +11,23 @@
 		{"label": "V", "number": 1, "status": 0},
 		{"label": "V", "number": 2, "status": 0},
 		{"label": "V", "number": 3, "status": 0},
-		{"label": "L", "number": 1, "status": 1},
-		{"label": "L", "number": 2, "status": 1},
+		{"label": "L", "number": 1, "status": 0},
+		{"label": "L", "number": 2, "status": 0},
 		{"label": "L", "number": 3, "status": 0},
 		{"label": "L", "number": 4, "status": 0},
 		{"label": "L", "number": 5, "status": 0},
 		{"label": "L", "number": 6, "status": 0},
 		{"label": "L", "number": 7, "status": 0},
 		{"label": "L", "number": 8, "status": 0},
-		{"label": "L", "number": 9, "status": 1},
-		{"label": "L", "number": 10, "status": 1},
+		{"label": "L", "number": 9, "status": 0},
+		{"label": "L", "number": 10, "status": 0},
 		{"label": "L", "number": 11, "status": 0},
 		{"label": "L", "number": 12, "status": 0},
 		{"label": "L", "number": 13, "status": 0},
 		{"label": "L", "number": 14, "status": 0},
 		{"label": "L", "number": 15, "status": 0},
 		{"label": "L", "number": 16, "status": 0},
-		{"label": "L", "number": 17, "status": 0},
+		{"label": "L", "number": 17, "status": 0}
 		]
 	}
 }

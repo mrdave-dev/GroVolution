@@ -3,3 +3,6 @@
 
 #executables
 gv
+
+#.swp files
+*.swp

@@ -82,13 +82,31 @@ int main(int argc, char** argv)  {
 			printf("SUCCESS\n");
 			return 0;
 
+		} else if (strcmp(argv[1], "weballon") == 0) {
+			printf("WEBALLON\n");
+			struct Bank* BankOne = bankLoad("untitled.json");
+			bankTurnAllOn(BankOne);
+			bankRename(BankOne, "web/webready.json");
+			bankSave(BankOne);
+			printf("SUCCESS\n");
+			return 0;
+
+		} else if (strcmp(argv[1], "weballoff") == 0) {
+			printf("WEBALLOFF\n");
+			struct Bank* BankOne = bankLoad("untitled.json");
+			bankTurnAllOff(BankOne);
+			bankRename(BankOne, "web/webready.json");
+			bankSave(BankOne);
+			printf("SUCCESS\n");
+			return 0;
+
 		} else if (strcmp(argv[1], "on") == 0) {
 			char targetChar = argv[2][0];
 			int  targetInt = argv[2][1] - '0';
 			bankTurnRelayOn(bankZero, targetChar, targetInt);
 			return 0;
 
-		}else if (strcmp(argv[1], "off") == 0) {
+		} else if (strcmp(argv[1], "off") == 0) {
 			 char targetChar = argv[2][0];
 			int  targetInt = argv[2][1] - '0';
 			bankTurnRelayOff(bankZero, targetChar, targetInt);

@@ -32,6 +32,9 @@ Issues
 	is created? Unsure. Check for memory leak here. Also,
 	previous struct is not destroyed. Free memory here.
 
+*	GV0008 - all - on, off functions are unable to switch any
+	think over 9. Incoporate logic from webtoggle param in
+	main.c
 
 Closed Issues
 -------------

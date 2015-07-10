@@ -100,6 +100,25 @@ int main(int argc, char** argv)  {
 			printf("SUCCESS\n");
 			return 0;
 
+		} else if (strcmp(argv[1], "webtoggle") == 0) {
+			printf("WEBTOGGLE\n");
+			struct Bank* BankOne = bankLoad("untitled.json");
+			char targetChar = argv[2][0];
+			int targetInt = 0;
+			if (argv[2][2] != 0) {
+				targetInt += ((argv[2][1] - '0') * 10);
+				targetInt += (argv[2][2] - '0');
+			} else {
+				targetInt += argv[2][1] - '0';
+			}
+			printf("targetInt: %i\n", targetInt);
+			bankFetchStatus(BankOne);
+			bankRelaySwitch(BankOne, targetChar, targetInt);
+			bankRename(BankOne, "web/webready.json");
+			bankSave(BankOne);
+			printf("SUCCESS\n");
+			return 0;
+
 		} else if (strcmp(argv[1], "on") == 0) {
 			char targetChar = argv[2][0];
 			int  targetInt = argv[2][1] - '0';

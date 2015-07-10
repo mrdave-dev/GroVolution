@@ -35,7 +35,7 @@ function weballon() {
 	xmlhttp.open("GET", "weballon.php?t=" + Math.random(), true);
 	xmlhttp.send();
 
-	loadWebFetch();
+	setTimeout(function() { loadWebFetch() }, 4000);
 }
 
 function weballoff() {
@@ -49,7 +49,24 @@ function weballoff() {
 	xmlhttp.open("GET", "weballoff.php?t=" + Math.random(), true);
 	xmlhttp.send();
 
-	loadWebFetch();
+	setTimeout(function() { loadWebFetch() }, 4000);
+}
+
+function webtoggle() {
+	var xmlhttp;
+	if (window.XMLHttpRequest) {
+		xmlhttp = new XMLHttpRequest();
+	} else {
+		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+	}
+
+	var rly = document.getElementById("relay").value;
+
+	xmlhttp.open("GET", "webtoggle.php?r=" + rly + "&t=" + Math.random(), true);
+	xmlhttp.send();
+
+	setTimeout(function() { loadWebFetch() }, 4000);
+
 }
 
 </script>
@@ -60,6 +77,10 @@ function weballoff() {
 <button type="button" onclick="loadWebFetch()">Load!</button>
 <button type="button" onclick="weballon()">All On</button>
 <button type="button" onclick="weballoff()">All Off</button>
+<br />
+
+<h2>Toggle Switch: <input type="text" id="relay"><button type="button" onclick="webtoggle()">ON/OFF</button></h2>
+
 
 </body>
 </html>

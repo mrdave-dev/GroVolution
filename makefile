@@ -4,10 +4,10 @@
 # LAST MOD.         May 29, 2015
 
 # Compiler
-CXX = gcc
+CXX = g++
 
 # Flags
-CXXFLAGS = -std=gnu99
+CXXFLAGS  = -std=c++0x
 CXXFLAGS += -Wall
 CXXFLAGS += -pedantic-errors
 CXXFLAGS += -g
@@ -64,3 +64,7 @@ bank-test-1: $(OBJS) tests/bank-test-1.c
 
 clean:
 	rm -rf *.o
+
+#refactor
+commscpp.o: sources/comms.cpp
+	$(CXX) $(CXXFLAGS) sources/comms.cpp -c

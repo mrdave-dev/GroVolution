@@ -28,7 +28,7 @@ class RS232Connection {
 		int getPiPort();
 
 		void sendText(std::string);
-		void readText(std::string rx);
+		void readText(std::string &rx);
 
 };
 

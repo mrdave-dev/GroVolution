@@ -46,7 +46,7 @@ void RS232Connection::sendText(std::string tx) {
 	RS232_CloseComport(this->piport);
 }
 
-void readText(std::string rx) {
+void RS232Connection::readText(std::string &rx) {
 	if (this->baudrate < 0
 	|| this->piport < 0
 	|| this->mode[0] == 0) {
@@ -58,5 +58,24 @@ void readText(std::string rx) {
 		throw 1; // 1: Unable to make RS232 connection
 	}
 
+	int i=0;
+	unsigned char buffer[100];
+	while (i < 20) {
+		int n = RS232_PollComport(this->piport, buffer, 99);
+
+		if (n > 0) {
+			buffer[n] = 0;
+
+			for (int x=0; x<n; x++) {
+				if (buffer[x] < 32) {
+					buffer[x] = '.';
+				}
+			}
+			break;
+		}
+		i++;
+	}
+
+	rx = (reinterpret_cast<char*>(buffer));
 
 }

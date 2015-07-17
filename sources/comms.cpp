@@ -29,6 +29,34 @@ int RS232Connection::getPiPort() {
 	return this->piport;
 }
 
-void sendText(std::string tx) {
+void RS232Connection::sendText(std::string tx) {
+	if (this->baudrate < 0
+	|| this->piport < 0
+	|| this->mode[0] == 0) {
+		throw 0;	// 0: RS232 connection not set
+	}
+
+	int port_status = RS232_OpenComport(this->piport, this->baudrate, this->mode);
+	if (port_status == 1) {
+		throw 1; // 1: Unable to make RS232 connection
+	}
+
+	RS232_cputs(this->piport, tx.c_str());
+
+	RS232_CloseComport(this->piport);
+}
+
+void readText(std::string rx) {
+	if (this->baudrate < 0
+	|| this->piport < 0
+	|| this->mode[0] == 0) {
+		throw 0;	// 0: RS232 connection not set
+	}
+
+	int port_status = RS232_OpenComport(this->piport, this->baudrate, this->mode);
+	if (port_status == 1) {
+		throw 1; // 1: Unable to make RS232 connection
+	}
+
 
 }

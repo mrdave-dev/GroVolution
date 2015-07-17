@@ -12,6 +12,8 @@
 #include <iostream>
 #include <string>
 
+#include "../RS-232/rs232.h"
+
 class RS232Connection {
 	private:
 		int baudrate;

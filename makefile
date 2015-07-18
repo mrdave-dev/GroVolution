@@ -68,3 +68,6 @@ clean:
 #refactor
 commscpp.o: sources/comms.cpp
 	$(CXX) $(CXXFLAGS) sources/comms.cpp -c
+
+comms-test: comms.o tests/comms-test-1.cpp
+	$(CXX) $(CXXFLAGS) comms.o tests/comms-test-1.cpp -o comms-test

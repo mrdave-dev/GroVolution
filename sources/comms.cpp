@@ -6,7 +6,7 @@
  *
  */
 
-#include "../headers/commscpp.h"
+#include "../headers/comms.h"
 
 RS232Connection::RS232Connection() {
 	this->baudrate = -1;
@@ -77,5 +77,4 @@ void RS232Connection::readText(std::string &rx) {
 	}
 
 	rx = (reinterpret_cast<char*>(buffer));
-
 }

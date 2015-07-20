@@ -7,7 +7,11 @@
 CXX = g++
 
 # Flags
+<<<<<<< HEAD
 CXXFLAGS = -std=c++0x
+=======
+CXXFLAGS  = -std=c++0x
+>>>>>>> refactor.comms
 CXXFLAGS += -Wall
 CXXFLAGS += -pedantic-errors
 CXXFLAGS += -g
@@ -17,7 +21,7 @@ CXXFLAGS += -lm
 OBJS = main.o rs232.o relay.o comms.o bank.o fileops.o
 
 # All sources
-SRCS = RS-232/rs232.c main.c sources/relay.c sources/comms.c sources/bank.c sources/fileops.c
+SRCS = RS-232/rs232.c main.c sources/relay.c sources/comms.cpp sources/bank.c sources/fileops.c
 
 #All headers
 HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bank.h headers/fileops.h
@@ -41,8 +45,8 @@ rs232.o: RS-232/rs232.c
 relay.o: sources/relay.c
 	$(CXX) $(CXXFLAGS) sources/relay.c -c
 
-comms.o: sources/comms.c
-	$(CXX) $(CXXFLAGS) sources/comms.c -c
+comms.o: sources/comms.cpp
+	$(CXX) $(CXXFLAGS) sources/comms.cpp -c
 
 bank.o: sources/bank.c
 	$(CXX) $(CXXFLAGS) sources/bank.c -c
@@ -65,7 +69,16 @@ bank-test-1: $(OBJS) tests/bank-test-1.c
 clean:
 	rm -rf *.o
 
+<<<<<<< HEAD
 
 #refactor
 relaycpp.o: sources/relay.cpp
 	$(CXX) $(CXXFLAGS) rs232.o comms.o sources/relay.cpp -c
+=======
+#refactor
+commscpp.o: sources/comms.cpp
+	$(CXX) $(CXXFLAGS) sources/comms.cpp -c
+
+comms-test: comms.o tests/comms-test-1.cpp
+	$(CXX) $(CXXFLAGS) comms.o rs232.o tests/comms-test-1.cpp -o comms-test
+>>>>>>> refactor.comms

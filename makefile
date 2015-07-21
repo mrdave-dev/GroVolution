@@ -7,11 +7,7 @@
 CXX = g++
 
 # Flags
-<<<<<<< HEAD
 CXXFLAGS = -std=c++0x
-=======
-CXXFLAGS  = -std=c++0x
->>>>>>> refactor.comms
 CXXFLAGS += -Wall
 CXXFLAGS += -pedantic-errors
 CXXFLAGS += -g
@@ -69,16 +65,17 @@ bank-test-1: $(OBJS) tests/bank-test-1.c
 clean:
 	rm -rf *.o
 
-<<<<<<< HEAD
 
 #refactor
 relaycpp.o: sources/relay.cpp
-	$(CXX) $(CXXFLAGS) rs232.o comms.o sources/relay.cpp -c
-=======
+	$(CXX) $(CXXFLAGS) sources/relay.cpp -c
+
+relay-test: relaycpp.o
+	$(CXX) $(CXXFLAGS) comms.o rs232.o relay.o tests/relay-test-1.cpp -o relay-test
+
 #refactor
 commscpp.o: sources/comms.cpp
 	$(CXX) $(CXXFLAGS) sources/comms.cpp -c
 
 comms-test: comms.o tests/comms-test-1.cpp
 	$(CXX) $(CXXFLAGS) comms.o rs232.o tests/comms-test-1.cpp -o comms-test
->>>>>>> refactor.comms

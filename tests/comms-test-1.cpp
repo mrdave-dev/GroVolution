@@ -9,7 +9,7 @@
  #include <string>
 
  #include "../RS-232/rs232.h"
- #include "../headers/commscpp.h"
+ #include "../headers/comms.h"
 
  int main(int argc, char** argv) {
  	int testBaudRate = 38000;
@@ -17,21 +17,21 @@
 
  	std::cout << "COMMS TEST 1\n";
  	std::cout << "\n";
- 	
+
  	std::cout << "01 - Does the class initialize? \n";
- 	
+
  	std::cout << "Creating RS232Connection object, no args...\n";
  	RS232Connection *firstConnect = new RS232Connection();
 
  	if (firstConnect) {std::cout << "\nTEST PASSED: RS232 Connection Created\n\n";}
- 	else {std::cout << "\nTEST FAILED: RS232Connection did not initialize.\n\n";} 	
- 	
+ 	else {std::cout << "\nTEST FAILED: RS232Connection did not initialize.\n\n";}
+
 
  	std::cout << "Creating RS232Connection object, with args...\n";
  	RS232Connection *secondConnect = new RS232Connection(testBaudRate, testPiPort);
 
 	if (secondConnect) {std::cout << "\nTEST PASSED: RS232Connection Created\n\n";}
- 	else {std::cout << "\nTEST FAILED: RS232Connection did not initialize.\n\n";} 
+ 	else {std::cout << "\nTEST FAILED: RS232Connection did not initialize.\n\n";}
 
  	std::cout << "firstConnect Addr.: " << firstConnect << "\n";
  	std::cout << "secondConnect Addr.: " << secondConnect << "\n\n";

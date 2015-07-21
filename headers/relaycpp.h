@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 /* GROVOLUTION - relay.h
  * A header file for the relay class. Relays provide an interface
  * for modifying and storing data about the PLC's individual
@@ -34,10 +33,12 @@ public:
 	char getLabel();
 	int getNumber();
 	bool getStatus();
+	RS232Connection* getConnection();
 
 	void setLabel(char);
 	void setNumber(int);
 	void setStatus(bool);
+	void setConnection(RS232Connection*);
 
 	void on();
 	void off();
@@ -47,45 +48,3 @@ public:
 };
 
 #endif
-=======
-/* GROVOLUTION - relay.c
- * Class definitions for the relay object.
- *
- * Author: Dave Martinez
- * Created: 7/16/15
- *
- */
-
- #ifndef RELAY_H
- #define RELAY_H
-
- class relay {
- 	private:
- 		int number;
- 		bool status;
- 		char label;
- 		RS232Connection connection;
-
-	public:
-		int getNumber();
-		bool getStatus();
-		getLabel();
-
-		void setNumber();
-		void setStatus();
-		void setLabel();
-
-		void on();
-		void off();
-
-		void printInfo();
-
- }
-
-
-
-
-
-
- #endif
->>>>>>> refactor.comms

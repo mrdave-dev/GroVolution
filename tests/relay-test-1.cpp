@@ -88,7 +88,47 @@ int main(int argc, char** argv) {
 	}
 
 	std::cout << "\n03 - Testing on/off methods\n";
+	std::cout << "Testing connection failure...\n";
+	Relay* fourthRelay = new Relay('L', 1, false);
+	try {
+		fourthRelay->on();
+		std::cout << "TEST FAILED: Connection did not throw exception.\n";
+	} catch (int e) {
+		std::cout << "TEST PASSED: Connection threw exception.\n";
+	}
 
+	std::cout << "\nNote: You'll need to check the PLC for physical results.\n\n";
+	fourthRelay->setConnection(&aConnection);
+
+	std::cout << "Testing on()...\n";
+	fourthRelay->on();
+	std::cout << "Did " << fourthRelay->getLabel() << fourthRelay->getNumber()
+	<< " turn on?\n";
+	std::cout << "Press enter to continue...";
+	std::cin.ignore();
+
+	std::cout << "\nTesting off()...\n";
+	fourthRelay->off();
+	std::cout << "Did " << fourthRelay->getLabel() << fourthRelay->getNumber()
+	<< " turn off?\n";
+	std::cout << "Press enter to continue...";
+	std::cin.ignore();
+
+	std::cout << "\nTesting toggle()...\n";
+	fourthRelay->toggle();
+	std::cout << "Did " << fourthRelay->getLabel() << fourthRelay->getNumber()
+	<< " toggle?\n";
+	std::cout << "Press enter to continue...";
+	std::cin.ignore();
+
+	std::cout << "\n\n04 - Reporting\n";
+	std::cout << "Testing report()...\n";
+	firstRelay->report();
+	secondRelay->report();
+	thirdRelay->report();
+	fourthRelay->report();
+
+	std::cout << "\n";
 
 
 

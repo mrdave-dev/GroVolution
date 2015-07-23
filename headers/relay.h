@@ -1,37 +1,50 @@
 /* GROVOLUTION - relay.h
- * Struct and function defintions for relay.
+ * A header file for the relay class. Relays provide an interface
+ * for modifying and storing data about the PLC's individual
+ * relays.
  *
  * Author: Dave Martinez
- * Created: June 4, 2015
+ * Created: July 20, 2015
  * Modified:
- *
  */
 
-#ifndef RELAYS_H
-#define RELAYS_H
+#ifndef RELAY_H
+#define RELAY_H
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <iostream>
+#include <string>
 
 #include "../RS-232/rs232.h"
-
 #include "../headers/comms.h"
 
-struct relay {
-	char 	label;
-	int 	number;
-	int 	status;
-};
+class Relay {
+private:
+	char label;
+	int number;
+	bool status;
+	RS232Connection* connection;
 
-struct relay* 	initRelay(char ab, int n);
-void 	setRelayNum(struct relay* r, int n);
-void 	setRelayLabel(struct relay* r, char ab);
-int 	switchRelay(struct relay* r);
-int 	onRelay(struct relay* r);
-int		offRelay(struct relay* r);
-char	getLabelRelay(struct relay* r);
-int		getNumRelay(struct relay* r);
-int		getStatusRelay(struct relay* r);
-void	printRelay(struct relay* r);
+public:
+	Relay();
+	Relay(char, int);
+	Relay(char, int, bool);
+
+	char getLabel();
+	int getNumber();
+	bool getStatus();
+	RS232Connection* getConnection();
+
+	void setLabel(char);
+	void setNumber(int);
+	void setStatus(bool);
+	void setConnection(RS232Connection*);
+
+	void on();
+	void off();
+	void toggle();
+	void report();
+
+};
 
 #endif

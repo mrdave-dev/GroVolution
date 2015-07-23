@@ -8,7 +8,7 @@
  * Modified:
  */
 
-#include "../headers/relaycpp.h"
+#include "../headers/relay.h"
 
 Relay::Relay() {
 	this->label = '\0';

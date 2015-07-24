@@ -20,7 +20,7 @@ OBJS = main.o rs232.o relay.o comms.o bank.o fileops.o
 SRCS = RS-232/rs232.c main.c sources/relay.cpp sources/comms.cpp sources/bank.cpp sources/fileops.c
 
 #All headers
-HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bank.h headers/fileops.h
+HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bankcpp.h headers/fileops.h
 
 
 # Make Flags
@@ -44,7 +44,7 @@ relay.o: sources/relay.cpp headers/relay.h
 comms.o: sources/comms.cpp headers/comms.h
 	$(CXX) $(CXXFLAGS) sources/comms.cpp -c
 
-bank.o: sources/bank.cpp headers/bank.h
+bank.o: sources/bank.cpp headers/bankcpp.h
 	$(CXX) $(CXXFLAGS) sources/bank.cpp -c
 
 fileops.o: sources/fileops.c
@@ -52,9 +52,11 @@ fileops.o: sources/fileops.c
 
 
 #tests
-relay-test-1: relay.o comms.o rs232.o
+relay-test: relay.o comms.o rs232.o
 	$(CXX) $(CXXFLAGS) comms.o rs232.o relay.o tests/relay-test-1.cpp -o relay-test
 
+bank-test: bank.o sources/bank.cpp headers/bankcpp.h tests/bank-test-1.cpp
+	$(CXX) $(CXXFLAGS) bank.o comms.o rs232.o relay.o tests/bank-test-1.cpp -o bank-test
 
 #utility
 

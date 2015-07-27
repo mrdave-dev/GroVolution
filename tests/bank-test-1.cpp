@@ -15,7 +15,7 @@
 #include "../headers/bankcpp.h"
 
 int main(int argc, char** argv) {
-	 Bank *aBank = new Bank();
+	 Bank *aBank = new Bank("untitled.json");
 	 std::cout << "End \n";
 
 return 0;

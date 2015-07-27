@@ -11,11 +11,15 @@
 #define BANK_H
 
 #include <cstdlib>
-#include <string>
 #include <iostream>
+#include <fstream>
+#include <string>
 #include <vector>
 
 #include "../RS-232/rs232.h"
+#include "../rapidjson/document.h"
+#include "../rapidjson/writer.h"
+#include "../rapidjson/stringbuffer.h"
 #include "../headers/comms.h"
 #include "../headers/relay.h"
 
@@ -38,6 +42,7 @@ public:
 	Bank(std::string);
 
 	void _load(std::string);
+	void _save();
 
 	std::string getName();
 	int getCount();

@@ -4,10 +4,10 @@
 # LAST MOD.         May 29, 2015
 
 # Compiler
-CXX = g++
+CXX = g++-4.9
 
 # Flags
-CXXFLAGS = -std=c++0x
+CXXFLAGS = -std=c++11
 CXXFLAGS += -Wall
 CXXFLAGS += -pedantic-errors
 CXXFLAGS += -g
@@ -57,6 +57,10 @@ relay-test: relay.o comms.o rs232.o
 
 bank-test: bank.o sources/bank.cpp headers/bankcpp.h tests/bank-test-1.cpp
 	$(CXX) $(CXXFLAGS) bank.o comms.o rs232.o relay.o tests/bank-test-1.cpp -o bank-test
+	
+regex-test: tests/regex-test.cpp
+	$(CXX) $(CXXFLAGS) tests/regex-test.cpp -o regex-test
+	
 
 #utility
 

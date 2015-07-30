@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <regex>
 
 #include "../RS-232/rs232.h"
 #include "../headers/comms.h"

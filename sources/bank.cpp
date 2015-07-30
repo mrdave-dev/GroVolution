@@ -28,29 +28,37 @@ Bank::Bank(std::string fn) {
 }
 
 void Bank::_load(std::string fn) {
-	std::ifstream fs(fn, std::ofstream::out);
+	std::ifstream fs(fn, std::ifstream::binary);
 
 	if (!fs.is_open()) {
 		throw 1;
 	}
 
-	// REFERENCE: http://insanecoding.blogspot.ca/2011/11/how-to-read-in-file-in-c.html
-	std::string contents;		// create a string
-	fs.seekg(0, std::ios::end);	// find the end of the file
-	contents.resize(fs.tellg());// resize string to size of file
-	fs.seekg(0, std::ios::beg);	// go back to beg. of file
-	fs.read(&contents[0], contents.size()); // read from beg. to end to str
-	fs.close();					// close
+	std::string _fn_p = "{\"(.*)\"\:\\s*{\\s*\\n";
 
-	std::cout << contents;
+	try {
+		std::regex fn_pattern (_fn_p);
 
-	rapidjson::Document d;
-	d.Parse(contents.c_str());
-	std::cout << d["untitled.json"]["count"].GetString() << std::endl;
+	std::smatch match;
+	std::string test1 = "{\"web/webready.json\": {";
+	std::regex_search(test1, match, fn_pattern);
+	std::cout << "MATCH (if any): " << match.size() << std::endl;
 
 
+	std::string buffer;
+	while (fs >> buffer) {
+		if (std::regex_search(buffer, match, fn_pattern)) {
+			std::cout << "MATCH MADE." << std::endl;
+			std::cout << match.size() << std::endl;
+		}
+	}
+	} catch (std::regex_error e ) {
+		if (std::regex_constants::error_escape == e.code()) {
+			std::cout << "Error: bad escape\n";
+		}
 
-
+		std::cout << "ERROR: " << e.code() << std::endl;
+	}
 
 }
 

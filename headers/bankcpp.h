@@ -12,6 +12,8 @@
 
 #include <cstdlib>
 #include <iostream>
+#include <iomanip>
+#include <sstream>
 #include <fstream>
 #include <string>
 #include <vector>
@@ -35,14 +37,29 @@ private:
 	std::vector<Relay*> relays;
 	std::vector<Relay*>::iterator current_relay;
 
+	RS232Connection* connection;
+
 public:
 	Bank();
 	Bank(std::string);
 
+	// Internal file functions
 	void _load(std::string);
 	void _save();
-	void _rename(std::string);
 
+	// Internal functions to fetch from the PLC
+	void _fetchTimers();
+	void _fetchRelays();
+
+	// Internal functions to set things
+	void _setFileName(std::string);
+	void _setWakeTime(int);
+	void _setLightDuration(int);
+	void _setSprayInterval(int);
+	void _setSprayDuration(int);
+	void _setTimers(int, int, int, int);
+
+	// Get methods
 	std::string getName();
 	int getCount();
 	int getWakeTime();
@@ -50,7 +67,7 @@ public:
 	int getSprayInterval();
 	int getSprayDuration();
 
-	// Functions to prompt user
+
 	void setName();
 	void setWakeTime(int);
 	void setWakeTime(std::string);

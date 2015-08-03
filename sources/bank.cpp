@@ -111,7 +111,59 @@ void Bank::_save() {
 
 }
 
-// Bank::_rename - helper method to rename the Bank.
+
+void Bank::_fetchTimers() {
+	std::string buffer;
+
+	this->connection->sendText("TM\r");
+	this->connection->readText(buffer);
+
+	std::regex timer_format("\\[(\\d{5}),(\\d{5}),(\\d{5}),(\\d{5})\\]");
+	std::smatch timers;
+
+	// Check for well-formed response
+	if (!std::regex_search(buffer, timers, timer_format)) {
+		// Response not well-formed
+		throw 1;
+	}
+
+	// Check for 4 timer matches
+	if (timers.size() != 5) {
+		// Search did not find four timers (and subject)
+		throw 2;
+	}
+
+	this->wake_time = std::stoi(timers[1].str());
+	this->light_duration = std::stoi(timers[2].str());
+	this->spray_interval = std::stoi(timers[3].str());
+	this->spray_duration = std::stoi(timers[4].str());
+
+}
+
+void Bank::_fetchRelays() {
+	std::string buffer;
+
+	this->connection->sendText("ST\r");
+	this->connection->readText(buffer);
+
+	std::regex status_format("\\b(\\d{22})\\b");
+	std::smatch statuses;
+
+	// Check for well-formed response
+	if (!std::regex_search(buffer, statuses, status_format)) {
+		// Response not well-formed
+		throw 1;
+	}
+
+	// Iterate through the buffer, set statuses at
+	// corresponding relays
+	for (unsigned int i=0; i<buffer.length(); i++) {
+		relays.at(i)->setStatus(buffer[i] - '0');
+	}
+}
+
+
+// Bank::_setFileName - helper method to rename the Bank.
 // @param nm - the string to set the Bank name to
 // @pre - nm ends with '.json'
 // @pre - nm contains only alpha or num or /-_.
@@ -120,7 +172,7 @@ void Bank::_save() {
 // @throws 2 - contains invalid chars
 // @throws 3 - doesn't lead with alpha or num
 // @post - Bank renamed
-void Bank::_rename(std::string nm) {
+void Bank::_setFileName(std::string nm) {
 	// REGEX: string ends with '.json'
 	std::regex ends_with_json(".+.json$");
 	if (!std::regex_match(nm, ends_with_json)) {
@@ -146,3 +198,52 @@ void Bank::_rename(std::string nm) {
 	this->file_name = nm;
 
 }
+
+void Bank::_setWakeTime(int x) {
+	if (x < 0) {
+		throw 1;
+	}
+
+	if (x > 23) {
+		throw 1;
+	}
+
+	std::stringstream text_to_send;
+
+	text_to_send << "TIL" << std::setw(3) << std::setfill('0')
+				 << x << '\r';
+
+	std::cout << "TEST: " << text_to_send.str() << std::endl;
+
+
+	//this->connection->sendText("TIL")
+
+	//TLI006
+
+}
+
+
+std::string Bank::getName() {
+	return this->file_name;
+}
+
+int Bank::getCount() {
+	return this->count;
+}
+
+int Bank::getWakeTime() {
+	return this->wake_time;
+}
+
+int Bank::getLightDuration() {
+	return this->light_duration;
+}
+
+int Bank::getSprayInterval() {
+	return this->spray_interval;
+}
+
+int Bank::getSprayDuration() {
+	return this->spray_duration;
+}
+

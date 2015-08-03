@@ -18,12 +18,13 @@
 int main(int argc, char** argv) {
 	 Bank *aBank = new Bank("untitled.json");
 	 try {
-		 aBank->_rename("test-1.json");
+		 aBank->_setFileName("test-1.json");
+		 aBank->_setWakeTime(21);
 	 } catch (int e) {
 		 std::cout << "RENAME ERROR: " << e << std::endl;
 	 }
 
-	 aBank->_save();
+	 // aBank->_save();
 
 
 

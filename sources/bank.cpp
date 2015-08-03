@@ -94,11 +94,55 @@ void Bank::_save() {
 	file << "\t\"spray_duration\":" << this->spray_duration << ",\n";
 
 	// relays
-	for (std::vector<Relay*>::iterator it = relays.begin() ; it != relays.end(); ++it) {
+	file << "\t\"relays\": [\n";
+	for (unsigned int i=0; i<relays.size(); i++) {
+		file << "\t\t\t{\"label\": \"" << relays.at(i)->getLabel() << "\", ";
+		file << "\"number\": " << relays.at(i)->getNumber() << ", ";
+		file << "\"status\": " << relays.at(i)->getStatus() << "}";
+		if (i != (relays.size() - 1)) {
+			 file << ",";
+		}
+		file << "\n";
+	}
+	file << "\t\t]\n";
 
+	file << "\t}\n";
+	file << "}\n";
+
+}
+
+// Bank::_rename - helper method to rename the Bank.
+// @param nm - the string to set the Bank name to
+// @pre - nm ends with '.json'
+// @pre - nm contains only alpha or num or /-_.
+// @pre - nm leads with alpha or num
+// @throws 1 - doesn't end with .json
+// @throws 2 - contains invalid chars
+// @throws 3 - doesn't lead with alpha or num
+// @post - Bank renamed
+void Bank::_rename(std::string nm) {
+	// REGEX: string ends with '.json'
+	std::regex ends_with_json(".+.json$");
+	if (!std::regex_match(nm, ends_with_json)) {
+		// doesn't end with '.json'
+		throw 1;
 	}
 
+	// REGEX: contains only alpha or num or /-_.
+	std::regex not_valid_chars("[^a-zA-Z0-9\\._\\/]");
+	if (std::regex_match(nm, not_valid_chars)) {
+		// contains invalid chars
+		throw 2;
+	}
 
+	// REGEX: leads with alpha or num
+	std::regex leading_char("^[a-zA-Z0-9]");
+	if (std::regex_match(nm, leading_char)) {
+		// Doesn't lead with alpha or num
+		throw 3;
+	}
 
+	// SUCCESS: Bank renamed
+	this->file_name = nm;
 
 }

@@ -41,6 +41,7 @@ public:
 
 	void _load(std::string);
 	void _save();
+	void _rename(std::string);
 
 	std::string getName();
 	int getCount();
@@ -49,7 +50,8 @@ public:
 	int getSprayInterval();
 	int getSprayDuration();
 
-	void setName(std::string);
+	// Functions to prompt user
+	void setName();
 	void setWakeTime(int);
 	void setWakeTime(std::string);
 	void setLightDuration(int);

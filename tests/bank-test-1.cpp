@@ -17,6 +17,16 @@
 
 int main(int argc, char** argv) {
 	 Bank *aBank = new Bank("untitled.json");
+	 try {
+		 aBank->_rename("test-1.json");
+	 } catch (int e) {
+		 std::cout << "RENAME ERROR: " << e << std::endl;
+	 }
+
+	 aBank->_save();
+
+
+
 	 std::cout << "End \n";
 
 return 0;

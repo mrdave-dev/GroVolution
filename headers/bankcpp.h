@@ -67,17 +67,12 @@ public:
 	int getSprayInterval();
 	int getSprayDuration();
 
-
-	void setName();
-	void setWakeTime(int);
-	void setWakeTime(std::string);
-	void setLightDuration(int);
-	void setLightDuration(std::string);
-	void setSprayInterval(int);
-	void setSprayInterval(std::string);
-	void setSprayDuration(int);
-	void setSprayDuration(std::string);
-	void setTimers(int, int, int, int);
+	void userSetName();
+	void userSetWakeTime();
+	void userSetLightDuration();
+	void userSetSprayInterval();
+	void userSetSprayDuration();
+	void userSetTimers();
 
 	Relay* _findRelayByID(std::string);
 

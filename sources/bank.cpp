@@ -199,6 +199,7 @@ void Bank::_setFileName(std::string nm) {
 
 }
 
+// x hour to wake
 void Bank::_setWakeTime(int x) {
 	if (x < 0) {
 		throw 1;
@@ -209,17 +210,68 @@ void Bank::_setWakeTime(int x) {
 	}
 
 	std::stringstream text_to_send;
-
-	text_to_send << "TIL" << std::setw(3) << std::setfill('0')
+	text_to_send << "TLI" << std::setw(3) << std::setfill('0')
 				 << x << '\r';
 
-	std::cout << "TEST: " << text_to_send.str() << std::endl;
+	//this->connection->sendText(text_to_send.str());
+}
 
+// x = hours
+void Bank::_setLightDuration(int x) {
+	if (x < 0) {
+		throw 1;
+	}
 
-	//this->connection->sendText("TIL")
+	if (x > 23) {
+		throw 1;
+	}
 
-	//TLI006
+	std::stringstream text_to_send;
+	text_to_send << "TLD" << std::setw(3) << std::setfill('0')
+				 << x << '\r';
 
+	// this->connection->sendText(text_to_send.str());
+}
+
+// x = minutes
+void Bank::_setSprayInterval(int x) {
+	if (x < 0) {
+		throw 1;
+	}
+
+	if (x > 3600) {
+		throw 1;
+	}
+
+	std::stringstream text_to_send;
+	text_to_send << "TSI" << std::setw(3) << std::setfill('0')
+				 << x << '\r';
+
+	// this->connection->sendText(text_to_send.str());
+}
+
+// x = seconds
+void Bank::_setSprayDuration(int x) {
+	if (x < 0) {
+		throw 1;
+	}
+
+	if (x > 30) {
+		throw 1;
+	}
+
+	std::stringstream text_to_send;
+	text_to_send << "TSD" << std::setw(3) << std::setfill('0')
+				 << x << '\r';
+
+	// this->connection->sendText(text_to_send.str());
+}
+
+void Bank::_setTimers(int wt, int ld, int si, int sd) {
+	this->_setWakeTime(wt);
+	this->_setLightDuration(ld);
+	this->_setSprayInterval(si);
+	this->_setSprayDuration(sd);
 }
 
 
@@ -247,3 +299,114 @@ int Bank::getSprayDuration() {
 	return this->spray_duration;
 }
 
+
+void Bank::userSetName() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "What would you like the name to be? ";
+
+	std::string user_response;
+	while (std::cin >> user_response) {
+		std::cin.ignore(256, '\n');
+		std::cin.clear();
+
+		std::cout << "NEW FILENAME: " << user_response << "\nIs that correct? (y/n) ";
+
+		std::string user_response_2;
+		std::cin >> user_response_2;
+		if (user_response_2 == "y") {break;}
+
+		std::cout << "What would you like the name to be? ";
+	}
+
+	try { this->_setFileName(user_response); }
+	catch (int e) {
+		std::cout << "ERROR #" << e << ": Unable to rename file." << std::endl;
+	}
+}
+
+void Bank::userSetWakeTime() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "WAKE TIME: " << this->wake_time << std::endl;
+	std::cout << "What should the wake time be? ";
+
+	int user_response;
+	while (std::cin >> user_response) {
+		std::cin.ignore(256, '\n');
+		std::cin.clear();
+
+		std::cout << "NEW WAKE TIME: " << user_response << std::endl;
+		std::string user_response_2;
+		std::cin >> user_response_2;
+		if (user_response_2 == "y") {break;}
+
+		std::cout << "What should the wake time be? ";
+	}
+
+	this->_setWakeTime(user_response);
+
+}
+
+void Bank::userSetLightDuration() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "LIGHT DURATION: " << this->light_duration << std::endl;
+	std::cout << "What should the light duration be? ";
+
+	int user_response;
+	while (std::cin >> user_response) {
+		std::cin.ignore(256, '\n');
+		std::cin.clear();
+
+		std::cout << "NEW LIGHT DURATION: " << user_response << std::endl;
+		std::string user_response_2;
+		std::cin >> user_response_2;
+		if (user_response_2 == "y") {break;}
+
+		std::cout << "What should the light duration be? ";
+	}
+
+	this->_setLightDuration(user_response);
+
+}
+
+void Bank::userSetSprayInterval() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "SPRAY INTERVAL: " << this->spray_interval << std::endl;
+	std::cout << "What should the spray interval be? ";
+
+	int user_response;
+	while (std::cin >> user_response) {
+		std::cin.ignore(256, '\n');
+		std::cin.clear();
+
+		std::cout << "NEW SPRAY INTERVAL: " << user_response << std::endl;
+		std::string user_response_2;
+		std::cin >> user_response_2;
+		if (user_response_2 == "y") {break;}
+
+		std::cout << "What should the spray interval be? ";
+	}
+
+	this->_setSprayInterval(user_response);
+
+}
+
+void Bank::userSetSprayDuration() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "SPRAY DURATION: " << this->spray_duration << std::endl;
+	std::cout << "What should the spray duration be? ";
+
+	int user_response;
+	while (std::cin >> user_response) {
+		std::cin.ignore(256, '\n');
+		std::cin.clear();
+
+		std::cout << "NEW SPRAY DURATION: " << user_response << std::endl;
+		std::string user_response_2;
+		std::cin >> user_response_2;
+		if (user_response_2 == "y") {break;}
+
+		std::cout << "What should the spray duration be? ";
+	}
+
+	this->_setSprayDuration(user_response);
+}

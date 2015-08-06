@@ -43,6 +43,13 @@ bool Relay::getStatus() {
 	return this->status;
 }
 
+std::string Relay::getID() {
+	std::stringstream ret_val;
+	ret_val << this->getLabel();
+	ret_val << this->getNumber();
+	return ret_val.str();
+}
+
 RS232Connection* Relay::getConnection() {
 	if (this->connection == 0) {throw 0;}
 	return this->connection;

@@ -313,14 +313,15 @@ void Bank::userSetName() {
 
 		std::string user_response_2;
 		std::cin >> user_response_2;
-		if (user_response_2 == "y") {break;}
-
+		if (user_response_2 == "y") {
+			try {
+				this->_setFileName(user_response);
+				return;
+			} catch (int e) {
+				std::cout << "ERROR " << e << ": unable to change.\n";
+			}
+		}
 		std::cout << "What would you like the name to be? ";
-	}
-
-	try { this->_setFileName(user_response); }
-	catch (int e) {
-		std::cout << "ERROR #" << e << ": Unable to rename file." << std::endl;
 	}
 }
 
@@ -337,13 +338,17 @@ void Bank::userSetWakeTime() {
 		std::cout << "NEW WAKE TIME: " << user_response << std::endl;
 		std::string user_response_2;
 		std::cin >> user_response_2;
-		if (user_response_2 == "y") {break;}
+		if (user_response_2 == "y") {
+			try {
+				this->_setWakeTime(user_response);
+				return;
+			} catch (int e) {
+				std::cout << "ERROR " << e << ": unable to change.\n";
+			}
+		}
 
 		std::cout << "What should the wake time be? ";
 	}
-
-	this->_setWakeTime(user_response);
-
 }
 
 void Bank::userSetLightDuration() {
@@ -359,13 +364,17 @@ void Bank::userSetLightDuration() {
 		std::cout << "NEW LIGHT DURATION: " << user_response << std::endl;
 		std::string user_response_2;
 		std::cin >> user_response_2;
-		if (user_response_2 == "y") {break;}
+		if (user_response_2 == "y") {
+			try {
+				this->_setLightDuration(user_response);
+				return;
+			} catch (int e) {
+				std::cout << "ERROR " << e << ": unable to change.\n";
+			}
+		}
 
 		std::cout << "What should the light duration be? ";
 	}
-
-	this->_setLightDuration(user_response);
-
 }
 
 void Bank::userSetSprayInterval() {
@@ -381,13 +390,17 @@ void Bank::userSetSprayInterval() {
 		std::cout << "NEW SPRAY INTERVAL: " << user_response << std::endl;
 		std::string user_response_2;
 		std::cin >> user_response_2;
-		if (user_response_2 == "y") {break;}
+		if (user_response_2 == "y") {
+			try {
+				this->_setSprayInterval(user_response);
+				return;
+			} catch (int e) {
+				std::cout << "ERROR " << e << ": unable to change.\n";
+			}
+		}
 
 		std::cout << "What should the spray interval be? ";
 	}
-
-	this->_setSprayInterval(user_response);
-
 }
 
 void Bank::userSetSprayDuration() {
@@ -403,10 +416,141 @@ void Bank::userSetSprayDuration() {
 		std::cout << "NEW SPRAY DURATION: " << user_response << std::endl;
 		std::string user_response_2;
 		std::cin >> user_response_2;
-		if (user_response_2 == "y") {break;}
-
+		if (user_response_2 == "y") {
+			try {
+				this->_setSprayDuration(user_response);
+				return;
+			} catch (int e) {
+				std::cout << "ERROR " << e << ": unable to change.\n";
+			}
+		}
 		std::cout << "What should the spray duration be? ";
 	}
-
-	this->_setSprayDuration(user_response);
 }
+
+void Bank::userSetTimers() {
+	this->userSetWakeTime();
+	this->userSetLightDuration();
+	this->userSetSprayInterval();
+	this->userSetSprayDuration();
+}
+
+
+Relay* Bank::_findRelayByID(std::string tv) {
+	// This simple linear search could maybe be refactored
+	// if the underlying structure for the relays variable
+	// was built as a tree or hash table...
+	for (unsigned int i=0; i<this->relays.size(); i++) {
+		if (this->relays[i]->getID() == tv) {
+			return this->relays[i];
+		}
+	}
+
+	return nullptr;
+}
+
+void Bank::_relayAdd(char label, int num) {
+	std::stringstream ID;
+	ID << label << num;
+
+	if (this->_findRelayByID(ID.str())) {
+		throw 1;
+	}
+
+	if (num > 100) {
+		throw 2;
+	}
+
+	if (num < 0) {
+		throw 3;
+	}
+
+	this->relays.push_back(new Relay(label, num));
+}
+
+void Bank::_relayDel(char label, int num) {
+	std::stringstream ID;
+	ID << label << num;
+
+	for (unsigned int i=0; i<relays.size(); i++) {
+		if (relays[i]->getID() == ID.str()) {
+			relays.erase(relays.begin() + i));
+			return;
+		}
+	}
+}
+
+void Bank::_relayOn(char label, int num) {
+	std::stringsteam ID;
+	ID << label << num;
+
+	Relay* rl = _findRelayByID(ID.str());
+
+	if (!rl) {
+		throw 1;
+	}
+
+	rl->on();
+}
+
+void Bank::_relayOff(char label, int num) {
+	std::stringsteam ID;
+	ID << label << num;
+
+	Relay* rl = _findRelayByID(ID.str());
+
+	if (!rl) {
+		throw 1;
+	}
+
+	rl->off();
+}
+
+void Bank::_relayToggle(char label, int num) {
+	std::stringsteam ID;
+	ID << label << num;
+
+	Relay* rl = _findRelayByID(ID.str());
+
+	if (!rl) {
+		throw 1;
+	}
+
+	rl->toggle();
+}
+
+
+void Bank::add() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "ADD NEW RELAY" << std::endl;
+
+	char label;
+	int num;
+	std::string user_response;
+
+	while (user_response != "y") {
+		std:cout << "Please enter a character label: ";
+		std::cin >> label;
+		std::cin.ignore(256, '\n');
+		std::cin.clear();
+
+		std::cout << "Please enter a number: ";
+		std::cin >> num;
+		std::cin.ignore(256, '\n');
+		std::cin.clear();
+
+		std::cout << "Add relay " << label << num << ", is that correct (y/n)? ";
+		std::cin >> user_response;
+
+		if (user_response == "y") {
+			try {
+				this->_relayAdd(label, num);
+				return;
+			} catch (int e) {
+				std::cout << "ERROR " << e << ": Unable to add relay.\n";
+				break;
+			}
+		}
+	}
+}
+

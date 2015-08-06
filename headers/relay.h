@@ -14,6 +14,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <string>
+#include <sstream>
 
 #include "../RS-232/rs232.h"
 #include "../headers/comms.h"
@@ -33,6 +34,7 @@ public:
 	char getLabel();
 	int getNumber();
 	bool getStatus();
+	std::string getID();
 	RS232Connection* getConnection();
 
 	void setLabel(char);

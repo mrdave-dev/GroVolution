@@ -77,10 +77,10 @@ public:
 	Relay* _findRelayByID(std::string);
 
 	// System functions. These throw exceptions.
-	void _relayAdd(Relay*);
-	void _relayDel(Relay*);
-	void _relayOn(Relay*);
-	void _relayOff(Relay*);
+	void _relayAdd(char, int);
+	void _relayDel(char, int);
+	void _relayOn(char, int);
+	void _relayOff(char, int);
 	void _relayToggle(Relay*);
 
 	// Bank functions below use the currentRelay

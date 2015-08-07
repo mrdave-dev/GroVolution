@@ -24,6 +24,8 @@ int main(int argc, char** argv) {
 		 std::cout << "RENAME ERROR: " << e << std::endl;
 	 }
 
+	 aBank->report();
+
 	 // aBank->_save();
 
 

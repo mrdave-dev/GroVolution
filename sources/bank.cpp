@@ -449,6 +449,18 @@ Relay* Bank::_findRelayByID(std::string tv) {
 	return nullptr;
 }
 
+Relay* Bank::_findRelayByID(char lb, int nm) {
+	for (unsigned int i=0; i<this->relays.size(); i++) {
+		if (this->relays[i]->getLabel() == lb) {
+			if (this->relays[i]->getNumber() == nm) {
+				return this->relays[i];
+			}
+		}
+	}
+
+	return nullptr;
+}
+
 void Bank::_relayAdd(char label, int num) {
 	std::stringstream ID;
 	ID << label << num;
@@ -474,14 +486,14 @@ void Bank::_relayDel(char label, int num) {
 
 	for (unsigned int i=0; i<relays.size(); i++) {
 		if (relays[i]->getID() == ID.str()) {
-			relays.erase(relays.begin() + i));
+			relays.erase(relays.begin() + i);
 			return;
 		}
 	}
 }
 
 void Bank::_relayOn(char label, int num) {
-	std::stringsteam ID;
+	std::stringstream ID;
 	ID << label << num;
 
 	Relay* rl = _findRelayByID(ID.str());
@@ -494,7 +506,7 @@ void Bank::_relayOn(char label, int num) {
 }
 
 void Bank::_relayOff(char label, int num) {
-	std::stringsteam ID;
+	std::stringstream ID;
 	ID << label << num;
 
 	Relay* rl = _findRelayByID(ID.str());
@@ -507,7 +519,7 @@ void Bank::_relayOff(char label, int num) {
 }
 
 void Bank::_relayToggle(char label, int num) {
-	std::stringsteam ID;
+	std::stringstream ID;
 	ID << label << num;
 
 	Relay* rl = _findRelayByID(ID.str());
@@ -519,6 +531,75 @@ void Bank::_relayToggle(char label, int num) {
 	rl->toggle();
 }
 
+int _getIntFromUser() {
+	int t;
+
+	std::string user_response;
+
+	int RELAY_NUM_LOWER_LIMIT = 0;
+	int RELAY_NUM_UPPER_LIMIT = 100;
+
+
+
+	while (user_response != "q") {
+		std::cout << "Please enter a number [" << RELAY_NUM_LOWER_LIMIT
+				  << " - " << RELAY_NUM_UPPER_LIMIT << "] or q to quit: ";
+		std::getline(std::cin, user_response);
+
+		if (user_response == "q") {
+			throw 1;
+		}
+
+		if (!isdigit(user_response.at(0))) {
+			// Doesn't contain digit in first char, not convertible
+			std::cout << "That's not a valid number!\n";
+		} else if (user_response.length() > 3) {
+			// Too long of a sequence
+			std::cout << "That's not a valid number!\n";
+		} else {
+			t = stoi(user_response);
+			if (t < RELAY_NUM_LOWER_LIMIT || t > RELAY_NUM_UPPER_LIMIT) {
+				// Not in range
+				std::cout << "That's not a valid number!\n";
+			} else {
+				// Success
+				return t;
+			}
+		}
+
+	}
+
+	throw 1;
+	return t;
+}
+
+char _getCharFromUser() {
+	char t;
+	std::string user_response;
+
+	while (user_response != "quit") {
+		std::cout << "Please enter a character [a-zA-Z] or 'quit': ";
+		std::getline(std::cin, user_response);
+
+		if (user_response == "quit") {
+			throw 1;
+		}
+
+		if (user_response.length() > 1) {
+			std::cout << "That's not a valid character!";
+		} else {
+			t = user_response[0];
+			if (!isalpha(t)) {
+				std::cout << "That's not a valid character!";
+			} else {
+				return t;
+			}
+		}
+	}
+
+	throw 1;
+	return t;
+}
 
 void Bank::add() {
 	std::cout << "BANK: " << this->file_name << std::endl;
@@ -526,18 +607,16 @@ void Bank::add() {
 
 	char label;
 	int num;
+
 	std::string user_response;
-
 	while (user_response != "y") {
-		std:cout << "Please enter a character label: ";
-		std::cin >> label;
-		std::cin.ignore(256, '\n');
-		std::cin.clear();
-
-		std::cout << "Please enter a number: ";
-		std::cin >> num;
-		std::cin.ignore(256, '\n');
-		std::cin.clear();
+		try {
+			label = _getCharFromUser();
+			num = _getIntFromUser();
+		} catch (int e) {
+			std::cout << "Bank add failed.";
+			return;
+		}
 
 		std::cout << "Add relay " << label << num << ", is that correct (y/n)? ";
 		std::cin >> user_response;
@@ -554,3 +633,94 @@ void Bank::add() {
 	}
 }
 
+void Bank::remove() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "REMOVE RELAY" << std::endl;
+
+	char label;
+	int num;
+
+	std::string user_response;
+	while (user_response != "y") {
+		try {
+			label = _getCharFromUser();
+			num = _getIntFromUser();
+		} catch (int e) {
+			std::cout << "Bank remove failed.";
+			return;
+		}
+
+		std::cout << "Add relay " << label << num << ", is that correct (y/n)? ";
+		std::cin >> user_response;
+
+		if (user_response == "y") {
+			try {
+				this->_relayDel(label, num);
+				return;
+			} catch (int e) {
+				std::cout << "ERROR " << e << ": Unable to remove relay.\n";
+				break;
+			}
+		}
+	}
+}
+
+void Bank::on() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "ON: " << std::endl;
+
+	char label;
+	int num;
+
+	try {
+		label = _getCharFromUser();
+		num = _getIntFromUser();
+		this->_relayOn(label, num);
+	} catch (int e) {
+		std::cout << "On failed.";
+		return;
+	}
+
+	if (Relay* x = _findRelayByID(label, num)) {
+		x->report();
+	}
+
+}
+
+void Bank::off() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "OFF: " << std::endl;
+
+	char label;
+	int num;
+
+	try {
+		label = _getCharFromUser();
+		num = _getIntFromUser();
+		this->_relayOff(label, num);
+	} catch (int e) {
+		std::cout << "Off failed.";
+		return;
+	}
+
+	if (Relay* x = _findRelayByID(label, num)) {
+		x->report();
+	}
+
+}
+
+// void Bank::next() - reports the next relay
+void Bank::report() {
+	std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "WAKE TIME: " << this->wake_time << "\t\t";
+	std::cout << "LIGHT DUR.: " << this->light_duration << "\t\t\n";
+	std::cout << "SPRAY INT.: " << this->spray_interval << "\t\t";
+	std::cout << "SPRAY DUR.: " << this->spray_duration << "\t\t\n";
+	std::cout << "RELAYS:\n";
+	for (unsigned int i=0; i<this->relays.size(); i++) {
+		std::cout << "\t" << relays.at(i)->getID() << "\t";
+		std::cout << "STATUS: " << relays.at(i)->getStatus();
+		std::cout << "\n";
+	}
+	std::cout << std::endl;
+}

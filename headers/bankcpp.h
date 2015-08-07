@@ -11,6 +11,7 @@
 #define BANK_H
 
 #include <cstdlib>
+#include <cctype>
 #include <iostream>
 #include <iomanip>
 #include <sstream>
@@ -75,13 +76,14 @@ public:
 	void userSetTimers();
 
 	Relay* _findRelayByID(std::string);
+	Relay* _findRelayByID(char, int);
 
 	// System functions. These throw exceptions.
 	void _relayAdd(char, int);
 	void _relayDel(char, int);
 	void _relayOn(char, int);
 	void _relayOff(char, int);
-	void _relayToggle(Relay*);
+	void _relayToggle(char, int);
 
 	// Bank functions below use the currentRelay
 	// iterator or prompts the user
@@ -89,15 +91,15 @@ public:
 	void remove();
 	void on();
 	void off();
-	void next();
-	void prev();
-	void rename();
-	void inverse();
+	//void next();
+	//void prev();
+	//void rename();
+	//void inverse();
 	void report();
-	void report(Relay *);
-	void reportAll();
-	void reportTimers();
-	void help();
+	//void report(Relay *);
+	//void reportAll();
+	//void reportTimers();
+	//void help();
 
 };
 

@@ -11,14 +11,16 @@
 RS232Connection::RS232Connection() {
 	this->baudrate = -1;
 	this->piport = -1;
-	mode[0] = 0; mode[1] = 0;
-	mode[2] = 0; mode[3] = 0;
+	mode[0] = '8'; mode[1] = 'O';
+	mode[2] = '1'; mode[3] = '\0';
 
 }
 
 RS232Connection::RS232Connection(int b, int p) {
 	this->baudrate = b;
 	this->piport = p;
+	mode[0] = '8'; mode[1] = 'O';
+	mode[2] = '1'; mode[3] = '\0';
 }
 
 int RS232Connection::getBaudRate() {

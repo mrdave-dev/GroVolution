@@ -55,7 +55,7 @@ fileops.o: sources/fileops.c
 relay-test: relay.o comms.o rs232.o
 	$(CXX) $(CXXFLAGS) comms.o rs232.o relay.o tests/relay-test-1.cpp -o relay-test
 
-bank-test: bank.o sources/bank.cpp headers/bankcpp.h tests/bank-test-1.cpp
+bank-test: comms.o bank.o rs232.o relay.o sources/bank.cpp headers/bankcpp.h tests/bank-test-1.cpp
 	$(CXX) $(CXXFLAGS) bank.o comms.o rs232.o relay.o tests/bank-test-1.cpp -o bank-test
 	
 regex-test: tests/regex-test.cpp

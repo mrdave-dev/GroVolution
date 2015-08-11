@@ -59,6 +59,7 @@ public:
 	void _setSprayInterval(int);
 	void _setSprayDuration(int);
 	void _setTimers(int, int, int, int);
+	void _setConnection(RS232Connection*);
 
 	// Get methods
 	std::string getName();

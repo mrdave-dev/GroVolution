@@ -18,11 +18,33 @@
 int main(int argc, char** argv) {
 	 Bank *aBank = new Bank("untitled.json");
 	 try {
-		 aBank->_setFileName("test-1.json");
-		 aBank->_setWakeTime(21);
+		 aBank->_setFileName("yeah/cool/awes-om.wow.jjson");
 	 } catch (int e) {
 		 std::cout << "RENAME ERROR: " << e << std::endl;
 	 }
+
+	 aBank->_setConnection(new RS232Connection(38400, 16));
+
+	 aBank->userSetName();
+	 aBank->userSetWakeTime();
+	 aBank->userSetLightDuration();
+	 aBank->userSetSprayInterval();
+	 aBank->userSetSprayDuration();
+
+	 std::cout << "getName(): " << aBank->getName() << std::endl;
+	 std::cout << "getCount(): " << aBank->getCount() << std::endl;
+	 std::cout << "getWakeTime(): " << aBank->getWakeTime() << std::endl;
+	 std::cout << "getLightDuration(): " << aBank->getLightDuration() << std::endl;
+	 std::cout << "getSprayInterval(): " << aBank->getSprayInterval() << std::endl;
+	 std::cout << "getSprayDuration(): " << aBank->getSprayDuration() << std::endl;
+
+	 std::cout << "_findRelayByID(std::string): " << aBank->_findRelayByID("P1")->getStatus() << std::endl;
+	 std::cout << "_findRelayByID(char, int): " << aBank->_findRelayByID('P', 1)->getStatus() << std::endl;
+
+
+
+
+
 
 	 aBank->report();
 

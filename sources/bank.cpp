@@ -174,14 +174,14 @@ void Bank::_fetchRelays() {
 // @post - Bank renamed
 void Bank::_setFileName(std::string nm) {
 	// REGEX: string ends with '.json'
-	std::regex ends_with_json(".+.json$");
+	std::regex ends_with_json(".+\\.json$");
 	if (!std::regex_match(nm, ends_with_json)) {
 		// doesn't end with '.json'
 		throw 1;
 	}
 
 	// REGEX: contains only alpha or num or /-_.
-	std::regex not_valid_chars("[^a-zA-Z0-9\\._\\/]");
+	std::regex not_valid_chars("[^a-zA-Z0-9\\._\\/\\-]");
 	if (std::regex_match(nm, not_valid_chars)) {
 		// contains invalid chars
 		throw 2;
@@ -213,7 +213,13 @@ void Bank::_setWakeTime(int x) {
 	text_to_send << "TLI" << std::setw(3) << std::setfill('0')
 				 << x << '\r';
 
-	//this->connection->sendText(text_to_send.str());
+	if (!this->connection) {
+		throw 2;
+	} else {
+		this->connection->sendText(text_to_send.str());
+		this->_fetchTimers();
+	}
+
 }
 
 // x = hours
@@ -230,7 +236,12 @@ void Bank::_setLightDuration(int x) {
 	text_to_send << "TLD" << std::setw(3) << std::setfill('0')
 				 << x << '\r';
 
-	// this->connection->sendText(text_to_send.str());
+	if (!this->connection) {
+		throw 2;
+	} else {
+		this->connection->sendText(text_to_send.str());
+		this->_fetchTimers();
+	}
 }
 
 // x = minutes
@@ -247,7 +258,12 @@ void Bank::_setSprayInterval(int x) {
 	text_to_send << "TSI" << std::setw(3) << std::setfill('0')
 				 << x << '\r';
 
-	// this->connection->sendText(text_to_send.str());
+	if (!this->connection) {
+		throw 2;
+	} else {
+		this->connection->sendText(text_to_send.str());
+		this->_fetchTimers();
+	}
 }
 
 // x = seconds
@@ -264,7 +280,12 @@ void Bank::_setSprayDuration(int x) {
 	text_to_send << "TSD" << std::setw(3) << std::setfill('0')
 				 << x << '\r';
 
-	// this->connection->sendText(text_to_send.str());
+	if (!this->connection) {
+		throw 2;
+	} else {
+		this->connection->sendText(text_to_send.str());
+		this->_fetchTimers();
+	}
 }
 
 void Bank::_setTimers(int wt, int ld, int si, int sd) {
@@ -274,6 +295,9 @@ void Bank::_setTimers(int wt, int ld, int si, int sd) {
 	this->_setSprayDuration(sd);
 }
 
+void Bank::_setConnection(RS232Connection* c) {
+	this->connection = c;
+}
 
 std::string Bank::getName() {
 	return this->file_name;
@@ -337,16 +361,24 @@ void Bank::userSetWakeTime() {
 
 		std::cout << "NEW WAKE TIME: " << user_response << std::endl;
 		std::string user_response_2;
+		std::cout << "Is that correct (y/n)? ";
 		std::cin >> user_response_2;
 		if (user_response_2 == "y") {
 			try {
 				this->_setWakeTime(user_response);
 				return;
 			} catch (int e) {
-				std::cout << "ERROR " << e << ": unable to change.\n";
+				if (e == 1) {
+					std::cout << "\nERROR 1: bad input.\n\n";
+				} else if (e == 2) {
+					std::cout << "\nERROR 2: connection not set.\n\n";
+					return;
+				} else {
+					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+					return;
+				}
 			}
 		}
-
 		std::cout << "What should the wake time be? ";
 	}
 }
@@ -363,13 +395,22 @@ void Bank::userSetLightDuration() {
 
 		std::cout << "NEW LIGHT DURATION: " << user_response << std::endl;
 		std::string user_response_2;
+		std::cout << "Is that correct (y/n)? ";
 		std::cin >> user_response_2;
 		if (user_response_2 == "y") {
 			try {
 				this->_setLightDuration(user_response);
 				return;
 			} catch (int e) {
-				std::cout << "ERROR " << e << ": unable to change.\n";
+				if (e == 1) {
+					std::cout << "\nERROR 1: bad input.\n\n";
+				} else if (e == 2) {
+					std::cout << "\nERROR 2: connection not set.\n\n";
+					return;
+				} else {
+					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+					return;
+				}
 			}
 		}
 
@@ -389,13 +430,22 @@ void Bank::userSetSprayInterval() {
 
 		std::cout << "NEW SPRAY INTERVAL: " << user_response << std::endl;
 		std::string user_response_2;
+		std::cout << "Is that correct (y/n)? ";
 		std::cin >> user_response_2;
 		if (user_response_2 == "y") {
 			try {
 				this->_setSprayInterval(user_response);
 				return;
 			} catch (int e) {
-				std::cout << "ERROR " << e << ": unable to change.\n";
+				if (e == 1) {
+					std::cout << "\nERROR 1: bad input.\n\n";
+				} else if (e == 2) {
+					std::cout << "\nERROR 2: connection not set.\n\n";
+					return;
+				} else {
+					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+					return;
+				}
 			}
 		}
 
@@ -415,13 +465,22 @@ void Bank::userSetSprayDuration() {
 
 		std::cout << "NEW SPRAY DURATION: " << user_response << std::endl;
 		std::string user_response_2;
+		std::cout << "Is that correct (y/n)? ";
 		std::cin >> user_response_2;
 		if (user_response_2 == "y") {
 			try {
 				this->_setSprayDuration(user_response);
 				return;
 			} catch (int e) {
-				std::cout << "ERROR " << e << ": unable to change.\n";
+				if (e == 1) {
+					std::cout << "\nERROR 1: bad input.\n\n";
+				} else if (e == 2) {
+					std::cout << "\nERROR 2: connection not set.\n\n";
+					return;
+				} else {
+					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+					return;
+				}
 			}
 		}
 		std::cout << "What should the spray duration be? ";
@@ -706,7 +765,6 @@ void Bank::off() {
 	if (Relay* x = _findRelayByID(label, num)) {
 		x->report();
 	}
-
 }
 
 // void Bank::next() - reports the next relay

@@ -14,13 +14,13 @@ CXXFLAGS += -g
 CXXFLAGS += -lm
 
 # All objects
-OBJS = main.o rs232.o relay.o comms.o bank.o fileops.o
+OBJS = main.o rs232.o relay.o comms.o bank.o
 
 # All sources
-SRCS = RS-232/rs232.c main.c sources/relay.cpp sources/comms.cpp sources/bank.cpp sources/fileops.c
+SRCS = RS-232/rs232.c main.cpp sources/relay.cpp sources/comms.cpp sources/bank.cpp
 
 #All headers
-HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bankcpp.h headers/fileops.h
+HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bankcpp.h
 
 
 # Make Flags
@@ -32,8 +32,8 @@ default: $(SRCS) $(OBJS)
 allandclean: default clean
 
 # Main interface
-main.o: main.c
-	$(CXX) $(CXXFLAGS) main.c -c
+main.o: main.cpp
+	$(CXX) $(CXXFLAGS) main.cpp -c
 
 rs232.o: RS-232/rs232.c
 	$(CXX) $(CXXFLAGS) RS-232/rs232.c -c
@@ -47,20 +47,16 @@ comms.o: sources/comms.cpp headers/comms.h
 bank.o: sources/bank.cpp headers/bankcpp.h
 	$(CXX) $(CXXFLAGS) sources/bank.cpp -c
 
-fileops.o: sources/fileops.c
-	$(CXX) $(CXXFLAGS) sources/fileops.c -c
-
-
 #tests
 relay-test: relay.o comms.o rs232.o
 	$(CXX) $(CXXFLAGS) comms.o rs232.o relay.o tests/relay-test-1.cpp -o relay-test
 
 bank-test: comms.o bank.o rs232.o relay.o sources/bank.cpp headers/bankcpp.h tests/bank-test-1.cpp
 	$(CXX) $(CXXFLAGS) bank.o comms.o rs232.o relay.o tests/bank-test-1.cpp -o bank-test
-	
+
 regex-test: tests/regex-test.cpp
 	$(CXX) $(CXXFLAGS) tests/regex-test.cpp -o regex-test
-	
+
 
 #utility
 

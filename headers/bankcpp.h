@@ -96,6 +96,7 @@ public:
 	//void prev();
 	//void rename();
 	//void inverse();
+	void fetch();
 	void report();
 	//void report(Relay *);
 	//void reportAll();

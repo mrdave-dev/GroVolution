@@ -113,6 +113,10 @@ void Bank::_save() {
 
 
 void Bank::_fetchTimers() {
+	if (!this->connection) {
+        throw 1;
+	}
+
 	std::string buffer;
 
 	this->connection->sendText("TM\r");
@@ -141,6 +145,10 @@ void Bank::_fetchTimers() {
 }
 
 void Bank::_fetchRelays() {
+	if (!this->connection) {
+        throw 1;
+	}
+
 	std::string buffer;
 
 	this->connection->sendText("ST\r");
@@ -765,6 +773,16 @@ void Bank::off() {
 	if (Relay* x = _findRelayByID(label, num)) {
 		x->report();
 	}
+}
+
+void Bank::fetch() {
+    try {
+        std::cout << "Test1\n";
+        this->_fetchTimers();
+        this->_fetchRelays();
+    } catch (int e) {
+        std::cout << "\n\nERROR " << e << ": could not fetch.";
+    }
 }
 
 // void Bank::next() - reports the next relay

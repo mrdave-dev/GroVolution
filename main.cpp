@@ -13,6 +13,9 @@
 #include "headers/relay.h"
 #include "headers/bankcpp.h"
 
+#define PIPORT 16
+#define BAUDRATE 38400
+
 // FUNCTION DECLARATIONS
 void printHelp();
 
@@ -36,33 +39,109 @@ int main(int argc, char** argv) {
         // Basic syntax of command line arguements:
         // ./gv [action] [file] [arguements]
         if (arguements[0] == "fetch") {
-            try {
-                Bank temp(arguements[1]);
-                temp._setConnection(new RS232Connection(38400, 14));
-                temp.fetch();
-                temp.report();
+            // fetch -- update a file
+            Bank temp(arguements[1]);
+            temp._setConnection(new RS232Connection(BAUDRATE, PIPORT));
 
-                // Need to create fail safe for RS232 connection on bank
-                // init. I gotta default the connection to a nullptr
-                // so we don't get segfaults if no connection is set
-            } catch (int e) {
+            temp.fetch();
+            temp.report();
 
-            }
+            std::cout << "\n\nSUCCESS";
+
         } else if (arguements[0] == "add") {
+            Bank temp(arguements[1]);
+            temp._setConnection(new RS232Connection(BAUDRATE, PIPORT));
+
+            temp.add(arguements[2]);
+            temp.report();
+
+            temp._save();
+
+            std::cout << "\n\nSUCCESS";
+
+        } else if (arguements[0] == "delete") {
+            std::cout << "lol no\n";
 
         } else if (arguements[0] == "on") {
+            Bank temp(arguements[1]);
+            temp._setConnection(new RS232Connection(BAUDRATE, PIPORT));
+
+            if (arguements[2] == "all") {
+                temp.allOn();
+            } else {
+                temp.on(arguements[2]);
+            }
+
+            temp.fetch();
+            temp.report();
+
+            temp._save();
+
+            std::cout << "\n\nSUCCESS";
 
         } else if (arguements[0] == "off") {
+            Bank temp(arguements[1]);
+            temp._setConnection(new RS232Connection(BAUDRATE, PIPORT));
+
+            if (arguements[2] == "all") {
+                temp.allOff();
+            } else {
+                temp.off(arguements[2]);
+            }
+
+            temp.fetch();
+            temp.report();
+
+            temp._save();
+
+            std::cout << "\n\nSUCCESS";
 
         } else if (arguements[0] == "toggle") {
+            std::cout << "lol no\n";
 
         } else {
             std::cout << "\n\nERROR: Unknown operation\n";
             std::cout << "FAILURE\n\n";
         }
 
-
+        // End before going in to the main program if a command
+        // line arguement is given.
         return 0;
+    }
+
+    // BEGIN PROGRAM
+    std::cout << "... creating connection ...\n";
+    RS232Connection* cx = new RS232Connection(BAUDRATE, PIPORT);
+
+    std::cout << "... creating empty bank ...\n";
+    Bank* BankZero = new Bank();
+
+    std::cout << "... almost done ...\n";
+    std::string userResponse;
+
+    std::cout << "... ready? FIGHT! ...\n\n";
+
+    printHelp();
+
+    while (userResponse != "exit") {
+        std::cout << "Enter a command or 'exit': ";
+        std::getline(std::cin, userResponse);
+
+        std::vector<std::string> commands;
+        std::string::size_type space_pos = userResponse.find(" ");
+
+        // Start at beginning of string
+        // Look for space
+        // Create substring to first space, add to vector
+        // Iterate to space that was found
+        // Repeat
+        while () {
+            commands.push_back(userResponse.substr())
+
+            space_pos = userResponse.find(" ");
+        }
+
+
     }
 
 
@@ -92,7 +171,7 @@ void printHelp() {
 	std::cout << "\t quit\t\t\t- exit the program\n\n";
 
 	std::cout << " You may also this program with command line arguements: \n\n";
-	std::cout << "\t\tSYNTAX: ./gv [on|off|all on|all off|fetch] (char)(#)\n\n";
+	std::cout << "\t\tSYNTAX: ./gv [on|off|fetch] [filename] [relay label|all]\n\n";
 
 	return;
 }

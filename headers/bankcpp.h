@@ -89,9 +89,15 @@ public:
 	// Bank functions below use the currentRelay
 	// iterator or prompts the user
 	void add();
+	void add(std::string);
 	void remove();
+	void remove(std::string);
 	void on();
+	void on(std::string);
 	void off();
+	void off(std::string);
+	void allOn();
+	void allOff();
 	//void next();
 	//void prev();
 	//void rename();

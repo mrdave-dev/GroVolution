@@ -19,12 +19,14 @@ Bank::Bank() {
 	}
 
 	this->file_name = user_response;
+	this->connection = nullptr;
 
 	return;
 }
 
 Bank::Bank(std::string fn) {
 	this->_load(fn);
+	this->connection = nullptr;
 }
 
 void Bank::_load(std::string fn) {
@@ -560,6 +562,10 @@ void Bank::_relayDel(char label, int num) {
 }
 
 void Bank::_relayOn(char label, int num) {
+	if (!this->connection) {
+        throw 1;
+	}
+
 	std::stringstream ID;
 	ID << label << num;
 
@@ -569,10 +575,15 @@ void Bank::_relayOn(char label, int num) {
 		throw 1;
 	}
 
+	rl->setConnection(this->connection);
 	rl->on();
 }
 
 void Bank::_relayOff(char label, int num) {
+	if (!this->connection) {
+        throw 1;
+	}
+
 	std::stringstream ID;
 	ID << label << num;
 
@@ -582,10 +593,15 @@ void Bank::_relayOff(char label, int num) {
 		throw 1;
 	}
 
+    rl->setConnection(this->connection);
 	rl->off();
 }
 
 void Bank::_relayToggle(char label, int num) {
+	if (!this->connection) {
+        throw 1;
+	}
+
 	std::stringstream ID;
 	ID << label << num;
 
@@ -595,6 +611,7 @@ void Bank::_relayToggle(char label, int num) {
 		throw 1;
 	}
 
+    rl->setConnection(this->connection);
 	rl->toggle();
 }
 
@@ -700,6 +717,30 @@ void Bank::add() {
 	}
 }
 
+void Bank::add(std::string ab) {
+    std::cout << "BANK: " << this->file_name << std::endl;
+	std::cout << "ADD NEW RELAY" << std::endl;
+	std::cout << "INPUT: " << ab << std::endl;
+
+	char a;
+	int b;
+
+    a = ab.at(0);
+    b = ab.at(1) - '0';
+
+    try {
+        this->_relayAdd(a, b);
+
+    } catch (int e) {
+        std::cout << "ERROR: " << e << ": unable to add relay\n";
+    }
+
+
+
+}
+
+
+
 void Bank::remove() {
 	std::cout << "BANK: " << this->file_name << std::endl;
 	std::cout << "REMOVE RELAY" << std::endl;
@@ -754,6 +795,26 @@ void Bank::on() {
 
 }
 
+void Bank::on(std::string ab) {
+    std::cout << "BANK: " << this->file_name << std::endl;
+    std::cout << "ON: " << ab << std::endl;
+
+    char a;
+    int b;
+
+    a = ab.at(0);
+    b = ab.at(1) - '0';
+    std::cout << b << std::endl;
+
+    try {
+        this->_relayOn(a, b);
+
+    } catch (int e) {
+        std::cout << "ERROR " << e << ": could not turn relay on" << std::endl;
+
+    }
+}
+
 void Bank::off() {
 	std::cout << "BANK: " << this->file_name << std::endl;
 	std::cout << "OFF: " << std::endl;
@@ -775,9 +836,42 @@ void Bank::off() {
 	}
 }
 
+void Bank::off(std::string ab) {
+    std::cout << "BANK: " << this->file_name << std::endl;
+    std::cout << "OFF: " << ab << std::endl;
+
+    char a;
+    int b;
+
+    a = ab.at(0);
+    b = ab.at(1) - '0';
+    std::cout << b << std::endl;
+
+    try {
+        this->_relayOff(a, b);
+
+    } catch (int e) {
+        std::cout << "ERROR " << e << ": could not turn relay off" << std::endl;
+
+    }
+}
+
+void Bank::allOn() {
+    for (unsigned i = 0; i<relays.size(); i++) {
+        this->relays.at(i)->setConnection(this->connection);
+        this->relays.at(i)->on();
+    }
+}
+
+void Bank::allOff() {
+    for (unsigned i = 0; i<relays.size(); i++) {
+        this->relays.at(i)->setConnection(this->connection);
+        this->relays.at(i)->off();
+    }
+}
+
 void Bank::fetch() {
     try {
-        std::cout << "Test1\n";
         this->_fetchTimers();
         this->_fetchRelays();
     } catch (int e) {

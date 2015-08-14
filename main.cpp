@@ -109,12 +109,13 @@ int main(int argc, char** argv) {
         return 0;
     }
 
-    // BEGIN PROGRAM
+    // PROGRAM SETUP
     std::cout << "... creating connection ...\n";
     RS232Connection* cx = new RS232Connection(BAUDRATE, PIPORT);
 
     std::cout << "... creating empty bank ...\n";
     Bank* BankZero = new Bank();
+    BankZero->_setConnection(cx);
 
     std::cout << "... almost done ...\n";
     std::string userResponse;
@@ -127,28 +128,70 @@ int main(int argc, char** argv) {
         std::cout << "Enter a command or 'exit': ";
         std::getline(std::cin, userResponse);
 
+        // Extract user input
         std::vector<std::string> commands;
-        std::string::size_type space_pos = userResponse.find(" ");
-
-        // Start at beginning of string
-        // Look for space
-        // Create substring to first space, add to vector
-        // Iterate to space that was found
-        // Repeat
-        while () {
-            commands.push_back(userResponse.substr())
-
-            space_pos = userResponse.find(" ");
+        std::istringstream raw_userResponse(userResponse);
+        std::string temp_word;
+        while (raw_userResponse >> temp_word) {
+          commands.push_back(temp_word);
         }
 
+      if (commands[0] == "add") {
+        // Add to the current bank
+        BankZero->add(commands[1]);
 
-    }
+      } else if (commands[0] == "remove") {
+        std::cout << "lol no.\n";
 
+      } else if (commands[0] == "on") {
+        if (commands[1] == "all") {
+            BankZero->allOn();
+        } else {
+            BankZero->on(commands[1]);
+        }
 
+        BankZero->fetch();
+        BankZero->report();
 
+        BankZero->_save();
 
+      } else if (commands[0] == "off") {
+        if (commands[1] == "all") {
+            BankZero->allOff();
+        } else {
+            BankZero->off(commands[1]);
+        }
+
+        BankZero->fetch();
+        BankZero->report();
+
+        BankZero->_save();
+
+      } else if (commands[0] == "load") {
+        BankZero->_load(commands[1]);
+        BankZero->report();
+
+      } else if (commands[0] == "save") {
+        BankZero->_save();
+        std::cout << "Bank saved.\n\n";
+
+      } else if (commands[0] == "report") {
+        BankZero->report();
+
+      } else if (commands[0] == "fetch") {
+        BankZero->fetch();
+        BankZero->report();
+
+      } else if (commands[0] == "help") {
+        printHelp();
+
+      } else if (commands[0] == "exit") {
+        return 0;
+
+      }
+    } // end while(userResponse != "exit")
     return 0;
-}
+} // end main()
 
 
 // FUNCTION DEFINITIONS

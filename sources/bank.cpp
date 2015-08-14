@@ -1,6 +1,7 @@
 #include "../headers/bankcpp.h"
 
 Bank::Bank() {
+	/*
 	// prompt for filename
 	std::cout << "NEW BANK \nPlease enter a filename: ";
 
@@ -17,8 +18,9 @@ Bank::Bank() {
 		std::cout << "NEW BANK \nPlease enter a filename: ";
 
 	}
-
 	this->file_name = user_response;
+	*/
+
 	this->connection = nullptr;
 
 	return;

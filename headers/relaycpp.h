@@ -5,7 +5,7 @@
  *
  * Author: Dave Martinez
  * Created: July 20, 2015
- * Modified:
+ * Modified: Aug. 13, 2015
  */
 
 #ifndef RELAY_H
@@ -18,31 +18,40 @@
 #include "../RS-232/rs232.h"
 #include "../headers/comms.h"
 
+/* Relay - an object class to provide controls and data storage for
+ * relays/switches on a programmable logic controller.
+ */
 class Relay {
 private:
-	char label;
-	int number;
-	bool status;
-	RS232Connection* connection;
+	char label;		// identifying char for relay
+	int number;		// identifying number fo relay
+	bool status;	// status of relay, true for on, false for off
+	RS232Connection* connection;	// connection to use for PLC communications
 
 public:
+	// Constructors
 	Relay();
 	Relay(char, int);
 	Relay(char, int, bool);
 
+	// get member data
 	char getLabel();
 	int getNumber();
 	bool getStatus();
 	RS232Connection* getConnection();
 
+	// set member data
 	void setLabel(char);
 	void setNumber(int);
 	void setStatus(bool);
 	void setConnection(RS232Connection*);
 
+	// send signals to PLC to turn relays on, off or opposite
 	void on();
 	void off();
 	void toggle();
+
+	// Output data to terminal
 	void report();
 
 };

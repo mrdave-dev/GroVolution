@@ -118,7 +118,7 @@ void Bank::_save() {
 
 void Bank::_fetchTimers() {
 	if (!this->connection) {
-        throw 1;
+        throw 0;
 	}
 
 	std::string buffer;
@@ -126,7 +126,7 @@ void Bank::_fetchTimers() {
 	this->connection->sendText("TM\r");
 	this->connection->readText(buffer);
 
-	std::regex timer_format("\\[(\\d{5}),(\\d{5}),(\\d{5}),(\\d{5})\\]");
+	std::regex timer_format("(\\d{5}),(\\d{5}),(\\d{5}),(\\d{5})\\.");
 	std::smatch timers;
 
 	// Check for well-formed response
@@ -150,7 +150,7 @@ void Bank::_fetchTimers() {
 
 void Bank::_fetchRelays() {
 	if (!this->connection) {
-        throw 1;
+        throw 3;
 	}
 
 	std::string buffer;
@@ -158,18 +158,18 @@ void Bank::_fetchRelays() {
 	this->connection->sendText("ST\r");
 	this->connection->readText(buffer);
 
-	std::regex status_format("\\b(\\d{22})\\b");
+	std::regex status_format("\\b(\\d{22})\\.");
 	std::smatch statuses;
 
 	// Check for well-formed response
 	if (!std::regex_search(buffer, statuses, status_format)) {
 		// Response not well-formed
-		throw 1;
+		throw 	4;
 	}
 
 	// Iterate through the buffer, set statuses at
 	// corresponding relays
-	for (unsigned int i=0; i<buffer.length(); i++) {
+	for (unsigned int i=0; i<(buffer.length()-1); i++) {
 		relays.at(i)->setStatus(buffer[i] - '0');
 	}
 }
@@ -803,9 +803,12 @@ void Bank::on(std::string ab) {
 
     char a;
     int b;
+    std::stringstream t;
 
     a = ab.at(0);
-    b = ab.at(1) - '0';
+
+    for (unsigned int i=1; i<ab.length(); i++) {t << ab.at(i);}
+    t >> b;
     std::cout << b << std::endl;
 
     try {
@@ -844,9 +847,12 @@ void Bank::off(std::string ab) {
 
     char a;
     int b;
+    std::stringstream t;
 
     a = ab.at(0);
-    b = ab.at(1) - '0';
+
+    for (unsigned int i=1; i<ab.length(); i++) {t << ab.at(i);}
+    t >> b;
     std::cout << b << std::endl;
 
     try {
@@ -877,7 +883,7 @@ void Bank::fetch() {
         this->_fetchTimers();
         this->_fetchRelays();
     } catch (int e) {
-        std::cout << "\n\nERROR " << e << ": could not fetch.";
+        std::cout << "\n\nERROR " << e << ": could not fetch.\n";
     }
 }
 

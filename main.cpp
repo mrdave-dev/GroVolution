@@ -112,6 +112,7 @@ int main(int argc, char** argv) {
     // PROGRAM SETUP
     std::cout << "... creating connection ...\n";
     RS232Connection* cx = new RS232Connection(BAUDRATE, PIPORT);
+    cx->sendText("0");
 
     std::cout << "... creating empty bank ...\n";
     Bank* BankZero = new Bank();

@@ -62,9 +62,19 @@ void RS232Connection::sendText(std::string tx) {
 		throw 1; // 1: Unable to make RS232 connection
 	}
 
+	std::cout << "TEXT SENT: " << tx << std::endl;
 	RS232_cputs(this->piport, tx.c_str());
 
 	RS232_CloseComport(this->piport);
+
+	// "Cool off" period:
+	// Computers operate faster than the PLC's cycle time
+	#ifdef _WIN
+		Sleep(150);
+	#else
+		usleep(150000);
+	#endif
+
 }
 
 // RS232Connection::readText(std::string &) - reads text
@@ -103,5 +113,6 @@ void RS232Connection::readText(std::string &rx) {
 		i++;
 	}
 
+	std::cout << "TEXT REC.: " << buffer << std::endl;
 	rx = (reinterpret_cast<char*>(buffer));
 }

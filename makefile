@@ -1,7 +1,7 @@
 # GROVOLUTION COMMUNICATION MAKEFILE
 # AUTHOR            Dave Martinez
 # DATE CREATED      May 29, 2015
-# LAST MOD.         May 29, 2015
+# LAST MOD.         Aug. 18, 2015
 
 # Compiler
 CXX = g++-4.9
@@ -14,13 +14,13 @@ CXXFLAGS += -g
 CXXFLAGS += -lm
 
 # All objects
-OBJS = main.o rs232.o relay.o comms.o bank.o
+OBJS = objs/main.o objs/rs232.o objs/relay.o objs/comms.o objs/bank.o
 
 # All sources
 SRCS = RS-232/rs232.c main.cpp sources/relay.cpp sources/comms.cpp sources/bank.cpp
 
 #All headers
-HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bankcpp.h
+HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bank.h
 
 
 # Make Flags
@@ -32,19 +32,19 @@ default: $(SRCS) $(OBJS)
 allandclean: default clean
 
 # Main interface
-main.o: main.cpp
+objs/main.o: main.cpp
 	$(CXX) $(CXXFLAGS) main.cpp -c
 
-rs232.o: RS-232/rs232.c
+objs/rs232.o: RS-232/rs232.c
 	$(CXX) $(CXXFLAGS) RS-232/rs232.c -c
 
-relay.o: sources/relay.cpp headers/relay.h
+objs/relay.o: sources/relay.cpp headers/relay.h
 	$(CXX) $(CXXFLAGS) sources/relay.cpp -c
 
-comms.o: sources/comms.cpp headers/comms.h
+objs/comms.o: sources/comms.cpp headers/comms.h
 	$(CXX) $(CXXFLAGS) sources/comms.cpp -c
 
-bank.o: sources/bank.cpp headers/bankcpp.h
+objs/bank.o: sources/bank.cpp headers/bank.h
 	$(CXX) $(CXXFLAGS) sources/bank.cpp -c
 
 #tests

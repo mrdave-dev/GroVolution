@@ -11,7 +11,7 @@
 #include "RS-232/rs232.h"
 #include "headers/comms.h"
 #include "headers/relay.h"
-#include "headers/bankcpp.h"
+#include "headers/bank.h"
 
 #define PIPORT 16
 #define BAUDRATE 38400

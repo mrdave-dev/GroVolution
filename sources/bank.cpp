@@ -1,4 +1,4 @@
-#include "../headers/bankcpp.h"
+#include "../headers/bank.h"
 
 Bank::Bank() {
 	/*

@@ -14,7 +14,7 @@ CXXFLAGS += -g
 CXXFLAGS += -lm
 
 # All objects
-OBJS = objs/main.o objs/rs232.o objs/relay.o objs/comms.o objs/bank.o
+OBJS = obj/main.o obj/rs232.o obj/relay.o obj/comms.o obj/bank.o
 
 # All sources
 SRCS = RS-232/rs232.c main.cpp sources/relay.cpp sources/comms.cpp sources/bank.cpp
@@ -32,20 +32,20 @@ default: $(SRCS) $(OBJS)
 allandclean: default clean
 
 # Main interface
-objs/main.o: main.cpp
-	$(CXX) $(CXXFLAGS) main.cpp -c
+obj/main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp -o obj/main.o
 
-objs/rs232.o: RS-232/rs232.c
-	$(CXX) $(CXXFLAGS) RS-232/rs232.c -c
+obj/rs232.o: RS-232/rs232.c
+	$(CXX) $(CXXFLAGS) -c RS-232/rs232.c -o obj/rs232.o
 
-objs/relay.o: sources/relay.cpp headers/relay.h
-	$(CXX) $(CXXFLAGS) sources/relay.cpp -c
+obj/relay.o: sources/relay.cpp headers/relay.h
+	$(CXX) $(CXXFLAGS) -c sources/relay.cpp -o obj/relay.o
 
-objs/comms.o: sources/comms.cpp headers/comms.h
-	$(CXX) $(CXXFLAGS) sources/comms.cpp -c
+obj/comms.o: sources/comms.cpp headers/comms.h
+	$(CXX) $(CXXFLAGS) -c sources/comms.cpp -o obj/comms.o
 
-objs/bank.o: sources/bank.cpp headers/bank.h
-	$(CXX) $(CXXFLAGS) sources/bank.cpp -c
+obj/bank.o: sources/bank.cpp headers/bank.h
+	$(CXX) $(CXXFLAGS) -c sources/bank.cpp -o obj/bank.o
 
 #tests
 relay-test: relay.o comms.o rs232.o

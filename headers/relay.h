@@ -1,37 +1,61 @@
 /* GROVOLUTION - relay.h
- * Struct and function defintions for relay.
+ * A header file for the relay class. Relays provide an interface
+ * for modifying and storing data about the PLC's individual
+ * relays.
  *
  * Author: Dave Martinez
- * Created: June 4, 2015
- * Modified:
- *
+ * Created: July 20, 2015
+ * Modified: Aug. 13, 2015
  */
 
-#ifndef RELAYS_H
-#define RELAYS_H
+#ifndef RELAY_H
+#define RELAY_H
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <iostream>
+#include <string>
+#include <sstream>
 
 #include "../RS-232/rs232.h"
-
 #include "../headers/comms.h"
 
-struct relay {
-	char 	label;
-	int 	number;
-	int 	status;
-};
+/* Relay - an object class to provide controls and data storage for
+ * relays/switches on a programmable logic controller.
+ */
+class Relay {
+private:
+	char label;		// identifying char for relay
+	int number;		// identifying number fo relay
+	bool status;	// status of relay, true for on, false for off
+	RS232Connection* connection;	// connection to use for PLC communications
 
-struct relay* 	initRelay(char ab, int n);
-void 	setRelayNum(struct relay* r, int n);
-void 	setRelayLabel(struct relay* r, char ab);
-int 	switchRelay(struct relay* r);
-int 	onRelay(struct relay* r);
-int		offRelay(struct relay* r);
-char	getLabelRelay(struct relay* r);
-int		getNumRelay(struct relay* r);
-int		getStatusRelay(struct relay* r);
-void	printRelay(struct relay* r);
+public:
+	// Constructors
+	Relay();
+	Relay(char, int);
+	Relay(char, int, bool);
+
+	// get member data
+	char getLabel();
+	int getNumber();
+	bool getStatus();
+	std::string getID();
+	RS232Connection* getConnection();
+
+	// set member data
+	void setLabel(char);
+	void setNumber(int);
+	void setStatus(bool);
+	void setConnection(RS232Connection*);
+
+	// send signals to PLC to turn relays on, off or opposite
+	void on();
+	void off();
+	void toggle();
+
+	// Output data to terminal
+	void report();
+
+};
 
 #endif

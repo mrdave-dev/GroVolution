@@ -1,26 +1,26 @@
 # GROVOLUTION COMMUNICATION MAKEFILE
 # AUTHOR            Dave Martinez
 # DATE CREATED      May 29, 2015
-# LAST MOD.         May 29, 2015
+# LAST MOD.         Aug. 18, 2015
 
 # Compiler
-CXX = gcc
+CXX = g++-4.9
 
 # Flags
-CXXFLAGS = -std=gnu99
+CXXFLAGS = -std=c++11
 CXXFLAGS += -Wall
 CXXFLAGS += -pedantic-errors
 CXXFLAGS += -g
 CXXFLAGS += -lm
 
 # All objects
-OBJS = main.o rs232.o relay.o comms.o bank.o fileops.o
+OBJS = obj/main.o obj/rs232.o obj/relay.o obj/comms.o obj/bank.o
 
 # All sources
-SRCS = RS-232/rs232.c main.c sources/relay.c sources/comms.c sources/bank.c sources/fileops.c
+SRCS = RS-232/rs232.c main.cpp sources/relay.cpp sources/comms.cpp sources/bank.cpp
 
 #All headers
-HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bank.h headers/fileops.h
+HEADERS = RS-232/rs232.h headers/relay.h headers/comms.h headers/bank.h
 
 
 # Make Flags
@@ -32,32 +32,30 @@ default: $(SRCS) $(OBJS)
 allandclean: default clean
 
 # Main interface
-main.o: main.c
-	$(CXX) $(CXXFLAGS) main.c -c
+obj/main.o: main.cpp
+	$(CXX) $(CXXFLAGS) -c main.cpp -o obj/main.o
 
-rs232.o: RS-232/rs232.c
-	$(CXX) $(CXXFLAGS) RS-232/rs232.c -c
+obj/rs232.o: RS-232/rs232.c
+	$(CXX) $(CXXFLAGS) -c RS-232/rs232.c -o obj/rs232.o
 
-relay.o: sources/relay.c
-	$(CXX) $(CXXFLAGS) sources/relay.c -c
+obj/relay.o: sources/relay.cpp headers/relay.h
+	$(CXX) $(CXXFLAGS) -c sources/relay.cpp -o obj/relay.o
 
-comms.o: sources/comms.c
-	$(CXX) $(CXXFLAGS) sources/comms.c -c
+obj/comms.o: sources/comms.cpp headers/comms.h
+	$(CXX) $(CXXFLAGS) -c sources/comms.cpp -o obj/comms.o
 
-bank.o: sources/bank.c
-	$(CXX) $(CXXFLAGS) sources/bank.c -c
-
-fileops.o: sources/fileops.c
-	$(CXX) $(CXXFLAGS) sources/fileops.c -c
-
+obj/bank.o: sources/bank.cpp headers/bank.h
+	$(CXX) $(CXXFLAGS) -c sources/bank.cpp -o obj/bank.o
 
 #tests
+relay-test: relay.o comms.o rs232.o
+	$(CXX) $(CXXFLAGS) comms.o rs232.o relay.o tests/relay-test-1.cpp -o relay-test
 
-relay-test-1: $(OBJS) tests/relay-test-1.c
-	$(CXX) $(CXXFLAGS) rs232.o relay.o comms.o tests/relay-test-1.c -o relay-test-1
+bank-test: comms.o bank.o rs232.o relay.o sources/bank.cpp headers/bankcpp.h tests/bank-test-1.cpp
+	$(CXX) $(CXXFLAGS) bank.o comms.o rs232.o relay.o tests/bank-test-1.cpp -o bank-test
 
-bank-test-1: $(OBJS) tests/bank-test-1.c
-	$(CXX) $(CXXFLAGS) rs232.o relay.o comms.o bank.o tests/bank-test-1.c -o bank-test-1
+regex-test: tests/regex-test.cpp
+	$(CXX) $(CXXFLAGS) tests/regex-test.cpp -o regex-test
 
 
 #utility

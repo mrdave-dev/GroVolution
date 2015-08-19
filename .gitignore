@@ -6,3 +6,6 @@ gv
 
 #.swp files
 *.swp
+
+#Don't commit rapidjson
+rapidjson*

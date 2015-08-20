@@ -140,17 +140,8 @@ void Relay::on() {
 		this->connection->sendText(tx);
 		this->status = true;
 	} catch (int e) {
-		switch (e) {
-			case 0:
-				std::cout << "ERROR: RS232 connection variables not set.\n";
-				break;
-
-			case 1:
-				std::cout << "ERROR: Unable to make RS232 connection.\n";
-				break;
-
-			default:
-				std::cout << "ERROR: Unknown error (" << e << ")\n";
+		if (check_errors(e)) {
+			return;
 		}
 	}
 }

@@ -3,9 +3,9 @@
 
 #executables
 gv
+error-test
 
 #.swp files
 *.swp
 
-#Don't commit rapidjson
-rapidjson*
+

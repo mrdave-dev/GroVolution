@@ -57,6 +57,10 @@ bank-test: comms.o bank.o rs232.o relay.o sources/bank.cpp headers/bankcpp.h tes
 regex-test: tests/regex-test.cpp
 	$(CXX) $(CXXFLAGS) tests/regex-test.cpp -o regex-test
 
+#refactor.error testing
+error: sources/error.cpp headers/error.h
+	$(CXX) sources/error.cpp -o error-test
+
 
 #utility
 

@@ -35,7 +35,7 @@ void Bank::_load(std::string fn) {
 	std::ifstream fs(fn);
 
 	if (!fs.is_open()) {
-		throw 1;  // 1: file did not open
+		throw 200;  // 1: file did not open
 	}
 
 	// put a line in the buffer
@@ -118,7 +118,7 @@ void Bank::_save() {
 
 void Bank::_fetchTimers() {
 	if (!this->connection) {
-        throw 0;
+        throw 0;	//Unable to fetch timers: Connection not set
 	}
 
 	std::string buffer;
@@ -131,14 +131,14 @@ void Bank::_fetchTimers() {
 
 	// Check for well-formed response
 	if (!std::regex_search(buffer, timers, timer_format)) {
-		// Response not well-formed
-		throw 1;
+		// Timer response not well-formed
+		throw 201;
 	}
 
 	// Check for 4 timer matches
 	if (timers.size() != 5) {
 		// Search did not find four timers (and subject)
-		throw 2;
+		throw 202;
 	}
 
 	this->wake_time = std::stoi(timers[1].str());
@@ -150,7 +150,7 @@ void Bank::_fetchTimers() {
 
 void Bank::_fetchRelays() {
 	if (!this->connection) {
-        throw 3;
+        throw 0;	//Unable to fetch relays: Connection not set
 	}
 
 	std::string buffer;
@@ -163,8 +163,8 @@ void Bank::_fetchRelays() {
 
 	// Check for well-formed response
 	if (!std::regex_search(buffer, statuses, status_format)) {
-		// Response not well-formed
-		throw 	4;
+		// Relay response not well-formed
+		throw 	203;
 	}
 
 	// Iterate through the buffer, set statuses at
@@ -180,30 +180,30 @@ void Bank::_fetchRelays() {
 // @pre - nm ends with '.json'
 // @pre - nm contains only alpha or num or /-_.
 // @pre - nm leads with alpha or num
-// @throws 1 - doesn't end with .json
-// @throws 2 - contains invalid chars
-// @throws 3 - doesn't lead with alpha or num
+// @throws 206 - doesn't end with .json
+// @throws 207 - contains invalid chars
+// @throws 208 - doesn't lead with alpha or num
 // @post - Bank renamed
 void Bank::_setFileName(std::string nm) {
 	// REGEX: string ends with '.json'
 	std::regex ends_with_json(".+\\.json$");
 	if (!std::regex_match(nm, ends_with_json)) {
 		// doesn't end with '.json'
-		throw 1;
+		throw 204;
 	}
 
 	// REGEX: contains only alpha or num or /-_.
 	std::regex not_valid_chars("[^a-zA-Z0-9\\._\\/\\-]");
 	if (std::regex_match(nm, not_valid_chars)) {
 		// contains invalid chars
-		throw 2;
+		throw 205;
 	}
 
 	// REGEX: leads with alpha or num
 	std::regex leading_char("^[a-zA-Z0-9]");
 	if (std::regex_match(nm, leading_char)) {
 		// Doesn't lead with alpha or num
-		throw 3;
+		throw 206;
 	}
 
 	// SUCCESS: Bank renamed
@@ -214,11 +214,11 @@ void Bank::_setFileName(std::string nm) {
 // x hour to wake
 void Bank::_setWakeTime(int x) {
 	if (x < 0) {
-		throw 1;
+		throw 207;	//invalid wake time
 	}
 
 	if (x > 23) {
-		throw 1;
+		throw 207;	//invalid wake time
 	}
 
 	std::stringstream text_to_send;
@@ -226,7 +226,7 @@ void Bank::_setWakeTime(int x) {
 				 << x << '\r';
 
 	if (!this->connection) {
-		throw 2;
+		throw 0;	//Unable to set wake time: Connection not set
 	} else {
 		this->connection->sendText(text_to_send.str());
 		this->_fetchTimers();
@@ -237,11 +237,11 @@ void Bank::_setWakeTime(int x) {
 // x = hours
 void Bank::_setLightDuration(int x) {
 	if (x < 0) {
-		throw 1;
+		throw 208;	//invalid light duration time
 	}
 
 	if (x > 23) {
-		throw 1;
+		throw 208;	//invalid light duration time
 	}
 
 	std::stringstream text_to_send;
@@ -249,7 +249,7 @@ void Bank::_setLightDuration(int x) {
 				 << x << '\r';
 
 	if (!this->connection) {
-		throw 2;
+		throw 0;	//Unable to set light duration: Connection not set
 	} else {
 		this->connection->sendText(text_to_send.str());
 		this->_fetchTimers();
@@ -259,11 +259,11 @@ void Bank::_setLightDuration(int x) {
 // x = minutes
 void Bank::_setSprayInterval(int x) {
 	if (x < 0) {
-		throw 1;
+		throw 209;	//Invalid spray interval value
 	}
 
 	if (x > 3600) {
-		throw 1;
+		throw 209;	//Invalid spray interval value
 	}
 
 	std::stringstream text_to_send;
@@ -271,7 +271,7 @@ void Bank::_setSprayInterval(int x) {
 				 << x << '\r';
 
 	if (!this->connection) {
-		throw 2;
+		throw 0;	//Unable to set spray interval: Connection not set
 	} else {
 		this->connection->sendText(text_to_send.str());
 		this->_fetchTimers();
@@ -281,11 +281,11 @@ void Bank::_setSprayInterval(int x) {
 // x = seconds
 void Bank::_setSprayDuration(int x) {
 	if (x < 0) {
-		throw 1;
+		throw 210;	//Invalid spray duration value
 	}
 
 	if (x > 30) {
-		throw 1;
+		throw 210;	//Invalid spray duration value
 	}
 
 	std::stringstream text_to_send;
@@ -293,7 +293,7 @@ void Bank::_setSprayDuration(int x) {
 				 << x << '\r';
 
 	if (!this->connection) {
-		throw 2;
+		throw 0;
 	} else {
 		this->connection->sendText(text_to_send.str());
 		this->_fetchTimers();
@@ -382,13 +382,7 @@ void Bank::userSetWakeTime() {
 				this->_setWakeTime(user_response);
 				return;
 			} catch (int e) {
-				if (e == 1) {
-					std::cout << "\nERROR 1: bad input.\n\n";
-				} else if (e == 2) {
-					std::cout << "\nERROR 2: connection not set.\n\n";
-					return;
-				} else {
-					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+				if(check_errors(e)) {
 					return;
 				}
 			}
@@ -416,13 +410,7 @@ void Bank::userSetLightDuration() {
 				this->_setLightDuration(user_response);
 				return;
 			} catch (int e) {
-				if (e == 1) {
-					std::cout << "\nERROR 1: bad input.\n\n";
-				} else if (e == 2) {
-					std::cout << "\nERROR 2: connection not set.\n\n";
-					return;
-				} else {
-					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+				if(check_errors(e)) {
 					return;
 				}
 			}
@@ -451,13 +439,7 @@ void Bank::userSetSprayInterval() {
 				this->_setSprayInterval(user_response);
 				return;
 			} catch (int e) {
-				if (e == 1) {
-					std::cout << "\nERROR 1: bad input.\n\n";
-				} else if (e == 2) {
-					std::cout << "\nERROR 2: connection not set.\n\n";
-					return;
-				} else {
-					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+				if (check_errors(e)) {
 					return;
 				}
 			}
@@ -486,13 +468,7 @@ void Bank::userSetSprayDuration() {
 				this->_setSprayDuration(user_response);
 				return;
 			} catch (int e) {
-				if (e == 1) {
-					std::cout << "\nERROR 1: bad input.\n\n";
-				} else if (e == 2) {
-					std::cout << "\nERROR 2: connection not set.\n\n";
-					return;
-				} else {
-					std::cout << "\nERROR " << e << ": unable to change.\n\n";
+				if(check_errors(e)) {
 					return;
 				}
 			}
@@ -539,15 +515,15 @@ void Bank::_relayAdd(char label, int num) {
 	ID << label << num;
 
 	if (this->_findRelayByID(ID.str())) {
-		throw 1;
+		throw 211;	//Relay ID already exists
 	}
 
 	if (num > 100) {
-		throw 2;
+		throw 212;	//Invalid number value
 	}
 
 	if (num < 0) {
-		throw 3;
+		throw 212;	//Invalid number value
 	}
 
 	this->relays.push_back(new Relay(label, num));
@@ -567,7 +543,7 @@ void Bank::_relayDel(char label, int num) {
 
 void Bank::_relayOn(char label, int num) {
 	if (!this->connection) {
-        throw 1;
+        throw 0;
 	}
 
 	std::stringstream ID;
@@ -576,7 +552,7 @@ void Bank::_relayOn(char label, int num) {
 	Relay* rl = _findRelayByID(ID.str());
 
 	if (!rl) {
-		throw 1;
+		throw 213;	//Relay ID not found
 	}
 
 	rl->setConnection(this->connection);
@@ -585,7 +561,7 @@ void Bank::_relayOn(char label, int num) {
 
 void Bank::_relayOff(char label, int num) {
 	if (!this->connection) {
-        throw 1;
+        throw 0;
 	}
 
 	std::stringstream ID;
@@ -594,7 +570,7 @@ void Bank::_relayOff(char label, int num) {
 	Relay* rl = _findRelayByID(ID.str());
 
 	if (!rl) {
-		throw 1;
+		throw 213;	//Relay ID not found
 	}
 
     rl->setConnection(this->connection);
@@ -603,7 +579,7 @@ void Bank::_relayOff(char label, int num) {
 
 void Bank::_relayToggle(char label, int num) {
 	if (!this->connection) {
-        throw 1;
+        throw 0;
 	}
 
 	std::stringstream ID;
@@ -612,7 +588,7 @@ void Bank::_relayToggle(char label, int num) {
 	Relay* rl = _findRelayByID(ID.str());
 
 	if (!rl) {
-		throw 1;
+		throw 213;
 	}
 
     rl->setConnection(this->connection);
@@ -635,7 +611,7 @@ int _getIntFromUser() {
 		std::getline(std::cin, user_response);
 
 		if (user_response == "q") {
-			throw 1;
+			throw 214;	//User quit
 		}
 
 		if (!isdigit(user_response.at(0))) {
@@ -657,7 +633,7 @@ int _getIntFromUser() {
 
 	}
 
-	throw 1;
+	throw 214;	//User quit
 	return t;
 }
 
@@ -670,7 +646,7 @@ char _getCharFromUser() {
 		std::getline(std::cin, user_response);
 
 		if (user_response == "quit") {
-			throw 1;
+			throw 214;
 		}
 
 		if (user_response.length() > 1) {
@@ -685,7 +661,7 @@ char _getCharFromUser() {
 		}
 	}
 
-	throw 1;
+	throw 214;
 	return t;
 }
 
@@ -702,8 +678,10 @@ void Bank::add() {
 			label = _getCharFromUser();
 			num = _getIntFromUser();
 		} catch (int e) {
-			std::cout << "Bank add failed.";
-			return;
+			if (check_errors(e)) {
+				std::cout << "Bank add failed.";
+				return;
+			}
 		}
 
 		std::cout << "Add relay " << label << num << ", is that correct (y/n)? ";
@@ -714,8 +692,9 @@ void Bank::add() {
 				this->_relayAdd(label, num);
 				return;
 			} catch (int e) {
-				std::cout << "ERROR " << e << ": Unable to add relay.\n";
-				break;
+				if(check_errors(e)) {
+					return;
+				}
 			}
 		}
 	}
@@ -736,11 +715,10 @@ void Bank::add(std::string ab) {
         this->_relayAdd(a, b);
 
     } catch (int e) {
-        std::cout << "ERROR: " << e << ": unable to add relay\n";
+        if(check_errors(e) {
+        	return;
+        }
     }
-
-
-
 }
 
 
@@ -758,11 +736,13 @@ void Bank::remove() {
 			label = _getCharFromUser();
 			num = _getIntFromUser();
 		} catch (int e) {
-			std::cout << "Bank remove failed.";
-			return;
+			if(check_errors(e)) {
+				std::cout << "Bank remove failed.";
+				return;
+			}
 		}
 
-		std::cout << "Add relay " << label << num << ", is that correct (y/n)? ";
+		std::cout << "Remove relay " << label << num << ", is that correct (y/n)? ";
 		std::cin >> user_response;
 
 		if (user_response == "y") {
@@ -770,8 +750,9 @@ void Bank::remove() {
 				this->_relayDel(label, num);
 				return;
 			} catch (int e) {
-				std::cout << "ERROR " << e << ": Unable to remove relay.\n";
-				break;
+				if(check_errors(e)) {
+					return;
+				}
 			}
 		}
 	}
@@ -789,8 +770,10 @@ void Bank::on() {
 		num = _getIntFromUser();
 		this->_relayOn(label, num);
 	} catch (int e) {
-		std::cout << "On failed.";
-		return;
+		if (check_errors(e)) {
+			std::cout << "On failed.";
+			return;
+		}
 	}
 
 	if (Relay* x = _findRelayByID(label, num)) {
@@ -817,7 +800,9 @@ void Bank::on(std::string ab) {
         this->_relayOn(a, b);
 
     } catch (int e) {
-        std::cout << "ERROR " << e << ": could not turn relay on" << std::endl;
+       if(check_errors(e)) {
+    	   return;
+       }
 
     }
 }
@@ -834,8 +819,10 @@ void Bank::off() {
 		num = _getIntFromUser();
 		this->_relayOff(label, num);
 	} catch (int e) {
-		std::cout << "Off failed.";
-		return;
+		if(check_errors(e)) {
+			std::cout << "Off failed.";
+			return;
+		}
 	}
 
 	if (Relay* x = _findRelayByID(label, num)) {
@@ -861,7 +848,9 @@ void Bank::off(std::string ab) {
         this->_relayOff(a, b);
 
     } catch (int e) {
-        std::cout << "ERROR " << e << ": could not turn relay off" << std::endl;
+        if(check_errors(e)) {
+        	return;
+        }
 
     }
 }
@@ -885,7 +874,9 @@ void Bank::fetch() {
         this->_fetchTimers();
         this->_fetchRelays();
     } catch (int e) {
-        std::cout << "\n\nERROR " << e << ": could not fetch.\n";
+        if(check_errors(e)) {
+        	return;
+        }
     }
 }
 

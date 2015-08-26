@@ -18,6 +18,7 @@
 
 #include "../RS-232/rs232.h"
 #include "../headers/comms.h"
+#include "../headers/error.h"
 
 /* Relay - an object class to provide controls and data storage for
  * relays/switches on a programmable logic controller.

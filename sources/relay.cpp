@@ -38,26 +38,26 @@ Relay::Relay(char ab, int n, bool s) {
 }
 
 // Relay::getLabel() - return the relay label
-// @throws 0 - not set
+// @throws 100 - not set
 // @ret label character
 char Relay::getLabel() {
-	if (this->label == '\0') {throw 0;}
+	if (this->label == '\0') {throw 100;}
 	return this->label;
 }
 
 // Relay::getNumber() - returns the relay number
-// @throws 0 - not set
+// @throws 101 - not set
 // @ret label int
 int Relay::getNumber() {
-	if (this->number == -1) {throw 0;}
+	if (this->number == -1) {throw 101;}
 	return this->number;
 }
 
 // Relay::getStatus() - returns the relay status
-// @throws 0 - not set
+// @throws 102 - not set
 // @ret status boolean
 bool Relay::getStatus() {
-	if (this->number == -1 || this->label == '\0') {throw 0;}
+	if (this->number == -1 || this->label == '\0') {throw 102;}
 	return this->status;
 }
 
@@ -177,17 +177,8 @@ void Relay::off() {
 		this->connection->sendText(tx);
 		this->status = false;
 	} catch (int e) {
-		switch (e) {
-			case 0:
-				std::cout << "ERROR: RS232 connection not set.\n";
-				break;
-
-			case 1:
-				std::cout << "ERROR: Unable to make RS232 connection.\n";
-				break;
-
-			default:
-				std::cout << "ERROR: Unknown error (" << e << ")\n";
+		if(check_errors(e)){
+			return;
 		}
 	}
 }
@@ -232,17 +223,8 @@ void Relay::toggle() {
 	try {
 		this->connection->sendText(tx);
 	} catch (int e) {
-		switch (e) {
-			case 0:
-				std::cout << "ERROR: RS232 connection not set.\n";
-				break;
-
-			case 1:
-				std::cout << "ERROR: Unable to make RS232 connection.\n";
-				break;
-
-			default:
-				std::cout << "ERROR: Unknown error (" << e << ")\n";
+		if(check_errors(e)){
+			return;
 		}
 	}
 }

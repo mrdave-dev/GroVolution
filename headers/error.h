@@ -10,7 +10,7 @@
 // 		end.
 // @member std::string output - text to provide user
 // @member bool terminate - true if error is fatal
-// 							false if error is non-fatal
+// 		false if error is non-fatal
 class gv_error {
 private:
 	int e_number;

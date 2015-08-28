@@ -16,6 +16,10 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 
+from . import views
+
 urlpatterns = [
+    url(r'^gv_bank_display/', include('gv_bank_display.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^$', views.index),
 ]

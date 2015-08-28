@@ -7,10 +7,10 @@ class GV_Bank(models.Model):
 	light_duration = models.IntegerField()
 	spray_interval = models.IntegerField()
 	spray_duration = models.IntegerField()
-	
+
 	def __str__(self):
 		return self.bank_name
-	
+
 
 class GV_Relay(models.Model):
 	bank = models.ForeignKey(GV_Bank)
@@ -20,3 +20,14 @@ class GV_Relay(models.Model):
 
 	def __str__(self):
 		return str(self.label) + str(self.number)
+
+
+class TestModel(models.Model):
+    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+
+    def __str__(self):
+        return self.title
+
+

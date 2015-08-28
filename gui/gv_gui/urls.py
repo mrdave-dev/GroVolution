@@ -15,6 +15,7 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -22,4 +23,6 @@ urlpatterns = [
     url(r'^gv_bank_display/', include('gv_bank_display.urls')),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^$', views.index),
+    url(r'^user/login/', auth_views.login,
+        {'template_name': 'gv_bank_display/login.html'}),
 ]

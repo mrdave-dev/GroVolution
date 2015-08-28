@@ -8,4 +8,5 @@ def test_view(request):
     output = ', '.join([str(t) for t in tests])
     return HttpResponse(output)
 
-
+def index(request):
+    return render(request, 'gv_bank_display/index.html')

@@ -36,7 +36,7 @@ bool check_errors(int e) {
 
 
 
-int main() {
+/*int main() {
 
 gv_errors.push_back(new gv_error(0, "RS232 Connection settings not set.", true));
 gv_errors.push_back(new gv_error(1, "Unable to make RS232 connection.", true));
@@ -66,4 +66,4 @@ gv_errors.push_back(new gv_error(214, "User quit.", true));
 	}
 
 	return 0;
-}
+}*/

@@ -1,3 +1,5 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import GV_Bank
+
+admin.site.register(GV_Bank)

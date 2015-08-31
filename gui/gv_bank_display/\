@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import GV_Bank, GV_Relay
+from .models import GV_Bank
 
 class GV_Bank_Admin(admin.ModelAdmin):
 	fieldsets = [

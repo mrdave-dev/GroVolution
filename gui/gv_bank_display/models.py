@@ -11,6 +11,10 @@ class GV_Bank(models.Model):
 	def __str__(self):
 		return self.bank_name
 
+	class Meta:
+		verbose_name = "Bank"
+		verbose_name_plural = "Banks"
+
 
 class GV_Relay(models.Model):
 	bank = models.ForeignKey(GV_Bank)
@@ -20,6 +24,10 @@ class GV_Relay(models.Model):
 
 	def __str__(self):
 		return str(self.label) + str(self.number)
+	
+	class Meta:
+		verbose_name = "Relay"
+		verbose_name_plural = "Relays"
 
 
 class TestModel(models.Model):

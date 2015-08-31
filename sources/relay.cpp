@@ -140,9 +140,8 @@ void Relay::on() {
 		this->connection->sendText(tx);
 		this->status = true;
 	} catch (int e) {
-		if (check_errors(e)) {
-			return;
-		}
+		if (this->error->check_errors(e) == true) return;	//terminate
+		else this->on();	//not fatal error, recall function
 	}
 }
 
@@ -177,9 +176,8 @@ void Relay::off() {
 		this->connection->sendText(tx);
 		this->status = false;
 	} catch (int e) {
-		if(check_errors(e)){
-			return;
-		}
+		if(this->error->check_errors(e) == true) return;	//terminate
+		else this->off();	//non-fatal error, recall function
 	}
 }
 
@@ -223,9 +221,8 @@ void Relay::toggle() {
 	try {
 		this->connection->sendText(tx);
 	} catch (int e) {
-		if(check_errors(e)){
-			return;
-		}
+		if(this->error->check_errors(e) == true) return;	//terminate
+		else this->toggle();
 	}
 }
 

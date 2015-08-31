@@ -29,6 +29,7 @@ private:
 	int number;		// identifying number fo relay
 	bool status;	// status of relay, true for on, false for off
 	RS232Connection* connection;	// connection to use for PLC communications
+	gv_error error;		//check for error type in case of exception
 
 public:
 	// Constructors

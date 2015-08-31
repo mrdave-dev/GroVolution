@@ -40,6 +40,7 @@ private:
 	std::vector<Relay*>::iterator current_relay;
 
 	RS232Connection* connection;
+	gv_error error;		//check for error type in case of exception
 
 public:
 	Bank();

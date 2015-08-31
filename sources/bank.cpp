@@ -354,9 +354,7 @@ void Bank::userSetName() {
 				this->_setFileName(user_response);
 				return;
 			} catch (int e) {
-				if (check_errors(e)) {
-					return;
-				}
+				if (this->error->check_errors(e) == true) return;	//terminate
 			}
 		}
 		std::cout << "What would you like the name to be? ";
@@ -382,9 +380,7 @@ void Bank::userSetWakeTime() {
 				this->_setWakeTime(user_response);
 				return;
 			} catch (int e) {
-				if(check_errors(e)) {
-					return;
-				}
+				if(this->error->check_errors(e) == true) return;	//terminate
 			}
 		}
 		std::cout << "What should the wake time be? ";
@@ -410,9 +406,7 @@ void Bank::userSetLightDuration() {
 				this->_setLightDuration(user_response);
 				return;
 			} catch (int e) {
-				if(check_errors(e)) {
-					return;
-				}
+				if(this->error->check_errors(e) == true) return;	//terminate
 			}
 		}
 
@@ -439,9 +433,7 @@ void Bank::userSetSprayInterval() {
 				this->_setSprayInterval(user_response);
 				return;
 			} catch (int e) {
-				if (check_errors(e)) {
-					return;
-				}
+				if (this->error->check_errors(e) == true) return;	//terminate
 			}
 		}
 
@@ -468,9 +460,7 @@ void Bank::userSetSprayDuration() {
 				this->_setSprayDuration(user_response);
 				return;
 			} catch (int e) {
-				if(check_errors(e)) {
-					return;
-				}
+				if(this->error->check_errors(e) == true) return;	//terminate
 			}
 		}
 		std::cout << "What should the spray duration be? ";
@@ -678,10 +668,11 @@ void Bank::add() {
 			label = _getCharFromUser();
 			num = _getIntFromUser();
 		} catch (int e) {
-			if (check_errors(e)) {
+			if (this->error->check_errors(e) == true) {
 				std::cout << "Bank add failed.";
-				return;
+				return;		//terminate
 			}
+			else this->add();	//non-fatal error, recall function
 		}
 
 		std::cout << "Add relay " << label << num << ", is that correct (y/n)? ";
@@ -692,9 +683,8 @@ void Bank::add() {
 				this->_relayAdd(label, num);
 				return;
 			} catch (int e) {
-				if(check_errors(e)) {
-					return;
-				}
+				if(this->error->check_errors(e) == true) return;	//terminate
+				else this->add();	//non-fatal error, recall function
 			}
 		}
 	}
@@ -715,13 +705,10 @@ void Bank::add(std::string ab) {
         this->_relayAdd(a, b);
 
     } catch (int e) {
-        if(check_errors(e) {
-        	return;
-        }
+        if(this->error->check_errors(e) == true) return;	//terminate
+        else this->add(std::string);	//non-fatal error, recall function
     }
 }
-
-
 
 void Bank::remove() {
 	std::cout << "BANK: " << this->file_name << std::endl;
@@ -736,10 +723,11 @@ void Bank::remove() {
 			label = _getCharFromUser();
 			num = _getIntFromUser();
 		} catch (int e) {
-			if(check_errors(e)) {
+			if(this->error->check_errors(e) == true) {
 				std::cout << "Bank remove failed.";
-				return;
+				return;		//terminate
 			}
+			else this->remove();	//non-fatal error, recall function
 		}
 
 		std::cout << "Remove relay " << label << num << ", is that correct (y/n)? ";
@@ -750,9 +738,8 @@ void Bank::remove() {
 				this->_relayDel(label, num);
 				return;
 			} catch (int e) {
-				if(check_errors(e)) {
-					return;
-				}
+				if(this->error->check_errors(e) == true) return;	//terminate
+				else this->remove();	//non-fatal error, recall function
 			}
 		}
 	}
@@ -770,10 +757,11 @@ void Bank::on() {
 		num = _getIntFromUser();
 		this->_relayOn(label, num);
 	} catch (int e) {
-		if (check_errors(e)) {
+		if (this->error->check_errors(e) == true) {
 			std::cout << "On failed.";
-			return;
+			return;		//terminate
 		}
+		else this->on();	//non-fatal error, recall function
 	}
 
 	if (Relay* x = _findRelayByID(label, num)) {
@@ -800,9 +788,8 @@ void Bank::on(std::string ab) {
         this->_relayOn(a, b);
 
     } catch (int e) {
-       if(check_errors(e)) {
-    	   return;
-       }
+       if(this->error->check_errors(e)) return;	//terminate
+       else this->on(std::string);	//non-fatal error, recall function
 
     }
 }
@@ -819,10 +806,11 @@ void Bank::off() {
 		num = _getIntFromUser();
 		this->_relayOff(label, num);
 	} catch (int e) {
-		if(check_errors(e)) {
+		if(this->error->check_errors(e) == true) {
 			std::cout << "Off failed.";
-			return;
+			return;		//terminate
 		}
+		else this->off();	//non-fatal error, recall function
 	}
 
 	if (Relay* x = _findRelayByID(label, num)) {
@@ -848,10 +836,8 @@ void Bank::off(std::string ab) {
         this->_relayOff(a, b);
 
     } catch (int e) {
-        if(check_errors(e)) {
-        	return;
-        }
-
+        if(this->error->check_errors(e)) return;	//terminate
+        else this->off(std::string);	//non-fatal error, recall function
     }
 }
 
@@ -874,9 +860,8 @@ void Bank::fetch() {
         this->_fetchTimers();
         this->_fetchRelays();
     } catch (int e) {
-        if(check_errors(e)) {
-        	return;
-        }
+        if(this->error->check_errors(e) == true) return;
+        else this->fetch();
     }
 }
 

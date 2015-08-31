@@ -354,7 +354,9 @@ void Bank::userSetName() {
 				this->_setFileName(user_response);
 				return;
 			} catch (int e) {
-				if (this->error->check_errors(e) == true) return;	//terminate
+				if (check_errors(e) {
+					return;
+				}
 			}
 		}
 		std::cout << "What would you like the name to be? ";

@@ -12,6 +12,7 @@
 #include "headers/comms.h"
 #include "headers/relay.h"
 #include "headers/bank.h"
+#include "headers/error.h"
 
 #define PIPORT 16
 #define BAUDRATE 38400

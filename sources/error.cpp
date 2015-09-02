@@ -1,4 +1,7 @@
 #include "../headers/error.h"
+#include <vector>
+
+std::vector<gv_error*> gv_errors;
 
 gv_error::gv_error(int e, std::string o, bool t) {
 	this->e_number = e;
@@ -35,9 +38,6 @@ bool check_errors(int e) {
 }
 
 
-
-/*int main() {
-
 gv_errors.push_back(new gv_error(0, "RS232 Connection settings not set.", true));
 gv_errors.push_back(new gv_error(1, "Unable to make RS232 connection.", true));
 gv_errors.push_back(new gv_error(100, "Relay label not set.", true));
@@ -59,11 +59,12 @@ gv_errors.push_back(new gv_error(212, "Invalid number value: Value must be 0-100
 gv_errors.push_back(new gv_error(213, "Relay ID not found.", true));
 gv_errors.push_back(new gv_error(214, "User quit.", true));
 
-
+/*
 	if (check_errors(0)) {
 
 		std::cout << "FATAL" << std::endl;
 	}
 
 	return 0;
-}*/
+}
+*/

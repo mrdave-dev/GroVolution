@@ -354,7 +354,7 @@ void Bank::userSetName() {
 				this->_setFileName(user_response);
 				return;
 			} catch (int e) {
-				if (check_errors(e) {
+				if (check_errors(e)) {
 					return;
 				}
 			}
@@ -382,9 +382,10 @@ void Bank::userSetWakeTime() {
 				this->_setWakeTime(user_response);
 				return;
 			} catch (int e) {
-			if (check_errors(e) {
-				return;
-			}
+			    if (check_errors(e)) {
+				    return;
+			    }
+            }
 		}
 		std::cout << "What should the wake time be? ";
 	}

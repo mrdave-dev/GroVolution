@@ -27,7 +27,7 @@ public:
 
 };
 
-std::vector<gv_error*> gv_errors;
+// std::vector<gv_error*> gv_errors;
 
 bool check_errors(int);
 

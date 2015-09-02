@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.contrib.auth import views as auth_views
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 from . import views
 
@@ -26,3 +27,5 @@ urlpatterns = [
     url(r'^user/login/', auth_views.login,
         {'template_name': 'gv_bank_display/login.html'}),
 ]
+
+urlpatterns += staticfiles_urlpatterns()

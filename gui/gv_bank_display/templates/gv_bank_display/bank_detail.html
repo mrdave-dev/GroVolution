@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ bank.bank_name }}{% endblock %}
+
+{% block content %}
+    <article>
+        <h2>{{ bank.bank_name }}</h2>
+        <h4>Last fetch: {{ bank.last_fetch }}</h4>
+        <h3>Wake time: {{ bank.wake_time }}</h3>
+        <h3>Light duration: {{ bank.light_duration }}</h3>
+        <h3>Spray duration: {{ bank.spray_duration }}</h3>
+        <h3>Spray interval: {{ bank.spray_interval }}</h3>
+        
+        <section>
+            <ul>
+                {% for relay in bank.gv_relay_set.all %}
+                    <li>
+                        {{ relay.label }}{{ relay.number }} - 
+                        {{ relay.status }}
+                  </li>
+                {% endfor %}
+            </ul>
+        </section>
+{% endblock %}

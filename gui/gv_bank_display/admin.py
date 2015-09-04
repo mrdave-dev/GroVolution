@@ -11,6 +11,7 @@ class GV_Bank_Admin(admin.ModelAdmin):
     inlines = [RelayInline,]
     fieldsets = [
         (None, {'fields':['bank_name']}),
+        ('Last fetch', {'fields':['last_fetch']}),
         ('Timers', {'fields':['wake_time', 'light_duration', 'spray_interval', 'spray_duration']}),
     ]
 

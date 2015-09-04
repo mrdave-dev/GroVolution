@@ -1,0 +1,27 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+    <title>{% block page_title %}{% endblock %}</title>
+
+</head>
+
+<body>
+    <div id="content-wrapper" >
+        <div id="header">
+            <h1>GroVolution Bank Controller</h1>
+            <h5>Version: 0.5</h5>
+            {% if user.is_authenticated %}
+                <h5>Hello, {{ user.username }}</h5>
+            {% endif %}
+        </div>
+        <div id="content">
+            {% block content %}{% endblock %}
+        </div>
+        <div id="footer">
+            <h4>Created during the summer of 2015</h4>
+        </div>
+    </div>
+</body>
+</html>

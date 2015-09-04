@@ -1,1 +1,16 @@
-<p>Hello World 2!</p>
+{% extends "base_template.html" %}
+
+
+{% block title %}Bank Display{% endblock %}
+
+
+{% block content %}
+<h2>Available banks:</h2>
+    <ul>    
+        {% for bank in banks %}
+            <li><h3><a href="{{ bank.pk }}/">
+                {{ bank.bank_name }}
+            </a></h3></li>
+        {% endfor %}
+    </ul>
+{% endblock %}

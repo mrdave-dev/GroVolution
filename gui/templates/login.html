@@ -1,0 +1,16 @@
+{% extends "base_template.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}Log in {% endblock %}
+
+
+{% block content %}
+    <form action ="{% url "gv_login" %}" method="post" accept-charset="utf-8">
+        {{ form|crispy }}
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <input class="btn btn-default" type="submit" value="Login">
+    </form>
+{% endblock %}
+

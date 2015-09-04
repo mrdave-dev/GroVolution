@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'gv_bank_display',
+    'crispy_forms',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -104,3 +105,9 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
 	os.path.join(BASE_DIR, 'assets'),
 )
+
+# Constants for login/logout
+LOGIN_URL = 'gv_login'
+LOGOUT_URL = 'gv_logut'
+LOGIN_REDIRECT_URL = '../'
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

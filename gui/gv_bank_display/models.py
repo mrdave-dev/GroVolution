@@ -1,19 +1,35 @@
 from django.db import models
 
+import re, json
+
 class GV_Bank(models.Model):
-	bank_name = models.CharField(max_length=200)
-	last_fetch = models.DateTimeField('last fetch')
-	wake_time = models.IntegerField()
-	light_duration = models.IntegerField()
-	spray_interval = models.IntegerField()
-	spray_duration = models.IntegerField()
+    bank_name = models.CharField(max_length=200)
+    last_fetch = models.DateTimeField('last fetch')
+    wake_time = models.IntegerField()
+    light_duration = models.IntegerField()
+    spray_interval = models.IntegerField()
+    spray_duration = models.IntegerField()
 
-	def __str__(self):
-		return self.bank_name
+    def update_relays(self):
+        # boil down filename
+        local_fn = re.search(r'[\w\d]+\.json', self.bank_name).group()
 
-	class Meta:
-		verbose_name = "Bank"
-		verbose_name_plural = "Banks"
+        # parse data
+        with open(self.bank_name, 'r') as data_file:
+            data = json.load(data_file)
+
+        # update object
+        for relay in data[local_fn]['relays']:
+            r = GV_Relay.objects.get(label=relay['label'], number=relay['number'])
+            r.status = relay['status']
+            r.save()
+
+    def __str__(self):
+        return self.bank_name
+
+    class Meta:
+        verbose_name = "Bank"
+        verbose_name_plural = "Banks"
 
 
 class GV_Relay(models.Model):
@@ -24,7 +40,7 @@ class GV_Relay(models.Model):
 
 	def __str__(self):
 		return str(self.label) + str(self.number)
-	
+
 	class Meta:
 		verbose_name = "Relay"
 		verbose_name_plural = "Relays"

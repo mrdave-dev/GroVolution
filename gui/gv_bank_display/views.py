@@ -9,7 +9,8 @@ def test_view(request):
     return HttpResponse(output)
 
 def index(request):
-    return render(request, 'gv_bank_display/index.html')
+    banks = GV_Bank.objects.all()
+    return render(request, 'gv_bank_display/index.html', {'banks': banks})
 
 
 def bank_display(request):

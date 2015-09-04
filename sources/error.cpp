@@ -1,4 +1,4 @@
-#include "../headers/error.h"
+#include "error.h"
 #include <vector>
 
 std::vector<gv_error*> gv_errors;
@@ -26,7 +26,7 @@ void gv_error::stateOutput() {
 }
 
 bool check_errors(int e) {
-	for (unsigned int i=0; i<gv_errors.size(); i++) {
+	for (unsigned int i = 0; i< gv_errors.size(); i++) {
 		if (gv_errors.at(i)->getE() == e) {
 			gv_errors.at(i)->stateOutput();
 			return gv_errors.at(i)->getTerminate();
@@ -37,34 +37,46 @@ bool check_errors(int e) {
 	return true;
 }
 
+void load_errors(std::string filename, std::vector<gv_error*> container)
+{
+	int errorCode = 0;	//temp int to hold error code
+	std::string errorType;	//temp string to hold error type
+	bool terminate = true;	//temp bool to hold terminate value
+	std::string buffer;	//buffer to read in text file
 
-gv_errors.push_back(new gv_error(0, "RS232 Connection settings not set.", true));
-gv_errors.push_back(new gv_error(1, "Unable to make RS232 connection.", true));
-gv_errors.push_back(new gv_error(100, "Relay label not set.", true));
-gv_errors.push_back(new gv_error(101, "Relay number not set.", true));
-gv_errors.push_back(new gv_error(102, "Relay status not set.", true));
-gv_errors.push_back(new gv_error(200, "File not open.", false));
-gv_errors.push_back(new gv_error(201, "Timer response not properly formed.", true));
-gv_errors.push_back(new gv_error(202, "Search didn't find all timers.", true));
-gv_errors.push_back(new gv_error(203, "Relay response not proerly formed.", true));
-gv_errors.push_back(new gv_error(204, "File name not set: Doesn't end with .json.", false));
-gv_errors.push_back(new gv_error(205, "File name not set: Contains invalid characters.", false));
-gv_errors.push_back(new gv_error(206, "File name not set: Must lead with alpha or num.", false));
-gv_errors.push_back(new gv_error(207, "Invalid wake time: Value must be 0-23.", false));
-gv_errors.push_back(new gv_error(208, "Invalid light duration: Value must be 0-23.", false));
-gv_errors.push_back(new gv_error(209, "Invalid spray interval: Value must be 0-3600.", false));
-gv_errors.push_back(new gv_error(210, "Invalid spray duration: Value must be 0-30.", false));
-gv_errors.push_back(new gv_error(211, "Relay ID already exists.", false));
-gv_errors.push_back(new gv_error(212, "Invalid number value: Value must be 0-100.", false));
-gv_errors.push_back(new gv_error(213, "Relay ID not found.", true));
-gv_errors.push_back(new gv_error(214, "User quit.", true));
+	std::ifstream errorfile(filename);
 
-/*
-	if (check_errors(0)) {
+	if (errorfile.is_open())
+	{
+		while (!errorfile.eof())
+		{
+			getline(errorfile, buffer, ',');
+			errorCode = stoi(buffer);
 
-		std::cout << "FATAL" << std::endl;
+			getline(errorfile, buffer, ',');
+			errorType = buffer;
+
+			getline(errorfile, buffer, '\n');
+			if (buffer == "true") terminate = true;
+			else terminate = false;
+
+			//push error into vector
+			gv_errors.push_back(new gv_error(errorCode, errorType, terminate));
+		}
+		errorfile.close();
 	}
+
+	else std::cout << "File did not open." << std::endl;
+}
+
+
+int main()
+{
+	std::vector<gv_error*> gv_errors;
+
+	load_errors("errors.txt", gv_errors);
+
+	check_errors(0);
 
 	return 0;
 }
-*/

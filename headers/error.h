@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <fstream>
 
 // class gv_error - a struct to hold error reasons and
 // 		a bool for whether the function or method should
@@ -25,13 +26,12 @@ public:
 	void stateOutput();
 	bool getTerminate();
 
+
 };
 
 // std::vector<gv_error*> gv_errors;
 
 bool check_errors(int);
-
-
-
+void load_errors(std::string, std::vector<gv_error*>);
 
 #endif

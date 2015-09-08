@@ -24,6 +24,20 @@ class GV_Bank(models.Model):
             r.status = relay['status']
             r.save()
 
+    def update_timers(self):
+        # boil down filename
+        local_fn = re.search(r'[\w\d]+.json', self.bank_name).group()
+
+        with open(self.bank_name, 'r') as data_file:
+            data=json.load(data_file)
+
+        self.wake_time = data[local_fn]['wake_time']
+        self.spray_interval = data[local_fn]['spray_interval']
+        self.light_duration = data[local_fn]['light_duration']
+        self.spray_duration = data[local_fn]['spray_duration']
+
+        self.save()
+
     def fetch_and_update(self):
         # boil down filename
         local_fn = re.search(r'[\w\d]+\.json', self.bank_name).group()
@@ -34,6 +48,7 @@ class GV_Bank(models.Model):
 
         time.sleep(2)
         self.update_relays()
+        self.update_timers()
 
     def __str__(self):
         return self.bank_name

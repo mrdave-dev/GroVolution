@@ -1,10 +1,25 @@
-{% extends "layout.html" %}
+{% extends "base_template.html" %}
 
 {% block title %}{{ bank.bank_name }}{% endblock %}
 
 {% block content %}
+    <script type="text/javascript">
+        function bank_fetch_and_update() {
+            $.get("fetch/", function( data ) {
+                if (data == '0') {
+                    location.reload(); 
+                } else {
+                    alert("Unknown error: unable to fetch data.");
+                }
+                    
+            });
+        }
+
+    </script>
+
     <article>
         <h2>{{ bank.bank_name }}</h2>
+        <a href="#" onclick="bank_fetch_and_update()">Update now</a>
         <h4>Last fetch: {{ bank.last_fetch }}</h4>
         <h3>Wake time: {{ bank.wake_time }}</h3>
         <h3>Light duration: {{ bank.light_duration }}</h3>

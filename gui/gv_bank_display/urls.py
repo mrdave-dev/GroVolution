@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^$', views.index),
 	url(r'^banks$', views.bank_display),
     url(r'(?P<pk>\d+)/$', views.bank_detail),
+    url(r'(?P<pk>\d+)/fetch/', views.bank_fetch),
 ]

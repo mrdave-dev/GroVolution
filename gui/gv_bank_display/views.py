@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
 
 from .models import TestModel, GV_Bank, GV_Relay
@@ -21,3 +22,12 @@ def bank_display(request):
 def bank_detail(request, pk):
     bank = get_object_or_404(GV_Bank, pk=pk)
     return render(request, 'gv_bank_display/bank_detail.html', {'bank': bank})
+
+def bank_fetch(request, pk):
+    try:
+        bank = GV_Bank.objects.get(pk=pk)
+    except GV_Bank.DoesNotExist:
+        return HttpResponse('1')
+
+    bank.fetch_and_update()
+    return HttpResponse('0')

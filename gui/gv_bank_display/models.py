@@ -1,6 +1,6 @@
 from django.db import models
 
-import re, json
+import re, json, subprocess, time
 
 class GV_Bank(models.Model):
     bank_name = models.CharField(max_length=200)
@@ -23,6 +23,17 @@ class GV_Bank(models.Model):
             r = GV_Relay.objects.get(label=relay['label'], number=relay['number'])
             r.status = relay['status']
             r.save()
+
+    def fetch_and_update(self):
+        # boil down filename
+        local_fn = re.search(r'[\w\d]+\.json', self.bank_name).group()
+
+        # call gv program to fetch
+        command = 'cd ..; ./gv fetch ' + local_fn
+        subprocess.Popen(command, shell=True)
+
+        time.sleep(2)
+        self.update_relays()
 
     def __str__(self):
         return self.bank_name

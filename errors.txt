@@ -1,0 +1,20 @@
+0,RS232 Connection settings not set,true
+1,Unable to make RS232 connection,true
+100,Relay label not set,true
+101,Relay number not set,true
+102,Relay status not set,true
+200,File not open,false
+201,Timer response not properly formed,true
+202,Search didn't find all timers,true
+203,Relay response not proerly formed,true
+204,File name not set: Doesn't end with .json,false
+205,File name not set: Contains invalid characters,false
+206,File name not set: Must lead with alpha or num,false
+207,Invalid wake time: Value must be 0-23,false
+208,Invalid light duration: Value must be 0-23,false
+209,Invalid spray interval: Value must be 0-3600,false
+210,Invalid spray duration: Value must be 0-30,false
+211,Relay ID already exists,false
+212,Invalid number value: Value must be 0-100,false
+213,Relay ID not found,true
+214,User quit,true

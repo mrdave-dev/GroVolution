@@ -31,3 +31,23 @@ def bank_fetch(request, pk):
 
     bank.fetch_and_update()
     return HttpResponse('0')
+
+
+def relay_off(request, pk):
+    try:
+        relay = GV_Relay.objects.get(pk=pk)
+    except GV_Relay.DoesNotExist:
+        return HttpResponse('1')
+
+    relay.turn_off()
+    return HttpResponse('0')
+
+
+def relay_on(request, pk):
+    try:
+        relay = GV_Relay.objects.get(pk=pk)
+    except GV_Relay.DoesNotExist:
+        return HttpResponse('1')
+
+    relay.turn_on()
+    return HttpResponse('0')

@@ -44,17 +44,33 @@ class GV_Bank(models.Model):
 
 
 class GV_Relay(models.Model):
-	bank = models.ForeignKey(GV_Bank)
-	label = models.CharField(max_length=2)
-	number = models.IntegerField()
-	status = models.BooleanField()
+    bank = models.ForeignKey(GV_Bank)
+    label = models.CharField(max_length=2)
+    number = models.IntegerField()
+    status = models.BooleanField()
 
-	def __str__(self):
-		return str(self.label) + str(self.number)
+    def turn_off(self):
+        # boil down filename
+        local_fn = re.search(r'[\w\d]+\.json', self.bank.bank_name).group()
 
-	class Meta:
-		verbose_name = "Relay"
-		verbose_name_plural = "Relays"
+        # call gv program to turn off
+        command = 'cd ..; ./gv off ' + local_fn + self.label + str(self.number)
+        subprocess.Popen(command, shell=True)
+
+    def turn_on(self):
+        # boil down filename
+        local_fn = re.search(r'[\w\d]+\.json', self.bank.bank_name).group()
+
+        #call gv program to turn off
+        command = 'cd ..; ./gv on ' + local_fn + self.label + str(self.number)
+        subprocess.Popen(command, shell=True)
+
+    def __str__(self):
+        return str(self.label) + str(self.number)
+
+    class Meta:
+        verbose_name = "Relay"
+        verbose_name_plural = "Relays"
 
 
 class TestModel(models.Model):

@@ -15,6 +15,26 @@
             });
         }
 
+        function relay_off(id) {
+            $.get("../relays/" + id + "/off", function( data ) {
+                if (data == '0') {
+                    alert("Relay off.");
+                } else {
+                    alert("Unknown error: unable to turn relay off.");
+                }
+            });
+        }
+
+        function relay_on(id) {
+            $.get("../relays/" + id + "/on", function( data ) {
+                if (data == '0') {
+                    alert("Relay on.");
+                } else {
+                    alert("Unknown error: unable to turn relay on.");
+                }
+            });
+        }
+
     </script>
 
     <article>
@@ -32,6 +52,7 @@
                     <li>
                         {{ relay.label }}{{ relay.number }} - 
                         {{ relay.status }}
+                        <a href="#" onclick="relay_on({{ relay.pk }})">on</a> | <a href="#"i onclick="relay_off({{ relay.pk }})">off</a>
                   </li>
                 {% endfor %}
             </ul>

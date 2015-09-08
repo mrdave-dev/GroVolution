@@ -62,7 +62,7 @@ regex-test: tests/regex-test.cpp
 
 #refactor.error testing
 error: sources/error.cpp headers/error.h
-	$(CXX) sources/error.cpp -o error-test
+	$(CXX) $(CXXFLAGS) sources/error.cpp -o error-test
 
 
 #utility

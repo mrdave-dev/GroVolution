@@ -44,7 +44,7 @@ void load_errors(std::string filename, std::vector<gv_error*> container)
 	bool terminate = true;	//temp bool to hold terminate value
 	std::string buffer;	//buffer to read in text file
 
-	std::ifstream errorfile(filename);
+	std::ifstream errorfile(filename.c_str());
 
 	if (errorfile.is_open())
 	{
@@ -69,7 +69,6 @@ void load_errors(std::string filename, std::vector<gv_error*> container)
 	else std::cout << "File did not open." << std::endl;
 }
 
-/*
 int main()
 {
 	std::vector<gv_error*> gv_errors;
@@ -78,6 +77,18 @@ int main()
 
 	check_errors(0);
 
+    // this won't compile but its here for example
+    // checklist
+    //  make sure non-fatal error repeats on higher level function
+    //  make sure fatal error does not repeat on higher level function
+    //  move load_errors to main.cpp
+    //  try it out in main program... but you don't have to
+
+    Bank davesBank* = new Bank("blah", 1, cool);
+
+    davesBank->userRename();
+
+    davesBank->fetchTimers();
+
 	return 0;
 }
-*/

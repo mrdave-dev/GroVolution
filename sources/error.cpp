@@ -1,5 +1,4 @@
 #include "../headers/error.h"
-#include <vector>
 
 std::vector<gv_error*> gv_errors;
 
@@ -84,11 +83,11 @@ int main()
     //  move load_errors to main.cpp
     //  try it out in main program... but you don't have to
 
-    Bank davesBank* = new Bank("blah", 1, cool);
+//    Bank davesBank* = new Bank("blah", 1, cool);
 
-    davesBank->userRename();
+//    davesBank->userRename();
 
-    davesBank->fetchTimers();
+//    davesBank->fetchTimers();
 
 	return 0;
 }

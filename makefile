@@ -61,8 +61,8 @@ regex-test: tests/regex-test.cpp
 	$(CXX) $(CXXFLAGS) tests/regex-test.cpp -o regex-test
 
 #refactor.error testing
-error: sources/error.cpp headers/error.h
-	$(CXX) $(CXXFLAGS) sources/error.cpp -o error-test
+error: obj/error.o obj/relay.o obj/comms.o obj/bank.o obj/rs232.o
+	$(CXX) $(CXXFLAGS) obj/error.o obj/comms.o obj/bank.o obj/rs232.o obj/relay.o -o error-test
 
 
 #utility

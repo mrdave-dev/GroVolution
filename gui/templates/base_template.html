@@ -1,27 +1,58 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-
+<!DOCTYPE html>
 <html>
 <head>
     <title>{% block page_title %}{% endblock %}</title>
+
+    <!-- JQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
+    
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+
 </head>
 
 <body>
-    <div id="content-wrapper" >
-        <div id="header">
-            <h1>GroVolution Bank Controller</h1>
-            <h5>Version: 0.5</h5>
-            {% if user.is_authenticated %}
-                <h5>Hello, {{ user.username }}</h5>
-            {% endif %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">GroVolution </a>
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/login/">Log in</a></li>    
+                    <li><a href="/gv_bank_display/">Bank Control</a></li>
+                </ul>
+            </div>
         </div>
-        <div id="content">
+    </nav>    
+
+    <div class="container">
+        <br /><br /><br />
+        <div class="starter-template">
             {% block content %}{% endblock %}
         </div>
-        <div id="footer">
-            <h4>Created during the summer of 2015</h4>
-        </div>
+
+        <br /><br /><br />
+        <footer>
+            Created during the summer of 2015 | Version: 0.5
+        </footer>
     </div>
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        // Check for active menu url
+        var url = window.location.pathname;
+        $('ul.nav a[href="' +  url +'"]').parent().addClass('active');
+    </script>
+
 </body>
 </html>

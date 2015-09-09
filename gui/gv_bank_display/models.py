@@ -69,7 +69,7 @@ class GV_Relay(models.Model):
         local_fn = re.search(r'[\w\d]+\.json', self.bank.bank_name).group()
 
         # call gv program to turn off
-        command = 'cd ..; ./gv off ' + local_fn + self.label + str(self.number)
+        command = 'cd ..; ./gv off ' + local_fn + ' ' + self.label + str(self.number)
         subprocess.Popen(command, shell=True)
 
     def turn_on(self):
@@ -77,7 +77,7 @@ class GV_Relay(models.Model):
         local_fn = re.search(r'[\w\d]+\.json', self.bank.bank_name).group()
 
         #call gv program to turn off
-        command = 'cd ..; ./gv on ' + local_fn + self.label + str(self.number)
+        command = 'cd ..; ./gv on ' + local_fn + ' ' + self.label + str(self.number)
         subprocess.Popen(command, shell=True)
 
     def __str__(self):

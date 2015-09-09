@@ -62,7 +62,7 @@ regex-test: tests/regex-test.cpp
 
 #refactor.error testing
 error: obj/error.o obj/relay.o obj/comms.o obj/bank.o obj/rs232.o
-	$(CXX) $(CXXFLAGS) obj/error.o obj/comms.o obj/bank.o obj/rs232.o obj/relay.o -o error-test
+	$(CXX) $(CXXFLAGS) obj/error.o obj/comms.o obj/bank.o obj/rs232.o obj/relay.o tests/error-test.cpp -o error-test
 
 
 #utility

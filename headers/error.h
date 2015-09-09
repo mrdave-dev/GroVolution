@@ -6,10 +6,10 @@
 #include <vector>
 #include <fstream>
 
-#include "../RS-232/rs232.h"
-#include "../headers/comms.h"
-#include "../headers/relay.h"
-#include "../headers/bank.h"
+//#include "../RS-232/rs232.h"
+//#include "../headers/comms.h"
+//#include "../headers/relay.h"
+//#include "../headers/bank.h"
 
 
 // class gv_error - a struct to hold error reasons and

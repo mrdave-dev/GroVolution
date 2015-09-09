@@ -67,7 +67,7 @@ void load_errors(std::string filename, std::vector<gv_error*> container)
 
 	else std::cout << "File did not open." << std::endl;
 }
-
+/*
 int main()
 {
 	std::vector<gv_error*> gv_errors;
@@ -91,3 +91,4 @@ int main()
 
 	return 0;
 }
+*/

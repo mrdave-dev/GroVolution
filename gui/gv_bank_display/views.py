@@ -1,28 +1,28 @@
 from django.http import HttpResponse
 from django.shortcuts import render, get_object_or_404
+from django.contrib.auth.decorators import login_required
 
 from .models import TestModel, GV_Bank, GV_Relay
 
-
-def test_view(request):
-    tests = TestModel.objects.all()
-    output = ', '.join([str(t) for t in tests])
-    return HttpResponse(output)
-
+@login_required
 def index(request):
     banks = GV_Bank.objects.all()
     return render(request, 'gv_bank_display/index.html', {'banks': banks})
 
 
+@login_required
 def bank_display(request):
 	banks = GV_Bank.objects.all()
 	return render(request, 'gv_bank_display/bank_display.html', {'banks': banks})
 
 
+@login_required
 def bank_detail(request, pk):
     bank = get_object_or_404(GV_Bank, pk=pk)
     return render(request, 'gv_bank_display/bank_detail.html', {'bank': bank})
 
+
+@login_required
 def bank_fetch(request, pk):
     try:
         bank = GV_Bank.objects.get(pk=pk)
@@ -33,6 +33,7 @@ def bank_fetch(request, pk):
     return HttpResponse('0')
 
 
+@login_required
 def relay_off(request, pk):
     try:
         relay = GV_Relay.objects.get(pk=pk)
@@ -43,6 +44,7 @@ def relay_off(request, pk):
     return HttpResponse('0')
 
 
+@login_required
 def relay_on(request, pk):
     try:
         relay = GV_Relay.objects.get(pk=pk)

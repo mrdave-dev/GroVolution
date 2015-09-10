@@ -1,14 +1,19 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html>
 <head>
     <title>{% block page_title %}{% endblock %}</title>
 
     <!-- JQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script> 
-    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
     <!-- Bootstrap -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static "bootstrap/bootstrap-switch/bootstrap-switch.min.css" %}">
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+        <script src="{% static "bootstrap/bootstrap-switch/bootstrap-switch.min.js" %}"></script>
 
 </head>
 
@@ -27,12 +32,12 @@
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a href="/">Home</a></li>
-                    <li><a href="/login/">Log in</a></li>    
+                    <li><a href="/login/">Log in</a></li>
                     <li><a href="/gv_bank_display/">Bank Control</a></li>
                 </ul>
             </div>
         </div>
-    </nav>    
+    </nav>
 
     <div class="container">
         <br /><br /><br />
@@ -47,12 +52,13 @@
     </div>
 
 
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
     <script type="text/javascript">
         // Check for active menu url
         var url = window.location.pathname;
         $('ul.nav a[href="' +  url +'"]').parent().addClass('active');
     </script>
+
 
 </body>
 </html>

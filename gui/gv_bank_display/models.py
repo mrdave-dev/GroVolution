@@ -1,6 +1,6 @@
 from django.db import models
 
-import re, json, subprocess, time
+import re, json, subprocess, time, datetime
 
 class GV_Bank(models.Model):
     bank_name = models.CharField(max_length=200)
@@ -50,6 +50,9 @@ class GV_Bank(models.Model):
         self.update_relays()
         self.update_timers()
 
+        self.last_fetch = datetime.datetime.now()
+        self.save()
+
     def __str__(self):
         return self.bank_name
 
@@ -95,5 +98,3 @@ class TestModel(models.Model):
 
     def __str__(self):
         return self.title
-
-

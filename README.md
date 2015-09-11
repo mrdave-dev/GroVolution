@@ -100,3 +100,7 @@ There are some bugs within the interface.
 *	Starting the C++ program 'gv' requires a clear of the comport buffer (this
 	is currently handled by the 'gv' program by polling the comport twice for
 	a response)
+* 	Also... I never figured out how to carry over group permissions on Git. So
+	if you get a 'read only database error' or Server 500 error, you'll need 
+	to change the group ownership of the project's root folder and all files
+	in it.

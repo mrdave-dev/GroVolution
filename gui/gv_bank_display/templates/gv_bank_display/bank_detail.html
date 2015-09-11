@@ -1,0 +1,75 @@
+{% extends "base_template.html" %}
+
+{% block title %}{{ bank.bank_name }}{% endblock %}
+
+{% block content %}
+    <script type="text/javascript">
+        function bank_fetch_and_update() {
+            $.get("fetch/", function( data ) {
+                if (data == '0') {
+                    location.reload();
+                } else {
+                    alert("Unknown error: unable to fetch data.");
+                }
+
+            });
+        }
+
+        function relay_off(id) {
+            $.get("../relays/" + id + "/off/", function( data ) {
+                if (data == '0') {
+                    // alert("Relay off.");
+                } else {
+                    alert("Unknown error: unable to turn relay off.");
+                    location.reload();
+                }
+            });
+        }
+
+        function relay_on(id) {
+            $.get("../relays/" + id + "/on/", function( data ) {
+                if (data == '0') {
+                    // alert("Relay on.");
+                } else {
+                    alert("Unknown error: unable to turn relay on.");
+                    location.reload();
+                }
+            });
+        }
+
+        function toggle_relay(relay_name) {
+          alert(relay_name);
+
+        }
+
+    </script>
+
+    <article>
+        <h2>{{ bank.bank_name }}</h2>
+        <a href="#" onclick="bank_fetch_and_update()">Update now</a>
+        <h4>Last fetch: {{ bank.last_fetch }}</h4>
+        <h3>Wake time: {{ bank.wake_time }}</h3>
+        <h3>Light duration: {{ bank.light_duration }}</h3>
+        <h3>Spray duration: {{ bank.spray_duration }}</h3>
+        <h3>Spray interval: {{ bank.spray_interval }}</h3>
+
+        <div class="row">
+            {% for relay in bank.gv_relay_set.all %}
+              <div class="col-xs-6 col-sm-3">
+                      {{ relay.label }}{{ relay.number }}{% if relay.number < 10 %}&nbsp;&nbsp;{% endif %}-
+                      <input type="checkbox" name="{{ relay.label }}{{ relay.number }}" {% if relay.status %}checked{% endif %}>
+                      <script type="text/javascript">
+                        $("[name='{{ relay.label }}{{ relay.number }}']").bootstrapSwitch();
+                        $("input[name='{{ relay.label }}{{ relay.number }}']").on('switchChange.bootstrapSwitch', function(event, state) {
+                          if (state) {
+                            relay_on('{{ relay.pk }}');
+                          } else {
+                            relay_off('{{ relay.pk }}');
+                          }
+                        })
+                      </script>
+              </div>
+            {% endfor %}
+        </div>
+      </article>
+{% endblock %}

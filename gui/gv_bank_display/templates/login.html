@@ -1,0 +1,27 @@
+{% extends "base_template.html" %}
+{% load crispy_forms_tags %}
+
+
+{% block title %}Log in {% endblock %}
+
+
+{% block content %}
+
+{% if request.user.is_authenticated %}
+
+    <h2>Hello, {{ user.username }}!</h2>
+    <h3>You're logged in. Do you want to <a href="/logout/">logout</a>?</h3>
+    
+{% else %}
+
+    <form action ="{% url "gv_login" %}" method="post" accept-charset="utf-8">
+        {{ form|crispy }}
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ next }}">
+        <input class="btn btn-default" type="submit" value="Login">
+    </form>
+
+{% endif %}
+
+{% endblock %}
+

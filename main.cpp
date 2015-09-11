@@ -23,6 +23,17 @@ void printHelp();
 int main(int argc, char** argv) {
   // Create a new Bank
   Bank* BankZero = nullptr;
+    
+    // PROGRAM SETUP
+    std::cout << "... creating connection ...\n";
+    RS232Connection* cx = new RS232Connection(BAUDRATE, PIPORT);
+    
+    // BUG WORKAROUND: For some reason, the PLC is returning bad characters back
+    // ONLY on the first send. Dave's hypothesis: leftover characters in the
+    // comport require a 'readText()' to clear them. This seems to work.
+    std::string throwaway;
+    cx->readText(throwaway);
+    cx->readText(throwaway);
 
     // Check for command line arguements
     if (argc > 1) {
@@ -118,11 +129,7 @@ int main(int argc, char** argv) {
         }
     }
 
-    // PROGRAM SETUP
-    std::cout << "... creating connection ...\n";
-    RS232Connection* cx = new RS232Connection(BAUDRATE, PIPORT);
-    cx->sendText("0");
-
+    
     if (!BankZero) {
       std::cout << "... creating empty bank ...\n";
       BankZero = new Bank();
@@ -204,6 +211,8 @@ int main(int argc, char** argv) {
 
       }
     } // end while(userResponse != "exit")
+
+    std::cout << std::endl;
     return 0;
 } // end main()
 

@@ -13,9 +13,19 @@ int main()
     
     Bank stephBank;
 
-    stephBank.userSetName();    //should repeat (non-fatal)
 
-    stephBank._fetchTimers(); //should throw fatal error
+    stephBank.remove();   
+
+    std::cout << "Success!!!" << std::endl;
+
+    stephBank.on();   
+
+    std::cout << "Success!!!" << std::endl;
+
+    stephBank.off();   
+
+    std::cout << "Success!!!" << std::endl;
+
 
     return 0;
 }

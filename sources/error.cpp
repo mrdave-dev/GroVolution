@@ -22,6 +22,8 @@ void gv_error::stateOutput() {
 	std::cout << ": ";
 	std::cout << this->output;
 	std::cout << "\n\n";
+    std::cout << this->terminate;
+    std::cout << "\n\n";
 }
 
 bool check_errors(int e) {
@@ -56,10 +58,10 @@ void load_errors(std::string filename, std::vector<gv_error*> container)
 			errorType = buffer;
 
 			getline(errorfile, buffer, '\n');
-			if (buffer == "true") terminate = true;
+            if (buffer == "true\r") terminate = true;
 			else terminate = false;
 
-			//push error into vector
+            //push error into vector
 			gv_errors.push_back(new gv_error(errorCode, errorType, terminate));
 		}
 		errorfile.close();

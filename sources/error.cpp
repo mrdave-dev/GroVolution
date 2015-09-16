@@ -52,7 +52,9 @@ void load_errors(std::string filename, std::vector<gv_error*> container)
 		while (!errorfile.eof())
 		{
 			getline(errorfile, buffer, ',');
-			errorCode = stoi(buffer);
+         
+            if(buffer.length() > 0) {
+            errorCode = stoi(buffer);
 
 			getline(errorfile, buffer, ',');
 			errorType = buffer;
@@ -63,7 +65,9 @@ void load_errors(std::string filename, std::vector<gv_error*> container)
 
             //push error into vector
 			gv_errors.push_back(new gv_error(errorCode, errorType, terminate));
-		}
+		
+            }
+        }
 		errorfile.close();
 	}
 

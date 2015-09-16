@@ -1,4 +1,4 @@
-0,RS232 Connection settings not set,true
+0,RS232 Connection not set,true
 1,Unable to make RS232 connection,true
 100,Relay label not set,true
 101,Relay number not set,true

@@ -742,6 +742,7 @@ void Bank::remove() {
 
 		std::cout << "Remove relay " << label << num << ", is that correct (y/n)? ";
 		std::cin >> user_response;
+        std::cin.ignore(256, '\n');
 
 		if (user_response == "y") {
 			try {

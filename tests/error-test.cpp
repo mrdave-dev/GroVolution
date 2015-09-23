@@ -12,6 +12,7 @@ int main()
     load_errors("errors.txt", gv_errors);
     
     Bank stephBank;
+    stephBank._setConnection(new RS232Connection(38400, 16));
 
 
     stephBank.remove();   

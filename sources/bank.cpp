@@ -650,11 +650,11 @@ char _getCharFromUser() {
 		}
 
 		if (user_response.length() > 1) {
-			std::cout << "That's not a valid character!";
+			std::cout << "That's not a valid character!\n";
 		} else {
 			t = user_response[0];
 			if (!isalpha(t)) {
-				std::cout << "That's not a valid character!";
+				std::cout << "That's not a valid character!\n";
 			} else {
 				return t;
 			}
